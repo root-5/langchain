@@ -41,8 +41,8 @@ export default function Page() {
                     <label htmlFor="inputText" className="text-gray-700">
                         質問を入力してください
                     </label>
-                    <input
-                        type="text"
+                    <textarea
+                        // type="text"
                         name="inputText"
                         id="inputText"
                         className="mt-2 p-2 border border-gray-300 rounded-md"
