@@ -7,9 +7,12 @@ import { Headline2 } from '../components/Headline2';
 // import { Metadata } from 'next';
 
 export default function Page() {
-    let result = 'ここに結果が表示されます';
+    // 初期値とステートの宣言
+    let initial = 'ここに結果が表示されます';
+    const [result, setResult] = useState(initial);
 
-    async function summary(event: React.FormEvent<HTMLFormElement>) {
+    // フォームの送信ボタンが押されたときの処理
+    async function submitClick(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const serverResponse = await fetch('/api/summary', {
@@ -24,11 +27,8 @@ export default function Page() {
 
         // レスポンスをJSONとしてパース、返信を返す
         const serverResponseJson = await serverResponse.json();
-        result = serverResponseJson.result;
-        console.log(result);
-        // return result;
-
-        // 表示の結果の変更
+        let result = serverResponseJson.result;
+        setResult(result);
     }
 
     return (
@@ -36,7 +36,7 @@ export default function Page() {
             <Headline2>大規模AI系便利ツール</Headline2>
 
             {/* フォーム */}
-            <form className="mt-8" onSubmit={summary}>
+            <form className="mt-8" onSubmit={submitClick}>
                 <div className="flex flex-col">
                     <label htmlFor="inputText" className="text-gray-700">
                         質問を入力してください
@@ -52,7 +52,6 @@ export default function Page() {
                     送信
                 </button>
             </form>
-            <script></script>
 
             {/* 結果の表示 */}
             <div className="mt-8">
