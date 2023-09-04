@@ -1,32 +1,64 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Headline2 } from '../components/Headline2';
-import { Metadata } from 'next';
-import { OpenAI } from 'langchain/llms/openai';
+// import { Metadata } from 'next';
 
-const llm = new OpenAI({
-    openAIApiKey: process.env.API_KEY,
-    temperature: 0.9,
-});
+export default function Page() {
+    let result = 'ここに結果が表示されます';
 
-// "Feetful of Fun"
+    async function summary(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const serverResponse = await fetch('/api/summary', {
+            method: 'POST',
+            body: JSON.stringify({
+                text: formData.get('inputText'),
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
-export const metadata: Metadata = {
-    title: '大規模AI系便利ツール',
-    description:
-        'このサイトは「大規模AI系便利ツール- 倫理的に食べる」の非公式ファンサイトです。このサイトを見られた方のヴィーガンという概念を少しでも変えられたらと思っています。',
-    referrer: 'origin-when-cross-origin',
-    keywords: ['大規模AI系便利ツール'],
-};
+        // レスポンスをJSONとしてパース、返信を返す
+        const serverResponseJson = await serverResponse.json();
+        result = serverResponseJson.result;
+        console.log(result);
+        // return result;
 
-export default async function Page() {
-    let result = 'テスト表示';
-    // result = await llm.predict('What would be a good company name for a company that makes colorful socks?');
+        // 表示の結果の変更
+    }
+
     return (
         <main className="max-w-5xl w-11/12 mx-auto pt-14">
             <Headline2>大規模AI系便利ツール</Headline2>
-            <Headline2>{result}</Headline2>
+
             {/* フォーム */}
+            <form className="mt-8" onSubmit={summary}>
+                <div className="flex flex-col">
+                    <label htmlFor="inputText" className="text-gray-700">
+                        質問を入力してください
+                    </label>
+                    <input
+                        type="text"
+                        name="inputText"
+                        id="inputText"
+                        className="mt-2 p-2 border border-gray-300 rounded-md"
+                    />
+                </div>
+                <button type="submit" className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                    送信
+                </button>
+            </form>
+            <script></script>
+
+            {/* 結果の表示 */}
+            <div className="mt-8">
+                <p className="text-gray-700">結果</p>
+                <p className="mt-2 text-gray-700">{result}</p>
+            </div>
         </main>
     );
 }
