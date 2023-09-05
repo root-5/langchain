@@ -13,9 +13,9 @@ export function Footer() {
             <div className="flex flex-wrap gap-12 w-11/12 max-w-6xl mx-auto justify-between">
                 <div>
                     <Link href="./" className="text-xl text-white hover:before:scale-x-0">
-                        大規模AI系便利ツール
+                        AIを便利に使おう！
                     </Link>
-                    <p className="pt-2 text-sm text-white">非公式ファンサイト</p>
+                    <p className="pt-2 text-sm text-white">製作者：root-5</p>
                 </div>
 
                 <div className="flex flex-wrap gap-x-8 gap-y-4 w-full max-w-sm ">
@@ -32,7 +32,7 @@ export function Footer() {
             </div>
 
             <p className="pt-16 pb-2 text-xs text-white text-center">
-                Copyright © 2023 大規模AI系便利ツール 非公式ファンサイト
+                Copyright © 2023 AIを便利に使おう！ by root-5
             </p>
         </footer>
     );

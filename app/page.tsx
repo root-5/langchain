@@ -53,7 +53,7 @@ export default function Page() {
 
     return (
         <main className="max-w-5xl w-11/12 mx-auto pt-14">
-            <Headline2>AIを便利に使おう！</Headline2>
+            <Headline2>文章要約</Headline2>
 
             {/* フォーム */}
             <form className="mt-8" onSubmit={submitClick}>

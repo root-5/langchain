@@ -5,15 +5,15 @@ import { Footer } from '../components/Footer';
 import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
-    title: '大規模AI系便利ツール',
+    title: 'AIを便利に使おう！',
     description:
-        'このサイトは「大規模AI系便利ツール- 倫理的に食べる」の非公式ファンサイトです。このサイトを見られた方のヴィーガンという概念を少しでも変えられたらと思っています。',
+        'このサイトは「AIを便利に使おう！- 倫理的に食べる」の非公式ファンサイトです。このサイトを見られた方のヴィーガンという概念を少しでも変えられたらと思っています。',
     openGraph: {
         images: 'img/FV.jpg',
     },
     referrer: 'origin-when-cross-origin',
     keywords: [
-        '大規模AI系便利ツール',
+        'AIを便利に使おう！',
         'ヴィーガン',
         'ピーター・シンガー',
         '倫理的に食べる',
