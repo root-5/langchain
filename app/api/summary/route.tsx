@@ -18,6 +18,7 @@ export async function POST(req: Request) {
     // リクエストから質問部分を取得
     const body = await req.json();
     const text = body.text;
+    const length = body.length;
 
     // テキストを分割してOpenAIの入力形式に変換
     const textSplitter = new RecursiveCharacterTextSplitter({ chunkSize: 1000 });
@@ -27,7 +28,7 @@ export async function POST(req: Request) {
     const prompt = new PromptTemplate({
         inputVariables: ['text'],
         template: `
-            あなたは以下のドキュメントを要約してください。また、その際にできる限り多くの情報を含めてください。:
+            本文で提示された重要な論点を${length}文字程度に簡潔にまとめてください:
             "{text}"
             ---
             要約:

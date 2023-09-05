@@ -7,12 +7,17 @@ import { Headline2 } from '../components/Headline2';
 
 export default function Page() {
     // ステートの宣言
-    const [result, setResult] = useState('ここに結果が表示されます');
+    const [result, setResult] = useState('');
     const [resultTextLength, setResultTextLength] = useState(0);
+    const [formTextLength, setFormTextLength] = useState(0);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
 
     // フォームの送信ボタンが押されたときの処理
     async function submitClick(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+
+        // ボタンを無効化
+        setButtonDisabled(true);
 
         // フォームの内容を取得し、サーバーに送信
         const formData = new FormData(event.currentTarget);
@@ -20,6 +25,7 @@ export default function Page() {
             method: 'POST',
             body: JSON.stringify({
                 text: formData.get('inputText'),
+                length: formData.get('textLength'),
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -31,17 +37,26 @@ export default function Page() {
         let result = serverResponseJson.result;
         setResult(result);
 
-        // const text = event.currentTarget.value;
-        // const length = text.length;
-        // setResultTextLength(length);
+        // レスポンスの文字数を表示する
+        const length = result.length;
+        setResultTextLength(length);
+
+        // ボタンを有効化
+        setButtonDisabled(false);
     }
 
-    // テキストエリアの文字数を表示する
-    const [formTextLength, setFormTextLength] = useState(0);
-    function showLength(event: React.KeyboardEvent<HTMLTextAreaElement>) {
+    // 入力トリガーでテキストエリア（フォーム）の文字数を表示する
+    function showFormTextLength(event: React.KeyboardEvent<HTMLTextAreaElement>) {
         const text = event.currentTarget.value;
         const length = text.length;
         setFormTextLength(length);
+    }
+
+    // 入力トリガーでテキストエリア（結果）の文字数を表示する
+    function showREsultTextLength(event: React.KeyboardEvent<HTMLTextAreaElement>) {
+        const text = event.currentTarget.value;
+        const length = text.length;
+        setResultTextLength(length);
     }
 
     return (
@@ -50,29 +65,53 @@ export default function Page() {
 
             {/* フォーム */}
             <form className="mt-8" onSubmit={submitClick}>
+                <p className="text-2xl text-gray-900">入力</p>
                 <div className="flex flex-col">
-                    <label htmlFor="inputText" className="text-gray-900">
-                        質問を入力してください
+                    <label htmlFor="inputText" className="mt-2 text-gray-900">
+                        要約したい文章
                     </label>
                     <textarea
-                        // type="text"
                         name="inputText"
                         id="inputText"
-                        className="mt-2 p-2 border border-gray-300 rounded-md"
-                        onKeyUp={showLength}
+                        className="mt-2 p-2 h-64 border border-gray-300 rounded-md"
+                        onChangeCapture={showFormTextLength}
                     />
-                    <p className="text-gray-700">{formTextLength}文字</p>
+                    <p className="text-gray-700 text-right">{formTextLength}文字</p>
+                    <label htmlFor="inputText" className="text-gray-900">
+                        要約後の文字数
+                    </label>
+                    <select
+                        name="textLength"
+                        id="textLength"
+                        className="mt-2 p-2 w-20 border border-gray-300 rounded-md"
+                    >
+                        <option>100</option>
+                        <option selected>200</option>
+                        <option>300</option>
+                        <option>400</option>
+                        <option>500</option>
+                    </select>
                 </div>
-                <button type="submit" className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                <button
+                    type="submit"
+                    disabled={buttonDisabled}
+                    className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-300"
+                >
                     送信
                 </button>
             </form>
 
             {/* 結果の表示 */}
-            <div className="mt-8">
+            <div className="mt-10">
                 <p className="text-2xl text-gray-900">結果</p>
-                <p className="mt-2 text-gray-900">{result}</p>
-                <p className="text-gray-700">{resultTextLength}文字</p>
+                <textarea
+                    className="mt-2 p-2 h-64 w-full border border-gray-300 rounded-md"
+                    onChangeCapture={showREsultTextLength}
+                    placeholder="ここに結果が表示されます"
+                    value={result}
+                    readOnly
+                ></textarea>
+                <p className="mt-2 text-gray-700">{resultTextLength}文字</p>
             </div>
         </main>
     );
