@@ -65,7 +65,6 @@ export default function Page() {
             <form className="mt-8" onSubmit={submitClick}>
                 <p className="text-2xl">入力</p>
                 <div className="flex flex-col">
-                    <label className="mt-2">要約したい文章</label>
                     <textarea
                         name="inputText"
                         id="inputText"
@@ -110,7 +109,7 @@ export default function Page() {
                 <div className="relative mt-2">
                     <textarea
                         className="p-2 h-64 w-full border border-gray-300 rounded-md"
-                        placeholder="ここに結果が表示されます"
+                        placeholder="ここに要約結果が表示されます"
                         value={result.resultText}
                         readOnly
                     ></textarea>

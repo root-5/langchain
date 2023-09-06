@@ -27,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="jp">
             <head>
+                <meta name="robots" content="noindex" />
                 <link rel="icon" href="/favicon.ico" />
                 <link rel="stylesheet" href="css/top.css" />
             </head>

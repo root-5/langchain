@@ -53,17 +53,17 @@ export function Header() {
                             </Link>
                         </li>
                         <li>
-                            <Link href="./author" className="py-2 w-fit text-xl text-white">
-                                ピーターシンガーについて
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="./dashboard" className="py-2 w-fit text-xl text-white">
+                            <Link href="./" className="py-2 w-fit text-xl text-white">
                                 リンク
                             </Link>
                         </li>
                         <li>
-                            <Link href="./dashboard" className="py-2 w-fit text-xl text-white">
+                            <Link href="./" className="py-2 w-fit text-xl text-white">
+                                リンク
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="./" className="py-2 w-fit text-xl text-white">
                                 リンク
                             </Link>
                         </li>

@@ -19,21 +19,19 @@ export function Footer() {
                 </div>
 
                 <div className="flex flex-wrap gap-x-8 gap-y-4 w-full max-w-sm ">
-                    <Link href="./author" className="text-white">
-                        ピーターシンガーについて
-                    </Link>
-                    <Link href="./dashboard" className="text-white">
+                    <Link href="./" className="text-white">
                         リンク
                     </Link>
-                    <Link href="./dashboard" className="text-white">
+                    <Link href="./" className="text-white">
+                        リンク
+                    </Link>
+                    <Link href="./" className="text-white">
                         リンク
                     </Link>
                 </div>
             </div>
 
-            <p className="pt-16 pb-2 text-xs text-white text-center">
-                Copyright © 2023 AIを便利に使おう！ by root-5
-            </p>
+            <p className="pt-16 pb-2 text-xs text-white text-center">Copyright © 2023 AIを便利に使おう！ by root-5</p>
         </footer>
     );
 }
