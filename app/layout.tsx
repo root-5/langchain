@@ -7,20 +7,12 @@ import { Analytics } from '@vercel/analytics/react';
 export const metadata: Metadata = {
     title: 'AIを便利に使おう！',
     description:
-        'このサイトは「AIを便利に使おう！- 倫理的に食べる」の非公式ファンサイトです。このサイトを見られた方のヴィーガンという概念を少しでも変えられたらと思っています。',
+        'このサイトは「AIを便利に使おう！」をスローガンとして作成されました。皆が使いやすいアプリを手軽に提供していく予定です。',
     openGraph: {
         images: 'img/FV.jpg',
     },
     referrer: 'origin-when-cross-origin',
-    keywords: [
-        'AIを便利に使おう！',
-        'ヴィーガン',
-        'ピーター・シンガー',
-        '倫理的に食べる',
-        'Why Vegan?',
-        '児玉聡',
-        '林和雄',
-    ],
+    keywords: ['AIを便利に使おう！', 'アプリ', '使いやすい', '文章要約'],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
