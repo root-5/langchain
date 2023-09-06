@@ -44,30 +44,37 @@ export default function Page() {
         setStatus('typing');
     }
 
-    // 入力トリガーでテキストエリア（フォーム）の文字数を表示する
+    // 入力トリガーでテキストエリア（入力部分）の文字数を表示する
     function showFormTextLength(event: React.KeyboardEvent<HTMLTextAreaElement>) {
         const text = event.currentTarget.value;
         const length = text.length;
         setFormTextLength(length);
     }
 
+    // 結果のテキストをコピーする
+    function copyText(e: React.MouseEvent<HTMLImageElement, MouseEvent>) {
+        const text = result.resultText;
+        navigator.clipboard.writeText(text);
+    }
+
     return (
         <main className="max-w-5xl w-11/12 mx-auto pt-14">
             <Headline2>文章要約</Headline2>
 
-            {/* フォーム */}
+            {/* 入力フォーム */}
             <form className="mt-8" onSubmit={submitClick}>
-                <p className="text-2xl text-gray-900">入力</p>
+                <p className="text-2xl">入力</p>
                 <div className="flex flex-col">
-                    <label className="mt-2 text-gray-900">要約したい文章</label>
+                    <label className="mt-2">要約したい文章</label>
                     <textarea
                         name="inputText"
                         id="inputText"
+                        placeholder="ここに要約したい文章を入力してください"
                         className="mt-2 p-2 h-64 border border-gray-300 rounded-md"
                         onChangeCapture={showFormTextLength}
                     />
                     <p className="text-gray-700 text-right">{formTextLength}文字</p>
-                    <label className="text-gray-900">要約後の文字数</label>
+                    <label className="">要約後の文字数</label>
                     <select
                         name="textLength"
                         id="textLength"
@@ -83,25 +90,40 @@ export default function Page() {
                 <button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-300"
+                    className="relative mt-4 py-2 px-4 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-gray-300"
                 >
                     送信
+                    <div
+                        hidden={status === 'typing'}
+                        className="absolute top-1 left-24 animate-spin h-8 w-8 bg-blue-200 duration-300 rounded-xl pointer-events-none"
+                    ></div>
                 </button>
+                <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
             </form>
 
             {/* 結果の表示 */}
             <div className="mt-10">
-                <p className="text-2xl text-gray-900">結果</p>
+                <p className="text-2xl">結果</p>
                 <p hidden={isError.errorStatus} className="mt-2 text-gray-700">
                     {isError.errorStatus ? isError.errorMessage : ''}
                 </p>
-                <textarea
-                    className="mt-2 p-2 h-64 w-full border border-gray-300 rounded-md"
-                    placeholder="ここに結果が表示されます"
-                    value={result.resultText}
-                    readOnly
-                ></textarea>
-                <p className="mt-2 text-gray-700">{result.resultLength}文字</p>
+                <div className="relative mt-2">
+                    <textarea
+                        className="p-2 h-64 w-full border border-gray-300 rounded-md"
+                        placeholder="ここに結果が表示されます"
+                        value={result.resultText}
+                        readOnly
+                    ></textarea>
+                    <Image
+                        src="/img/copy.png"
+                        width={24}
+                        height={24}
+                        alt={'コピー'}
+                        className="absolute bottom-2 right-1 p-2 w-10 h-10 opacity-30 duration-300 rounded-2xl hover:opacity-100 cursor-pointer active:bg-blue-200"
+                        onClick={copyText}
+                    />
+                </div>
+                <p className="text-gray-700 text-right">{result.resultLength}文字</p>
             </div>
         </main>
     );
