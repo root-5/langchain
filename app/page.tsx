@@ -25,6 +25,7 @@ export default function Page() {
                 body: JSON.stringify({
                     text: formData.get('inputText'),
                     length: formData.get('textLength'),
+                    kansai: formData.get('kansaiToggle'),
                 }),
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,25 +74,39 @@ export default function Page() {
                         onChangeCapture={showFormTextLength}
                     />
                     <p className="text-gray-700 text-right">{formTextLength}文字</p>
-                    <label className="">要約後の文字数</label>
-                    <select
-                        name="textLength"
-                        id="textLength"
-                        className="mt-2 p-2 w-20 border border-gray-300 rounded-md"
-                    >
-                        <option>100</option>
-                        <option selected>200</option>
-                        <option>300</option>
-                        <option>400</option>
-                        <option>500</option>
-                    </select>
+                    <div className="flex gap-5 items-center">
+                        <label className="">要約後の文字数</label>
+                        <select
+                            name="textLength"
+                            id="textLength"
+                            className="p-2 w-20 border border-gray-300 rounded-md"
+                        >
+                            <option>100</option>
+                            <option>200</option>
+                            <option>300</option>
+                            <option>400</option>
+                            <option>500</option>
+                        </select>
+                    </div>
+                    <label className="relative mt-4 w-fit flex gap-5 items-center cursor-pointer">
+                        <span className="">関西弁で要約する</span>
+                        <input
+                            type="checkbox"
+                            value="関西弁で"
+                            name="kansaiToggle"
+                            id="kansaiToggle"
+                            className="sr-only peer"
+                        />
+                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                    {/* <label className="">関西弁で出力</label> */}
                 </div>
                 <button
                     type="submit"
                     disabled={status === 'loading'}
                     className="relative mt-4 py-2 px-4 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-gray-300"
                 >
-                    送信
+                    要約する
                     <div
                         hidden={status === 'typing'}
                         className="absolute top-1 left-24 animate-spin h-8 w-8 bg-blue-200 duration-300 rounded-xl pointer-events-none"
@@ -100,9 +115,9 @@ export default function Page() {
                 <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
             </form>
 
-            {/* 結果の表示 */}
+            {/* 出力の表示 */}
             <div className="mt-10">
-                <p className="text-2xl">結果</p>
+                <p className="text-2xl">出力</p>
                 <p hidden={isError.errorStatus} className="mt-2 text-gray-700">
                     {isError.errorStatus ? isError.errorMessage : ''}
                 </p>

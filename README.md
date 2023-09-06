@@ -3,14 +3,19 @@
 1. `npm create next-app` yarn を利用して、コマンドを実行したフォルダ内に Nextjs のプロジェクトファイルを作成する。
 2. `git remote add origin https://github.com/root-5/langchain.git`
 3. `git push -u origin main`
-4. `yarn` yarn管理に切り替え
+4. `yarn` yarn 管理に切り替え
 5. `yarn add langchain`
+6. versel 側から github のプロジェクトを追加
+7. `yarn add @vercel/analytics`
+8. `vercel deploy`
 
 # 本番環境
 
+https://langchain-wine-six.vercel.app/
+
 1. `yarn dev` 開発環境の実行
-2. `yarn build` 本番環境のビルド
-3. `yarn start` 本番環境の実行
+2. `yarn build` 本番環境のビルド（versel を使っているため基本的に使用しない）
+3. `yarn start` 本番環境の実行（versel を使っているため基本的に使用しない）
 
 # 注意点
 
@@ -26,5 +31,5 @@ https://zenn.dev/crsc1206/articles/d92548257fb445
 
 # 試すべきこと
 
--   propsでの関数渡し
+-   props での関数渡し
 -
