@@ -25,7 +25,6 @@ export default function Page() {
                 body: JSON.stringify({
                     text: formData.get('inputText'),
                     length: formData.get('textLength'),
-                    // kansai: formData.get('kansaiToggle'),
                 }),
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,6 +55,7 @@ export default function Page() {
     function copyText(e: React.MouseEvent<HTMLImageElement, MouseEvent>) {
         const text = result.resultText;
         navigator.clipboard.writeText(text);
+        const copyButton = e.currentTarget;
     }
 
     return (
@@ -90,17 +90,6 @@ export default function Page() {
                             <option>500</option>
                         </select>
                     </div>
-                    {/* <label className="relative mt-4 w-fit flex gap-5 items-center cursor-pointer">
-                        <span className="">関西弁で要約する</span>
-                        <input
-                            type="checkbox"
-                            value="関西弁に翻訳した上で"
-                            name="kansaiToggle"
-                            id="kansaiToggle"
-                            className="sr-only peer"
-                        />
-                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label> */}
                 </div>
                 <button
                     type="submit"
@@ -123,18 +112,19 @@ export default function Page() {
                     {isError.errorStatus ? isError.errorMessage : ''}
                 </p>
                 <div className="relative mt-2">
-                    <textarea
-                        className="p-2 h-64 w-full border border-gray-300 rounded-md"
+                    <div
+                        className="p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap"
                         placeholder="ここに要約結果が表示されます"
-                        value={result.resultText}
-                        readOnly
-                    ></textarea>
+                        // contentEditable="true"
+                    >
+                        {result.resultText}
+                    </div>
                     <Image
                         src="/img/copy.png"
                         width={24}
                         height={24}
                         alt={'コピー'}
-                        className="absolute bottom-2 right-1 p-2 w-10 h-10 opacity-30 duration-300 rounded-2xl hover:opacity-100 cursor-pointer active:bg-blue-200"
+                        className="absolute z-10 bottom-2 right-1 p-2 w-10 h-10 opacity-30 duration-300 rounded-2xl hover:opacity-100 cursor-pointer active:bg-blue-500"
                         onClick={copyText}
                     />
                 </div>

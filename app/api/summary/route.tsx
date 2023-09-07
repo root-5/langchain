@@ -19,7 +19,6 @@ export async function POST(req: Request) {
     const body = await req.json();
     const text = body.text;
     const length = body.length;
-    // const kansai = body.kansai;
 
     // テキストを分割してOpenAIの入力形式に変換
     const textSplitter = new RecursiveCharacterTextSplitter({ chunkSize: 1000 });
@@ -29,17 +28,11 @@ export async function POST(req: Request) {
     const prompt = new PromptTemplate({
         inputVariables: ['text'],
         template: `
-            本文で提示された重要な論点を${length}文字程度に簡潔にまとめてください:
+            本文で提示された重要な論点を${length}文字程度に簡潔にまとめてください。箇条書きの使用はできるだけ控えてください:
             "{text}"
             ---
             要約:
         `,
-        // template: `
-        //     本文で提示された重要な論点を${length}文字程度に${kansai}簡潔にまとめてください:
-        //     "{text}"
-        //     ---
-        //     要約:
-        // `,
     });
 
     // 要約を実行
