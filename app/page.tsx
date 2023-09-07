@@ -25,7 +25,7 @@ export default function Page() {
                 body: JSON.stringify({
                     text: formData.get('inputText'),
                     length: formData.get('textLength'),
-                    kansai: formData.get('kansaiToggle'),
+                    // kansai: formData.get('kansaiToggle'),
                 }),
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,18 +88,17 @@ export default function Page() {
                             <option>500</option>
                         </select>
                     </div>
-                    <label className="relative mt-4 w-fit flex gap-5 items-center cursor-pointer">
+                    {/* <label className="relative mt-4 w-fit flex gap-5 items-center cursor-pointer">
                         <span className="">関西弁で要約する</span>
                         <input
                             type="checkbox"
-                            value="関西弁で"
+                            value="関西弁に翻訳した上で"
                             name="kansaiToggle"
                             id="kansaiToggle"
                             className="sr-only peer"
                         />
                         <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
-                    {/* <label className="">関西弁で出力</label> */}
+                    </label> */}
                 </div>
                 <button
                     type="submit"

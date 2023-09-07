@@ -32,4 +32,4 @@ https://zenn.dev/crsc1206/articles/d92548257fb445
 # 試すべきこと
 
 -   props での関数渡し
--
+-   マークダウンで構造化した要約の作成
