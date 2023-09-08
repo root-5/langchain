@@ -19,11 +19,11 @@ export function Footer() {
                 </div>
 
                 <div className="flex flex-wrap gap-x-8 gap-y-4 w-full max-w-sm ">
-                    <Link href="./" className="text-white">
-                        リンク
+                    <Link href="./summary" className="text-white">
+                        文章要約
                     </Link>
-                    <Link href="./" className="text-white">
-                        リンク
+                    <Link href="./document" className="text-white">
+                        文書作成
                     </Link>
                     <Link href="./" className="text-white">
                         リンク

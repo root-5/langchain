@@ -48,13 +48,13 @@ export function Header() {
                 >
                     <ul className="mt-6">
                         <li>
-                            <Link href="./" className="py-2 w-fit text-xl text-white">
-                                ホーム
+                            <Link href="./summary" className="py-2 w-fit text-xl text-white">
+                                文章要約
                             </Link>
                         </li>
                         <li>
-                            <Link href="./" className="py-2 w-fit text-xl text-white">
-                                リンク
+                            <Link href="./document" className="py-2 w-fit text-xl text-white">
+                                文書作成
                             </Link>
                         </li>
                         <li>
