@@ -20,7 +20,7 @@ export default function Page() {
         // フォームの内容を取得し、サーバーに送信
         try {
             const formData = new FormData(event.currentTarget);
-            const serverResponse = await fetch('../api/summary', {
+            const serverResponse = await fetch('../api/summary/getSummary', {
                 method: 'POST',
                 body: JSON.stringify({
                     text: formData.get('inputText'),
@@ -31,10 +31,10 @@ export default function Page() {
                 },
             });
             // レスポンスをJSONとしてパース
-            const serverResponseJson = await serverResponse.json();
+            const serverResponseObj = await serverResponse.json();
 
             // レスポンスのテキストと長さをステートに保存
-            const text = serverResponseJson.result;
+            const text = serverResponseObj.result;
             const length = text.length;
             setResult({ text: text, length: length });
         } catch (error) {

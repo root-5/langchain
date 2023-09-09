@@ -49,7 +49,7 @@ export function HeadlineList(props: { title: string; toggle: boolean; number: nu
 
         // フォームの内容を取得し、サーバーに送信
         try {
-            const serverResponse = await fetch('../api/document/sentence', {
+            const serverResponse = await fetch('../api/document/getBody', {
                 method: 'POST',
                 body: JSON.stringify({
                     title: props.title,
@@ -61,10 +61,10 @@ export function HeadlineList(props: { title: string; toggle: boolean; number: nu
                 },
             });
             // レスポンスをJSONとしてパース
-            const serverResponseJson = await serverResponse.json();
+            const serverResponseObj = await serverResponse.json();
 
             // レスポンスのテキストと長さをステートに保存
-            const newText = serverResponseJson.result;
+            const newText = serverResponseObj.result;
             const newLength = newText.length;
 
             // レスポンスのテキストと長さをステートに保存
@@ -107,15 +107,15 @@ export function HeadlineList(props: { title: string; toggle: boolean; number: nu
                 <button
                     onClick={(e) => genereteSentenceFunc(e, num)}
                     disabled={status[num] === 'loading'}
-                    className="p-2 w-14 bg-blue-500 text-white rounded-md duration-300 cursor-pointer hover:bg-blue-600 disabled:bg-gray-300"
+                    className="p-2 w-18 bg-blue-500 text-white rounded-md duration-300 cursor-pointer hover:bg-blue-600 disabled:bg-gray-300"
                 >
-                    生成
+                    本文生成
                 </button>
             </div>
             <div className="flex w-full mt-2 gap-3">
                 <p className="text-lg w-3"></p>
                 <textarea
-                    placeholder="ここに要約結果が表示されます"
+                    placeholder="ここに生成した本文が表示されます"
                     className="p-2 w-full h-64 border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap"
                     value={responseSentenceText[num]}
                     onChange={(e) => textareaChange(e, num)}

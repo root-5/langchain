@@ -16,6 +16,47 @@ export default function Page() {
     const [isError, setIsError] = useState({ statusBoolean: false, messageText: '' }); // エラー状態の有無とエラーメッセージを管理
     const [status, setStatus] = useState('typing'); // 表示状態を管理、'typing'は入力中、'loading'はロード中
 
+    // 章作成ボタンが押されたときの処理
+    async function generateHeadline(e: React.FormEvent<HTMLButtonElement>) {
+        e.preventDefault();
+        setStatus('loading');
+
+        // フォームの内容を取得し、サーバーに送信
+        try {
+            const serverResponse = await fetch('../api/document/getHeadline', {
+                method: 'POST',
+                body: JSON.stringify({
+                    title: title,
+                    number: headlineState.number,
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            // レスポンスをJSONとしてパース
+            const serverResponseObj = await serverResponse.json();
+
+            // 回答部分のみを抽出
+            const resText = serverResponseObj.result;
+
+            // 回答部分を改行で分割し、半角スペースが含まれる場合は半角スペース以降の文字だけを抽出
+            const resTextArray = resText.split('\n');
+            const headlines = resTextArray.map((text: string) => {
+                if (text.includes(' ')) {
+                    const textArray = text.split(' ');
+                    return textArray[1];
+                } else {
+                    return text;
+                }
+            });
+            console.log(headlines);
+        } catch (error) {
+            const messageText = (error as Error).toString();
+            setIsError({ statusBoolean: true, messageText: messageText });
+        }
+        setStatus('typing');
+    }
+
     // フォームの送信ボタンが押されたときの処理
     async function submitClick(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -71,15 +112,24 @@ export default function Page() {
                 <p className="text-2xl">入力</p>
                 <div className="flex flex-col">
                     <label className="mt-4">文章のタイトル</label>
-                    <input
-                        type="text"
-                        name="inputHeadline"
-                        id="inputHeadline"
-                        className="mt-2 p-2 w-full border border-gray-300 rounded-md"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                    <label className="relative mt-4 w-fit flex gap-5 items-center cursor-pointer">
+                    <div className="flex w-full mt-2 gap-3 items-center">
+                        <input
+                            type="text"
+                            name="inputHeadline"
+                            id="inputHeadline"
+                            className="flex-1 p-2 w-full border border-gray-300 rounded-md"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
+                        <button
+                            onClick={generateHeadline}
+                            disabled={status === 'loading'}
+                            className="p-2 w-18 bg-blue-500 text-white rounded-md duration-300 cursor-pointer hover:bg-blue-600 disabled:bg-gray-300"
+                        >
+                            見出し生成
+                        </button>
+                    </div>
+                    {/* <label className="relative mt-4 w-fit flex gap-5 items-center cursor-pointer">
                         <span className="">章の見出し</span>
                         <input
                             type="checkbox"
@@ -90,7 +140,27 @@ export default function Page() {
                             onChange={toggleClick}
                         />
                         <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
+                    </label> */}
+                    <div className="flex mt-4 gap-5 items-center">
+                        <label className="">作成したい章数</label>
+                        <select
+                            name="textLength"
+                            id="textLength"
+                            className="p-2 w-20 border border-gray-300 rounded-md"
+                            onChange={(e) =>
+                                setHeadlineState({ toggle: headlineState.toggle, number: parseInt(e.target.value) })
+                            }
+                        >
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
                     <ol className="mt-2">
                         <HeadlineList
                             title={title}
