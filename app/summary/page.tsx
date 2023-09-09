@@ -73,7 +73,7 @@ export default function Page() {
                         name="inputText"
                         id="inputText"
                         placeholder={
-                            'ここに要約したい文章を入力してください\n英文をいれると要約された日本語訳を取得できます'
+                            'ここに要約したい文章を入力してください\n日本語以外の文章を入れた場合は要約された日本語訳を取得できます'
                         }
                         className="mt-2 p-2 h-64 border border-gray-300 rounded-md"
                         onChangeCapture={showFormTextLength}
@@ -97,13 +97,9 @@ export default function Page() {
                 <button
                     type="submit"
                     disabled={isLoading === true}
-                    className="relative mt-4 py-2 px-4 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-gray-300"
+                    className="relative mt-4 py-2 px-4 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
                 >
                     要約する
-                    <div
-                        hidden={isLoading === false}
-                        className="absolute top-1 left-28 animate-spin h-8 w-8 bg-blue-200 duration-300 rounded-xl pointer-events-none"
-                    ></div>
                 </button>
                 <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
             </form>

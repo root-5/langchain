@@ -175,13 +175,9 @@ export default function Page() {
                     <button
                         disabled={isLoading === true}
                         onClick={generateHeadline}
-                        className="relative mt-4 py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-gray-300"
+                        className="relative mt-4 py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
                     >
                         見出し生成
-                        <div
-                            hidden={isLoading === false}
-                            className="absolute top-1 left-32 animate-spin h-8 w-8 bg-blue-200 duration-300 rounded-xl pointer-events-none"
-                        ></div>
                     </button>
                     <label className="mt-10 font-bold">見出し構成</label>
                     <ol className="">
@@ -207,16 +203,12 @@ export default function Page() {
                     <button
                         disabled={isLoading === true}
                         onClick={generateBody}
-                        className="relative py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-gray-300"
+                        className="relative py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
                     >
                         本文生成
-                        <div
-                            hidden={isLoading === false}
-                            className="absolute top-1 left-32 animate-spin h-8 w-8 bg-blue-200 duration-300 rounded-xl pointer-events-none"
-                        ></div>
                     </button>
                     <p className="text-red-800">
-                        生成文の長さ次第ですが
+                        生成文の長さ次第ですが、
                         <br className="sm:hidden" />
                         かなり時間がかかります！！
                     </p>
