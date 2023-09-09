@@ -1,25 +1,28 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { Headline2 } from '../../components/Headline2';
-import { HeadlineList } from '@/components/document/HeadlineList';
+
+// 見出しの最大数
+const maxHeadlineNumber = 10;
 
 export default function Page() {
-    // ステートの宣言
-    const [isToggleChecked, setIsToggleChecked] = useState(true); // トグルの状態を管理
+    //====================================================================
+    // ==== ステートの宣言 ====
     const [title, setTitle] = useState(''); // タイトルを管理
     const [headlineState, setHeadlineState] = useState({ toggle: true, number: 3 }); // 見出しの有無と見出しの数を管理
+    const [textLength, setTextLength] = useState(100); // 本文文字数を管理
+    const [inputHeadlineText, setInputHeadlineText] = useState(['', '', '', '', '', '', '', '', '', '']); // テキストエリアの内容を管理
     const [result, setResult] = useState({ resultText: '', resultLength: 0 }); //レスポンスの文字数と内容を管理
-    const [textLength, setTextLength] = useState(100); //レスポンスの文字数と内容を管理
+    const [isLoading, setIsLoading] = useState(false); // 表示状態を管理
     const [isError, setIsError] = useState({ statusBoolean: false, messageText: '' }); // エラー状態の有無とエラーメッセージを管理
-    const [status, setStatus] = useState('typing'); // 表示状態を管理、'typing'は入力中、'loading'はロード中
 
+    //====================================================================
+    // ==== ボタンの処理 ====
     // 章作成ボタンが押されたときの処理
-    async function generateHeadline(e: React.FormEvent<HTMLButtonElement>) {
-        e.preventDefault();
-        setStatus('loading');
+    async function generateHeadline() {
+        setIsLoading(true);
 
         // フォームの内容を取得し、サーバーに送信
         try {
@@ -49,27 +52,33 @@ export default function Page() {
                     return text;
                 }
             });
-            console.log(headlines);
+            // headlines配列の長さがmaxHeadlineNumberより小さい場合は、空文字を追加
+            if (headlines.length < maxHeadlineNumber) {
+                for (let i = headlines.length; i < maxHeadlineNumber; i++) {
+                    headlines.push('');
+                }
+            }
+            setInputHeadlineText(headlines);
         } catch (error) {
             const messageText = (error as Error).toString();
             setIsError({ statusBoolean: true, messageText: messageText });
         }
-        setStatus('typing');
+        setIsLoading(false);
     }
 
-    // フォームの送信ボタンが押されたときの処理
-    async function submitClick(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        setStatus('loading');
+    // 本文生成ボタンが押されたときの処理
+    async function generateBody() {
+        setIsLoading(true);
 
         // フォームの内容を取得し、サーバーに送信
         try {
-            const formData = new FormData(e.currentTarget);
-            const serverResponse = await fetch('../api/document', {
+            const serverResponse = await fetch('../api/document/getBody', {
                 method: 'POST',
                 body: JSON.stringify({
-                    text: formData.get('inputText'),
-                    length: formData.get('textLength'),
+                    title: title, // タイトル
+                    headlineNumber: headlineState.number, // 見出しの数
+                    headlines: inputHeadlineText, // 見出しの内容
+                    length: textLength, // 本文の文字数
                 }),
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,15 +95,7 @@ export default function Page() {
             const messageText = (error as Error).toString();
             setIsError({ statusBoolean: true, messageText: messageText });
         }
-        setStatus('typing');
-    }
-    // トグルスイッチが押されたときの処理
-    function toggleClick() {
-        setHeadlineState({
-            toggle: !headlineState.toggle,
-            number: headlineState.number,
-        });
-        setIsToggleChecked(!isToggleChecked);
+        setIsLoading(false);
     }
 
     // 結果のテキストをコピーする関数
@@ -103,74 +104,91 @@ export default function Page() {
         navigator.clipboard.writeText(text);
     }
 
+    //====================================================================
+    // ==== 見出しのリスト ====
+    // numberを上限として、1,2,3...を格納した配列を作成
+    let headlineNumberArr: number[] = [];
+    for (let i = 0; i < headlineState.number; i++) {
+        headlineNumberArr.push(i + 1);
+    }
+    // 見出しのリストを作成
+    const listItems = headlineNumberArr.map((num) => (
+        <div className="flex w-full mt-4 gap-3 items-center">
+            <p className="text-lg">{num}. </p>
+            <input
+                type="text"
+                name="inputHeadline"
+                placeholder={'見出し' + num}
+                className="flex-1 p-2 w-full border border-gray-300 rounded-md"
+                value={inputHeadlineText[num - 1]}
+                onChange={(e) =>
+                    setInputHeadlineText(
+                        inputHeadlineText.map((text, index) => (index !== num ? text : e.target.value))
+                    )
+                }
+            />
+        </div>
+    ));
+
+    //====================================================================
+    // ==== レンダリング ====
     return (
         <main className="max-w-5xl w-11/12 mx-auto pt-14">
-            <Headline2>文章作成（！製作中！）</Headline2>
+            <Headline2>文章作成</Headline2>
 
-            {/* 入力フォーム */}
-            <form className="mt-8" onSubmit={submitClick}>
-                <p className="text-2xl">入力</p>
+            {/* 入力エリア */}
+            <div className="mt-8">
+                <p className="text-2xl font-black	">入力</p>
                 <div className="flex flex-col">
-                    <label className="mt-4">文章のタイトル</label>
+                    <label className="mt-4 font-bold">文章のタイトル</label>
                     <div className="flex w-full mt-2 gap-3 items-center">
                         <input
                             type="text"
                             name="inputHeadline"
                             id="inputHeadline"
-                            className="flex-1 p-2 w-full border border-gray-300 rounded-md"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
+                            placeholder="タイトルを入力"
+                            className="flex-1 p-2 w-full border border-gray-300 rounded-md"
                         />
-                        <button
-                            onClick={generateHeadline}
-                            disabled={status === 'loading'}
-                            className="p-2 w-18 bg-blue-500 text-white rounded-md duration-300 cursor-pointer hover:bg-blue-600 disabled:bg-gray-300"
-                        >
-                            見出し生成
-                        </button>
                     </div>
-                    {/* <label className="relative mt-4 w-fit flex gap-5 items-center cursor-pointer">
-                        <span className="">章の見出し</span>
-                        <input
-                            type="checkbox"
-                            name="kansaiToggle"
-                            id="kansaiToggle"
-                            className="sr-only peer"
-                            checked={isToggleChecked}
-                            onChange={toggleClick}
-                        />
-                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label> */}
                     <div className="flex mt-4 gap-5 items-center">
-                        <label className="">作成したい章数</label>
+                        <label className="font-bold">作成したい章数</label>
                         <select
                             name="textLength"
                             id="textLength"
-                            className="p-2 w-20 border border-gray-300 rounded-md"
+                            className="p-2 w-20 border border-gray-300 rounded-md font-normal"
                             onChange={(e) =>
                                 setHeadlineState({ toggle: headlineState.toggle, number: parseInt(e.target.value) })
                             }
                         >
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
                         </select>
                     </div>
-                    <ol className="mt-2">
-                        <HeadlineList
-                            title={title}
-                            toggle={headlineState.toggle}
-                            number={headlineState.number}
-                            wordCount={textLength}
-                        />
+                    <button
+                        disabled={isLoading === true}
+                        onClick={generateHeadline}
+                        className="relative mt-4 py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-gray-300"
+                    >
+                        見出し生成
+                        <div
+                            hidden={isLoading === false}
+                            className="absolute top-1 left-32 animate-spin h-8 w-8 bg-blue-200 duration-300 rounded-xl pointer-events-none"
+                        ></div>
+                    </button>
+                    <label className="mt-10 font-bold">見出し構成</label>
+                    <ol className="">
+                        <ul>{listItems}</ul>
                     </ol>
                     <div className="flex mt-4 gap-5 items-center">
-                        <label className="">各章の文字数</label>
+                        <label className="font-bold">見出し毎の文字数</label>
                         <select
                             name="textLength"
                             id="textLength"
@@ -185,34 +203,40 @@ export default function Page() {
                         </select>
                     </div>
                 </div>
-                <button
-                    type="submit"
-                    disabled={status === 'loading'}
-                    className="relative mt-4 py-2 px-4 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-gray-300"
-                >
-                    要約する
-                    <div
-                        hidden={status === 'typing'}
-                        className="absolute top-1 left-28 animate-spin h-8 w-8 bg-blue-200 duration-300 rounded-xl pointer-es-none"
-                    ></div>
-                </button>
+                <div className="flex mt-4 gap-5 items-center">
+                    <button
+                        disabled={isLoading === true}
+                        onClick={generateBody}
+                        className="relative py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-gray-300"
+                    >
+                        本文生成
+                        <div
+                            hidden={isLoading === false}
+                            className="absolute top-1 left-32 animate-spin h-8 w-8 bg-blue-200 duration-300 rounded-xl pointer-events-none"
+                        ></div>
+                    </button>
+                    <p className="text-red-800">
+                        生成文の長さ次第ですが
+                        <br className="sm:hidden" />
+                        かなり時間がかかります！！
+                    </p>
+                </div>
                 <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
-            </form>
+            </div>
 
-            {/* 出力の表示 */}
+            {/* 出力エリア */}
             <div className="mt-10">
-                <p className="text-2xl">出力</p>
+                <p className="text-2xl font-black">出力</p>
                 <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
                     {isError.statusBoolean ? isError.messageText : ''}
                 </p>
                 <div className="relative mt-2">
-                    <div
+                    <textarea
                         className="p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap"
-                        placeholder="ここに要約結果が表示されます"
-                        // contentEditable="true"
-                    >
-                        {result.resultText}
-                    </div>
+                        placeholder="ここに生成した文章が表示されます"
+                        value={result.resultText}
+                        onChange={(e) => setResult({ resultText: e.target.value, resultLength: result.resultLength })}
+                    ></textarea>
                     <Image
                         src="/img/copy.png"
                         width={24}
