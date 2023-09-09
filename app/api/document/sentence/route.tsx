@@ -15,18 +15,23 @@ export async function POST(req: Request) {
 
     // リクエストから質問部分を取得
     const body = await req.json();
-    const requestText = body.text;
-    const requestLength = body.length;
+
+    const reqTitle = body.title;
+    const reqHeadline = body.headline;
+    const reqLength = body.length;
 
     // テンプレートを作成
     const multipleInputPrompt = new PromptTemplate({
-        inputVariables: ['headline', 'wordCount'],
-        template: '{headline}という見出しに沿った文章を{wordCount}文字で生成してください。',
+        inputVariables: ['title', 'headline', 'length'],
+        template:
+            'あなたは記事ライターです。{title}というタイトルの記事を作成しています。この記事の一部である{headline}という見出しに沿った文章を{length}文字で生成してください。',
     });
 
+    // テンプレートに入力を埋め込む
     const formattedMultipleInputPrompt = await multipleInputPrompt.format({
-        headline: requestText,
-        wordCount: requestLength,
+        title: reqTitle,
+        headline: reqHeadline,
+        length: reqLength,
     });
 
     // OpenAIへリクエストを送信

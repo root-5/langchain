@@ -8,7 +8,8 @@ import { HeadlineList } from '@/components/document/HeadlineList';
 
 export default function Page() {
     // ステートの宣言
-    const [isChecked, setIsChecked] = useState(true); // チェックボックスの状態を管理
+    const [isToggleChecked, setIsToggleChecked] = useState(true); // トグルの状態を管理
+    const [title, setTitle] = useState(''); // タイトルを管理
     const [headlineState, setHeadlineState] = useState({ toggle: true, number: 3 }); // 見出しの有無と見出しの数を管理
     const [result, setResult] = useState({ resultText: '', resultLength: 0 }); //レスポンスの文字数と内容を管理
     const [textLength, setTextLength] = useState(100); //レスポンスの文字数と内容を管理
@@ -16,13 +17,13 @@ export default function Page() {
     const [status, setStatus] = useState('typing'); // 表示状態を管理、'typing'は入力中、'loading'はロード中
 
     // フォームの送信ボタンが押されたときの処理
-    async function submitClick(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
+    async function submitClick(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
         setStatus('loading');
 
         // フォームの内容を取得し、サーバーに送信
         try {
-            const formData = new FormData(event.currentTarget);
+            const formData = new FormData(e.currentTarget);
             const serverResponse = await fetch('../api/document', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -47,12 +48,12 @@ export default function Page() {
         setStatus('typing');
     }
     // トグルスイッチが押されたときの処理
-    function kansaiToggleClick() {
+    function toggleClick() {
         setHeadlineState({
             toggle: !headlineState.toggle,
             number: headlineState.number,
         });
-        setIsChecked(!isChecked);
+        setIsToggleChecked(!isToggleChecked);
     }
 
     // 結果のテキストをコピーする関数
@@ -75,6 +76,8 @@ export default function Page() {
                         name="inputHeadline"
                         id="inputHeadline"
                         className="mt-2 p-2 w-full border border-gray-300 rounded-md"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                     />
                     <label className="relative mt-4 w-fit flex gap-5 items-center cursor-pointer">
                         <span className="">章の見出し</span>
@@ -83,13 +86,14 @@ export default function Page() {
                             name="kansaiToggle"
                             id="kansaiToggle"
                             className="sr-only peer"
-                            checked={isChecked}
-                            onChange={kansaiToggleClick}
+                            checked={isToggleChecked}
+                            onChange={toggleClick}
                         />
                         <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                     <ol className="mt-2">
                         <HeadlineList
+                            title={title}
                             toggle={headlineState.toggle}
                             number={headlineState.number}
                             wordCount={textLength}
@@ -101,7 +105,7 @@ export default function Page() {
                             name="textLength"
                             id="textLength"
                             className="p-2 w-20 border border-gray-300 rounded-md"
-                            onChange={(event) => setTextLength(parseInt(event.target.value))}
+                            onChange={(e) => setTextLength(parseInt(e.target.value))}
                         >
                             <option value="100">100</option>
                             <option value="250">250</option>
@@ -119,7 +123,7 @@ export default function Page() {
                     要約する
                     <div
                         hidden={status === 'typing'}
-                        className="absolute top-1 left-28 animate-spin h-8 w-8 bg-blue-200 duration-300 rounded-xl pointer-events-none"
+                        className="absolute top-1 left-28 animate-spin h-8 w-8 bg-blue-200 duration-300 rounded-xl pointer-es-none"
                     ></div>
                 </button>
                 <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>

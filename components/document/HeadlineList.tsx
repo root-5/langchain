@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-export function HeadlineList(props: { toggle: boolean; number: number; wordCount: number }) {
+export function HeadlineList(props: { title: string; toggle: boolean; number: number; wordCount: number }) {
     // ステートの宣言
     const [inputHeadlineText, setInputHeadlineText] = useState(['', '', '', '', '', '', '', '', '', '']); // テキストエリアの内容を管理
     const [responseSentenceText, setResponseSentenceText] = useState(['', '', '', '', '', '', '', '', '', '']); //レスポンスの文字数と内容を管理
@@ -35,6 +35,7 @@ export function HeadlineList(props: { toggle: boolean; number: number; wordCount
         setStatus(status.map((status, index) => (index !== num ? status : newStatus)));
     }
 
+    // 見出しを利用する場合のみ、このコンポーネントを表示
     if (!props.toggle) {
         return;
     }
@@ -51,7 +52,8 @@ export function HeadlineList(props: { toggle: boolean; number: number; wordCount
             const serverResponse = await fetch('../api/document/sentence', {
                 method: 'POST',
                 body: JSON.stringify({
-                    text: inputHeadlineText[num],
+                    title: props.title,
+                    headline: inputHeadlineText[num],
                     length: props.wordCount,
                 }),
                 headers: {
