@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Headline2 } from '../../components/Headline2';
-import { HeadlineList } from '../../components/document/HeadlineList';
+import { HeadlineList } from '@/components/document/HeadlineList.1';
 
 export default function Page() {
     // ステートの宣言

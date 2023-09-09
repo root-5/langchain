@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 
 export function HeadlineList(props: { toggle: boolean; number: number; wordCount: number }) {
@@ -7,18 +6,12 @@ export function HeadlineList(props: { toggle: boolean; number: number; wordCount
     const [inputHeadlineText, setInputHeadlineText] = useState(['', '', '', '', '', '', '', '', '', '']); // テキストエリアの内容を管理
     const [responseSentenceText, setResponseSentenceText] = useState(['', '', '', '', '', '', '', '', '', '']); //レスポンスの文字数と内容を管理
     const [responseSentenceLength, setResponseSentenceLength] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //レスポンスの文字数と内容を管理
-    const [status, setStatus] = useState([
-        'typing',
-        'typing',
-        'typing',
-        'typing',
-        'typing',
-        'typing',
-        'typing',
-        'typing',
-        'typing',
-        'typing',
-    ]); // 表示状態を管理、'typing'は入力中、'loading'はロード中
+
+    // const [responseSentence, setResponseSentence] = useState({
+    //     text: ['', '', '', '', '', '', '', '', '', ''],
+    //     length: 0,
+    // }); //レスポンスの文字数と内容を管理
+    const [status, setStatus] = useState('typing'); // 表示状態を管理、'typing'は入力中、'loading'はロード中
     const [isError, setIsError] = useState({ statusBoolean: false, messageText: '' }); // エラー状態の有無とエラーメッセージを管理
 
     if (!props.toggle) {
@@ -26,11 +19,12 @@ export function HeadlineList(props: { toggle: boolean; number: number; wordCount
     }
 
     // 生成ボタンが押されたときの処理
-    async function genereteSentence(event: React.FormEvent<HTMLButtonElement>, num: number) {
+    async function genereteSentence(event: React.FormEvent<HTMLButtonElement>, num: Number) {
         event.preventDefault();
+        setStatus('loading');
         console.log(status);
-
-        setStatusFunction('loading', num);
+        console.log(status);
+        console.log(status);
 
         // フォームの内容を取得し、サーバーに送信
         try {
@@ -49,40 +43,29 @@ export function HeadlineList(props: { toggle: boolean; number: number; wordCount
             console.log(serverResponseJson);
 
             // レスポンスのテキストと長さをステートに保存
-            const newText = serverResponseJson.result;
-            const newLength = newText.length;
-            setResponseSentenceText(responseSentenceText.map((text, index) => (index === num ? newText : text)));
-            setResponseSentenceLength(
-                responseSentenceLength.map((length, index) => (index === num ? newLength : length))
-            );
+            const text = serverResponseJson.result;
+            const length = text.length;
+            setResponseSentenceText({ text: text, length: length });
         } catch (error) {
             const messageText = (error as Error).toString();
             setIsError({ statusBoolean: true, messageText: messageText });
         }
 
-        setStatusFunction('typing', num);
+        setStatus('typing');
     }
 
     // インプットエリアの内容が変更されたときの処理
     // 引数としてイベントと配列の要素番号を受け取り、配列の要素番号に対応するステートを更新
-    function inputHeadlineTextChange(event: React.ChangeEvent<HTMLInputElement>, num: number) {
+    function inputHeadlineTextChange(event: React.ChangeEvent<HTMLInputElement>, num: Number) {
         setInputHeadlineText(inputHeadlineText.map((text, index) => (index === num ? event.target.value : text)));
     }
 
     // テキストエリアの内容が変更されたときの処理
-    function textareaChange(event: React.ChangeEvent<HTMLTextAreaElement>, num: number) {
+    function textareaChange(event: React.ChangeEvent<HTMLTextAreaElement>, num: Number) {
         setResponseSentenceText(responseSentenceText.map((text, index) => (index === num ? event.target.value : text)));
         setResponseSentenceLength(
             responseSentenceLength.map((length, index) => (index === num ? event.target.value.length : length))
         );
-    }
-
-    // 表示状態が変更されたときの処理
-    function setStatusFunction(newStatus: string, num: number) {
-        console.log('status');
-
-        setStatus(status.map((status, index) => (index === num ? status : newStatus)));
-        console.log(status);
     }
 
     // numberを上限として、1,2,3...を格納した配列を作成
@@ -106,7 +89,7 @@ export function HeadlineList(props: { toggle: boolean; number: number; wordCount
                 />
                 <button
                     onClick={(e) => genereteSentence(e, num)}
-                    disabled={status[num] === 'loading'}
+                    disabled={status === 'loading'}
                     className="p-2 w-14 bg-blue-500 text-white rounded-md duration-300 cursor-pointer hover:bg-blue-600 disabled:bg-gray-300"
                 >
                     生成
