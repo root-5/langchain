@@ -6,13 +6,13 @@ import Image from 'next/image';
 import { Headline2 } from '../components/Headline2';
 
 const pageArr = [
-    { link: 'summary', name: '文章要約', discription: '文章を要約します。' },
-    { link: 'document', name: '文章生成', discription: '文章を生成します。' },
+    { key: 1, link: 'summary', name: '文章要約', discription: '文章を要約します。' },
+    { key: 2, link: 'document', name: '文章生成', discription: '文章を生成します。' },
 ];
 
 export default function Page() {
     const listItems = pageArr.map((page) => (
-        <li className="block border rounded-lg ">
+        <li key={page.key} className="block border rounded-lg">
             {/* 各ページのリンク */}
             <a href={'./' + page.link} className="block p-6 hover:opacity-80">
                 <h3 className="text-2xl font-bold">{page.name}</h3>
