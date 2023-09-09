@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     description:
         'このサイトは「AIを便利に使おう！」をスローガンとして作成されました。皆が使いやすいアプリを手軽に提供していく予定です。',
     openGraph: {
-        images: 'img/FV.jpg',
+        images: 'img/leaf.png',
     },
     referrer: 'origin-when-cross-origin',
     keywords: ['AIを便利に使おう！', 'アプリ', '使いやすい', '文章要約'],
