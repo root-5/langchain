@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="jp">
             <head>
                 <meta name="robots" content="noindex" />
-                <link rel="icon" href="/favicon.ico" />
+                <link rel="icon" href="img/favicon.ico" />
                 <link rel="stylesheet" href="css/top.css" />
             </head>
             <body className="font-gothic text-gray-900 text-sm lg:text-base">
