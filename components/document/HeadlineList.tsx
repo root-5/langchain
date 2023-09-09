@@ -28,8 +28,6 @@ export function HeadlineList(props: { toggle: boolean; number: number; wordCount
     // 生成ボタンが押されたときの処理
     async function genereteSentence(event: React.FormEvent<HTMLButtonElement>, num: number) {
         event.preventDefault();
-        console.log(status);
-
         setStatusFunction('loading', num);
 
         // フォームの内容を取得し、サーバーに送信
@@ -79,10 +77,7 @@ export function HeadlineList(props: { toggle: boolean; number: number; wordCount
 
     // 表示状態が変更されたときの処理
     function setStatusFunction(newStatus: string, num: number) {
-        console.log('status');
-
-        setStatus(status.map((status, index) => (index === num ? status : newStatus)));
-        console.log(status);
+        setStatus(status.map((status, index) => (index !== num ? status : newStatus)));
     }
 
     // numberを上限として、1,2,3...を格納した配列を作成
