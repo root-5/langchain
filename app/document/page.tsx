@@ -113,7 +113,7 @@ export default function Page() {
     }
     // 見出しのリストを作成
     const listItems = headlineNumberArr.map((num) => (
-        <div className="flex w-full mt-4 gap-3 items-center">
+        <div key={num} className="flex w-full mt-4 gap-3 items-center">
             <p className="text-lg">{num}. </p>
             <input
                 type="text"
