@@ -14,7 +14,7 @@ export default function Page() {
     const listItems = pageArr.map((page) => (
         <li key={page.key} className="block border rounded-lg">
             {/* 各ページのリンク */}
-            <Link href={'./' + page.link} className="block p-6 w-72 hover:opacity-80">
+            <Link href={'./' + page.link} className="block p-6 w-72 hover:opacity-40">
                 <h3 className="text-2xl font-bold">{page.name}</h3>
                 <p className="mt-4 text-lg">{page.discription}</p>
             </Link>

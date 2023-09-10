@@ -21,7 +21,8 @@ export default function Page() {
     //====================================================================
     // ==== ボタンの処理 ====
     // 章作成ボタンが押されたときの処理
-    async function generateHeadline() {
+    async function generateHeadline(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
         setIsLoading(true);
 
         // フォームの内容を取得し、サーバーに送信
@@ -67,7 +68,8 @@ export default function Page() {
     }
 
     // 本文生成ボタンが押されたときの処理
-    async function generateBody() {
+    async function generateBody(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
         setIsLoading(true);
 
         // フォームの内容を取得し、サーバーに送信
@@ -98,6 +100,8 @@ export default function Page() {
         setIsLoading(false);
     }
 
+    //====================================================================
+    // ==== その他の処理 ====
     // 結果のテキストをコピーする関数
     function copyText() {
         const text = result.resultText;
@@ -105,13 +109,13 @@ export default function Page() {
     }
 
     //====================================================================
-    // ==== 見出しのリスト ====
+    // ==== 見出しリストのパーツを生成 ====
     // numberを上限として、1,2,3...を格納した配列を作成
     let headlineNumberArr: number[] = [];
     for (let i = 0; i < headlineState.number; i++) {
         headlineNumberArr.push(i + 1);
     }
-    // 見出しのリストを作成
+    // 見出しリストを作成
     const listItems = headlineNumberArr.map((num) => (
         <div key={num} className="flex w-full mt-4 gap-3 items-center">
             <p className="text-lg">{num}. </p>
@@ -119,13 +123,14 @@ export default function Page() {
                 type="text"
                 name="inputHeadline"
                 placeholder={'見出し' + num}
-                className="flex-1 p-2 w-full border border-gray-300 rounded-md"
                 value={inputHeadlineText[num - 1]}
+                required
                 onChange={(e) =>
                     setInputHeadlineText(
-                        inputHeadlineText.map((text, index) => (index !== num ? text : e.target.value))
+                        inputHeadlineText.map((text, index) => (index !== num - 1 ? text : e.target.value))
                     )
                 }
+                className="flex-1 p-2 w-full border border-gray-300 rounded-md"
             />
         </div>
     ));
@@ -138,8 +143,8 @@ export default function Page() {
 
             {/* 入力エリア */}
             <div className="mt-8">
-                <p className="text-2xl font-black	">入力</p>
-                <div className="flex flex-col">
+                <p className="text-2xl font-black">入力</p>
+                <form onSubmit={generateHeadline} className="flex flex-col">
                     <label className="mt-4 font-bold">文章のタイトル</label>
                     <div className="flex w-full mt-2 gap-3 items-center">
                         <input
@@ -149,6 +154,7 @@ export default function Page() {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="タイトルを入力"
+                            required
                             className="flex-1 p-2 w-full border border-gray-300 rounded-md"
                         />
                     </div>
@@ -173,12 +179,14 @@ export default function Page() {
                         </select>
                     </div>
                     <button
+                        type="submit"
                         disabled={isLoading === true}
-                        onClick={generateHeadline}
                         className="relative mt-4 py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
                     >
                         見出し生成
                     </button>
+                </form>
+                <form onSubmit={generateBody}>
                     <label className="mt-10 font-bold">見出し構成</label>
                     <ol className="">
                         <ul>{listItems}</ul>
@@ -198,21 +206,20 @@ export default function Page() {
                             <option value="1000">1000</option>
                         </select>
                     </div>
-                </div>
-                <div className="flex mt-4 gap-5 items-center">
-                    <button
-                        disabled={isLoading === true}
-                        onClick={generateBody}
-                        className="relative py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
-                    >
-                        本文生成
-                    </button>
-                    <p className="text-red-800">
-                        生成文の長さ次第ですが、
-                        <br className="sm:hidden" />
-                        かなり時間がかかります！！
-                    </p>
-                </div>
+                    <div className="flex mt-4 gap-5 items-center">
+                        <button
+                            disabled={isLoading === true}
+                            className="relative py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
+                        >
+                            本文生成
+                        </button>
+                        <p className="text-red-800">
+                            生成文の長さ次第ですが、
+                            <br className="sm:hidden" />
+                            かなり時間がかかります！！
+                        </p>
+                    </div>
+                </form>
                 <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
             </div>
 

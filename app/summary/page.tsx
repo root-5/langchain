@@ -5,12 +5,15 @@ import Image from 'next/image';
 import { Headline2 } from '../../components/Headline2';
 
 export default function Page() {
-    // ステートの宣言
+    //====================================================================
+    // ==== ステートの宣言 ====
     const [formTextLength, setFormTextLength] = useState(0); // フォームの文字数を管理
     const [result, setResult] = useState({ text: '', length: 0 }); //レスポンスの文字数と内容を管理
     const [isError, setIsError] = useState({ statusBoolean: false, messageText: '' }); // エラー状態の有無とエラーメッセージを管理
     const [isLoading, setIsLoading] = useState(false); // 表示状態を管理
 
+    //====================================================================
+    // ==== ボタンの処理 ====
     // フォームの送信ボタンが押されたときの処理
     async function submitClick(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -43,6 +46,8 @@ export default function Page() {
         setIsLoading(false);
     }
 
+    //====================================================================
+    // ==== その他の処理 ====
     // 入力トリガーでテキストエリア（入力部分）の文字数を表示する
     function showFormTextLength(event: React.KeyboardEvent<HTMLTextAreaElement>) {
         const text = event.currentTarget.value;
@@ -61,6 +66,8 @@ export default function Page() {
         setResult({ text: event.target.value, length: event.target.value.length });
     }
 
+    //====================================================================
+    // ==== レンダリング ====
     return (
         <main className="max-w-5xl w-11/12 mx-auto pt-14">
             <Headline2>文章要約</Headline2>
@@ -75,8 +82,9 @@ export default function Page() {
                         placeholder={
                             'ここに要約したい文章を入力してください\n日本語以外の文章を入れた場合は要約された日本語訳を取得できます'
                         }
-                        className="mt-2 p-2 h-64 border border-gray-300 rounded-md"
+                        required
                         onChangeCapture={showFormTextLength}
+                        className="mt-2 p-2 h-64 border border-gray-300 rounded-md"
                     />
                     <p className="text-gray-700 text-right">{formTextLength}文字</p>
                     <div className="flex gap-5 items-center">
