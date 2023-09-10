@@ -186,8 +186,8 @@ export default function Page() {
                         見出し生成
                     </button>
                 </form>
-                <form onSubmit={generateBody}>
-                    <label className="mt-10 font-bold">見出し構成</label>
+                <form onSubmit={generateBody} className="mt-10">
+                    <label className="font-bold">見出し構成</label>
                     <ol className="">
                         <ul>{listItems}</ul>
                     </ol>
@@ -224,7 +224,7 @@ export default function Page() {
             </div>
 
             {/* 出力エリア */}
-            <div className="mt-10">
+            <div className="mt-14">
                 <p className="text-2xl font-black">出力</p>
                 <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
                     {isError.statusBoolean ? isError.messageText : ''}
