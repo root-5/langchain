@@ -9,7 +9,7 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-    const { title, content } = await request.json();
+    const { title, description } = await request.json();
 
     const memo = await prisma.memo.create({
         data: {

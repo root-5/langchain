@@ -43,6 +43,12 @@ https://zenn.dev/crsc1206/articles/d92548257fb445
 1. .eslintrc.json に`{"extends": "next/core-web-vitals"}`を記述
 2. `next lint`
 
+# gitコメント
+- fix：バグ修正
+- add：新規ファイル、新規機能追加
+- update：機能修正（バグではない）
+- remove：削除（ファイル）
+
 # 試すべきこと
 
 -   props での関数渡し
