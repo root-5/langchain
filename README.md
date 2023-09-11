@@ -5,21 +5,35 @@
 3. `git push -u origin main`
 4. `yarn` yarn 管理に切り替え
 5. `yarn add langchain`
-6. versel 側から github のプロジェクトを追加
-7. `yarn add @vercel/analytics`
-8. `vercel deploy`
+
+# vercel 関係
+
+1. vercel 側から github のプロジェクトを追加
+2. `yarn add @vercel/analytics` vercel アナリティクスの設定
+3. `vercel deploy`
+
+# DB 関係
+
+1. vercel のダッシュボードで postgres をセットアップ
+   https://zenn.dev/msy/articles/8d991c79b739aa
+2. `vercel env pull .env` vercel 上から DB 関係の.env ファイルをプル
+3. `yarn add @vercel/postgres`
+4. `yarn add prisma @prisma/client`
+5. prisma/schema.prisma に migration を定義
+6. `npx prisma generate` prisma client への反映
+7. package.json の"build"を"prisma generate && prisma db push && next build"に変更
 
 # 本番環境
 
 https://langchain-wine-six.vercel.app/
 
 1. `yarn dev` 開発環境の実行
-2. `yarn build` 本番環境のビルド（versel を使っているため基本的に使用しない）
-3. `yarn start` 本番環境の実行（versel を使っているため基本的に使用しない）
+2. `yarn build` 本番環境のビルド（vercel を使っているため基本的に使用しない）
+3. `yarn start` 本番環境の実行（vercel を使っているため基本的に使用しない）
 
 # 注意点
 
--   versel が読めなくなってしまうので、gitignore を追加で設定してはいけない
+-   vercel が読めなくなってしまうので、gitignore を追加で設定してはいけない
 
 # ESLint
 
