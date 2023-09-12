@@ -9,12 +9,14 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-    const { title, description } = await request.json();
+    const reqObj = await request.json();
 
-    const memo = await prisma.memo.create({
+    const memo = await prisma.memo.update({
+        where: {
+            id: reqObj.id,
+        },
         data: {
-            title,
-            description,
+            description: reqObj.description,
         },
     });
 
