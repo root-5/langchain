@@ -23,8 +23,10 @@
 6. `npx prisma generate` prisma client への反映
 7. package.json の"build"を"prisma generate && prisma db push && next build"に変更
 
-# three.js
-1. `yarn add three @react-three/fiber @types/three`
+# その他ライブラリ
+
+1. `yarn add three @react-three/fiber @types/three` three.js
+2. `yarn add react-syntax-highlighter` React-Syntaxhighlihter、のちに`yarn add --dev @types/react-syntax-highlighter`
 
 # 本番環境
 
@@ -36,7 +38,7 @@ https://langchain-wine-six.vercel.app/
 
 # 注意点
 
--   vercel が読めなくなってしまうので、基本的にgitignore を追加で設定してはいけない
+-   vercel が読めなくなってしまうので、基本的に gitignore を追加で設定してはいけない
 
 # ESLint
 
@@ -46,13 +48,15 @@ https://zenn.dev/crsc1206/articles/d92548257fb445
 1. .eslintrc.json に`{"extends": "next/core-web-vitals"}`を記述
 2. `next lint`
 
-# gitコメント
-- fix：バグ修正
-- add：新規ファイル、新規機能追加
-- update：機能修正（バグではない）
-- remove：削除（ファイル）
+# git コメント
+
+-   fix：バグ修正
+-   add：新規ファイル、新規機能追加
+-   update：機能修正（バグではない）
+-   remove：削除（ファイル）
 
 # 現在の方針
+
 1. 仕事をやる上で便利なサイトにする
 2. 他の人も一部使えるように
-3. three.jsなどのテスト実装も行う
+3. three.js などのテスト実装も行う

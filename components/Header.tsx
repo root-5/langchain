@@ -58,13 +58,8 @@ export function Header() {
                             </Link>
                         </li>
                         <li>
-                            <Link href="./" className="py-2 w-fit text-xl text-white">
-                                リンク
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="./" className="py-2 w-fit text-xl text-white">
-                                リンク
+                            <Link href="./cording" className="py-2 w-fit text-xl text-white">
+                                コーディング補助
                             </Link>
                         </li>
                     </ul>

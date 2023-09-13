@@ -25,8 +25,8 @@ export function Footer() {
                     <Link href="./document" className="text-white">
                         文書作成
                     </Link>
-                    <Link href="./" className="text-white">
-                        リンク
+                    <Link href="./cording" className="text-white">
+                        コーディング補助
                     </Link>
                 </div>
             </div>
