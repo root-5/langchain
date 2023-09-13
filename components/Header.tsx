@@ -1,13 +1,28 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { pagesData } from '../components/data/pagesData';
 
 export function Header() {
+    //====================================================================
+    // ==== ハンバーガーメニューのステートと処理 ====
     const [openMenu, setOpenMenu] = useState(false);
     const handleMenuOpen = () => {
         setOpenMenu(!openMenu);
     };
 
+    //====================================================================
+    // ==== 機能一覧パーツを生成 ====
+    const linkItems = pagesData.map((page) => (
+        <li key={page.key} className="mt-2">
+            <Link href={'./' + page.link} className="py-2 w-fit text-xl text-white">
+                {page.name}
+            </Link>
+        </li>
+    ));
+
+    //====================================================================
+    // ==== レンダリング ====
     return (
         <header className="fixed top-0 w-full py-4 bg-white z-50 dark:bg-stone-950">
             <div className="flex w-11/12 max-w-6xl mx-auto justify-between">
@@ -46,23 +61,7 @@ export function Header() {
                             : 'text-left fixed bg-green-800 dark:bg-stone-950 right-[-100%] top-0 w-9/12 sm:w-5/12 h-screen flex flex-col justify-start pt-8 px-5 duration-700'
                     }
                 >
-                    <ul className="mt-6">
-                        <li>
-                            <Link href="./summary" className="py-2 w-fit text-xl text-white">
-                                文章要約
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="./document" className="py-2 w-fit text-xl text-white">
-                                文書作成
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="./cording" className="py-2 w-fit text-xl text-white">
-                                コーディング補助
-                            </Link>
-                        </li>
-                    </ul>
+                    <ul className="mt-6">{linkItems}</ul>
                 </nav>
             </div>
         </header>

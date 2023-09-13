@@ -1,13 +1,19 @@
-'use client';
-import { useState } from 'react';
 import Link from 'next/link';
+import { pagesData } from '../components/data/pagesData';
 
 export function Footer() {
-    const [openMenu, setOpenMenu] = useState(false);
-    const handleMenuOpen = () => {
-        setOpenMenu(!openMenu);
-    };
+    //====================================================================
+    // ==== 機能一覧パーツを生成 ====
+    const linkItems = pagesData.map((page) => (
+        <li key={page.key}>
+            <Link href={'./' + page.link} className="py-2 w-fit text-white">
+                {page.name}
+            </Link>
+        </li>
+    ));
 
+    //====================================================================
+    // ==== レンダリング ====
     return (
         <footer className="mt-24 pt-12 bg-green-800 dark:bg-stone-950">
             <div className="flex flex-wrap gap-12 w-11/12 max-w-6xl mx-auto justify-between">
@@ -18,17 +24,7 @@ export function Footer() {
                     <p className="pt-2 text-sm text-white">製作者：root-5</p>
                 </div>
 
-                <div className="flex flex-wrap gap-x-8 gap-y-4 w-full max-w-sm ">
-                    <Link href="./summary" className="text-white">
-                        文章要約
-                    </Link>
-                    <Link href="./document" className="text-white">
-                        文書作成
-                    </Link>
-                    <Link href="./cording" className="text-white">
-                        コーディング補助
-                    </Link>
-                </div>
+                <ul className="flex flex-wrap gap-x-8 gap-y-4 w-full max-w-sm ">{linkItems}</ul>
             </div>
 
             <p className="pt-16 pb-2 text-xs text-white text-center">Copyright © 2023 AIを便利に使おう！ by root-5</p>

@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Headline2 } from '../components/Headline2';
+import { pagesData } from '../components/data/pagesData';
 
 //====================================================================
 // ==== データ ====
@@ -29,17 +30,6 @@ const docArr = [
         key: 4,
         link: 'https://js.langchain.com/docs/get_started/introduction/',
         name: 'LangChain',
-    },
-];
-// 機能一覧
-const pageArr = [
-    { key: 1, link: 'summary', name: '文章要約', description: '文章を要約します。日本語以外にも対応しています。' },
-    { key: 2, link: 'document', name: '文章生成', description: '見出しを調整し、文章構成に手を加えることができます。' },
-    {
-        key: 3,
-        link: 'cording',
-        name: 'コーディング補助',
-        description: 'コードの生成、解説、修正、コメントの付与ができます。',
     },
 ];
 
@@ -86,7 +76,7 @@ export default function Page() {
 
     //====================================================================
     // ==== 機能一覧パーツを生成 ====
-    const linkItems = pageArr.map((page) => (
+    const linkItems = pagesData.map((page) => (
         <li key={page.key} className="block border rounded-lg">
             <Link href={'./' + page.link} className="block p-6 w-72 hover:opacity-40">
                 <h3 className="text-2xl font-bold">{page.name}</h3>
