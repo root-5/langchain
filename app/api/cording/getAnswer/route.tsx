@@ -47,6 +47,13 @@ export async function POST(req: Request) {
                     'あなたは{language}言語の優秀なプログラマーです。以下のコードを指示をもとに修正してください。また提示するコードには丁寧にコメントをつけてください。\n\n\n# 指示\n{fixOrder}\n\n\n# コード\n{text}\n\n',
             });
             break;
+        case 'error':
+            multipleInputPrompt = new PromptTemplate({
+                inputVariables: ['language', 'text'],
+                template:
+                    'あなたは{language}言語の優秀なプログラマーです。以下のエラー文が示している内容とその修正方法を、例を用いながら初心者にもわかるように解説してください。\n\n{text}\n\n',
+            });
+            break;
         case 'comment':
             multipleInputPrompt = new PromptTemplate({
                 inputVariables: ['language', 'text'],

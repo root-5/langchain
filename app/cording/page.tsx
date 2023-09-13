@@ -92,6 +92,7 @@ export default function Page() {
                             <option value={'generate'}>コードの生成</option>
                             <option value={'explain'}>コードの解説</option>
                             <option value={'fix'}>コードの修正</option>
+                            <option value={'error'}>エラーの解説</option>
                             <option value={'comment'}>コメントの挿入</option>
                         </select>
                     </div>
@@ -106,6 +107,8 @@ export default function Page() {
                                 ? '解説してほしいコードを入力してください\n\n例: \nRange("A1:B2").Value'
                                 : mode === 'fix'
                                 ? '修正してほしいコードを入力してください\n\n例: \nRange(A1:B2).Value'
+                                : mode === 'error'
+                                ? '解説してほしいエラーを入力してください\n\n例: \nインデックスが有効範囲にありません。：実行時エラー9'
                                 : mode === 'comment'
                                 ? 'コメントを挿入してほしいコードを入力してください'
                                 : ''
@@ -141,6 +144,8 @@ export default function Page() {
                         ? '解説する'
                         : mode === 'fix'
                         ? '修正する'
+                        : mode === 'error'
+                        ? '解説する'
                         : mode === 'comment'
                         ? 'コメントを挿入する'
                         : ''}
@@ -157,7 +162,7 @@ export default function Page() {
                 <div className="relative mt-2">
                     <SyntaxHighlighter
                         language={language === 'JavaScript' ? 'javascript' : language === 'Python' ? 'python' : 'vba'}
-                        className="mt-2 p-2 h-96 w-full rounded-md"
+                        className="mt-2 h-96 w-full rounded-md"
                     >
                         {result}
                     </SyntaxHighlighter>
