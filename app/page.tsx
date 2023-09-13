@@ -104,9 +104,7 @@ export default function Page() {
             <Headline2>機能一覧</Headline2>
             <ul className="flex flex-wrap gap-6 justify-center">{linkItems}</ul>
             <Headline2>ホワイトボード</Headline2>
-            <div className="relative mt-16 border-b-8 border-slate-600">
-                <div className="absolute top-0 left-32 w-4 h-3 bg-gray-200 border-slate-400"></div>
-                <div className="absolute top-0 right-32 w-4 h-3 bg-gray-200 border-slate-400"></div>
+            <div className="relative border-b-8 border-slate-600">
                 <div className="absolute bottom-0 right-32 w-12 h-4 bg-sky-600"></div>
                 <div className="absolute bottom-2 right-8 w-6 h-6 bg-yellow-300 rounded-full"></div>
                 <textarea

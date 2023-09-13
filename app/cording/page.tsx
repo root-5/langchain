@@ -157,7 +157,7 @@ export default function Page() {
                 <div className="relative mt-2">
                     <SyntaxHighlighter
                         language={language === 'JavaScript' ? 'javascript' : language === 'Python' ? 'python' : 'vba'}
-                        className="mt-2 p-2 h-64 w-full rounded-md"
+                        className="mt-2 p-2 h-96 w-full rounded-md"
                     >
                         {result}
                     </SyntaxHighlighter>
