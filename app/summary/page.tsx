@@ -84,15 +84,15 @@ export default function Page() {
                         }
                         required
                         onChangeCapture={showFormTextLength}
-                        className="mt-2 p-2 h-64 border border-gray-300 rounded-md"
+                        className="mt-2 p-2 h-64 border border-gray-300 rounded-md dark:text-gray-900"
                     />
-                    <p className="text-gray-700 text-right">{formTextLength}文字</p>
+                    <p className="text-gray-700 text-right dark:text-white">{formTextLength}文字</p>
                     <div className="flex gap-5 items-center">
                         <label className="font-bold">要約後の文字数</label>
                         <select
                             name="textLength"
                             id="textLength"
-                            className="p-2 w-20 border border-gray-300 rounded-md"
+                            className="p-2 w-20 border border-gray-300 rounded-md dark:text-gray-900"
                         >
                             <option>100</option>
                             <option>250</option>
@@ -120,10 +120,10 @@ export default function Page() {
                 </p>
                 <div className="relative mt-2">
                     <textarea
-                        className="p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap"
                         placeholder="ここに要約結果が表示されます"
                         onChange={textareaChange}
                         value={result.text}
+                        className="p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap dark:text-gray-900"
                     ></textarea>
                     <Image
                         src="/img/copy.png"
@@ -134,7 +134,7 @@ export default function Page() {
                         onClick={copyText}
                     />
                 </div>
-                <p className="text-gray-700 text-right">{result.length}文字</p>
+                <p className="text-gray-700 text-right dark:text-white">{result.length}文字</p>
             </div>
         </main>
     );

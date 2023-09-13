@@ -130,7 +130,7 @@ export default function Page() {
                         inputHeadlineText.map((text, index) => (index !== num - 1 ? text : e.target.value))
                     )
                 }
-                className="flex-1 p-2 w-full border border-gray-300 rounded-md"
+                className="flex-1 p-2 w-full border border-gray-300 rounded-md dark:text-gray-900"
             />
         </div>
     ));
@@ -155,7 +155,7 @@ export default function Page() {
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="タイトルを入力"
                             required
-                            className="flex-1 p-2 w-full border border-gray-300 rounded-md"
+                            className="flex-1 p-2 w-full border border-gray-300 rounded-md dark:text-gray-900"
                         />
                     </div>
                     <div className="flex mt-4 gap-5 items-center">
@@ -163,7 +163,7 @@ export default function Page() {
                         <select
                             name="textLength"
                             id="textLength"
-                            className="p-2 w-20 border border-gray-300 rounded-md font-normal"
+                            className="p-2 w-20 border border-gray-300 rounded-md font-normal dark:text-gray-900"
                             onChange={(e) =>
                                 setHeadlineState({ toggle: headlineState.toggle, number: parseInt(e.target.value) })
                             }
@@ -196,7 +196,7 @@ export default function Page() {
                         <select
                             name="textLength"
                             id="textLength"
-                            className="p-2 w-20 border border-gray-300 rounded-md"
+                            className="p-2 w-20 border border-gray-300 rounded-md dark:text-gray-900"
                             onChange={(e) => setTextLength(parseInt(e.target.value))}
                         >
                             <option value="100">100</option>
@@ -213,7 +213,7 @@ export default function Page() {
                         >
                             本文生成
                         </button>
-                        <p className="text-red-800">
+                        <p className="text-red-800 dark:text-white">
                             生成文の長さ次第ですが、
                             <br className="sm:hidden" />
                             かなり時間がかかります！！
@@ -231,7 +231,7 @@ export default function Page() {
                 </p>
                 <div className="relative mt-2">
                     <textarea
-                        className="p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap"
+                        className="p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap dark:text-gray-900"
                         placeholder="ここに生成した文章が表示されます"
                         value={result.resultText}
                         onChange={(e) => setResult({ resultText: e.target.value, resultLength: result.resultLength })}
@@ -245,7 +245,7 @@ export default function Page() {
                         onClick={copyText}
                     />
                 </div>
-                <p className="text-gray-700 text-right">{result.resultLength}文字</p>
+                <p className="text-gray-700 text-right dark:text-white">{result.resultLength}文字</p>
             </div>
         </main>
     );

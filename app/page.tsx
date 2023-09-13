@@ -109,8 +109,8 @@ export default function Page() {
                     onBlur={setMemoData}
                     className={
                         memo === ''
-                            ? 'block mt-2 w-full border  p-4 h-96  focus:outline-none bg-gray-100 animate-pulse'
-                            : 'block mt-2 w-full border  p-4 h-96  focus:outline-none'
+                            ? 'block mt-2 w-full border p-4 h-96 focus:outline-none dark:text-gray-900 bg-gray-100 animate-pulse'
+                            : 'block mt-2 w-full border p-4 h-96 focus:outline-none dark:text-gray-900'
                     }
                 ></textarea>
             </div>

@@ -9,32 +9,32 @@ export function Header() {
     };
 
     return (
-        <header className="fixed top-0 w-full py-4 bg-white z-50">
+        <header className="fixed top-0 w-full py-4 bg-white z-50 dark:bg-black">
             <div className="flex w-11/12 max-w-6xl mx-auto justify-between">
                 <Link href="./" className="hover:before:scale-x-0">
-                    <h1 className="text-xl text-gray-900">AIを便利に使おう！</h1>
+                    <h1 className="text-xl">AIを便利に使おう！</h1>
                 </Link>
 
                 <button onClick={handleMenuOpen} type="button" className="z-10 space-y-2">
                     <div
                         className={
                             openMenu
-                                ? 'w-8 h-0.5 bg-white duration-700 translate-y-2.5 rotate-45'
-                                : 'w-8 h-0.5 bg-gray-600 duration-700'
+                                ? 'w-8 h-0.5 bg-white dark:bg-gray-600 duration-700 translate-y-2.5 rotate-45'
+                                : 'w-8 h-0.5 bg-gray-600 dark:bg-white duration-700'
                         }
                     />
                     <div
                         className={
                             openMenu
-                                ? 'w-8 h-0.5 bg-white duration-700 opacity-0'
-                                : 'w-8 h-0.5 bg-gray-600 duration-700'
+                                ? 'w-8 h-0.5 bg-white dark:bg-gray-600 duration-700 opacity-0'
+                                : 'w-8 h-0.5 bg-gray-600 dark:bg-white duration-700'
                         }
                     />
                     <div
                         className={
                             openMenu
-                                ? 'w-8 h-0.5 bg-white duration-700 -translate-y-2.5 -rotate-45'
-                                : 'w-8 h-0.5 bg-gray-600 duration-700'
+                                ? 'w-8 h-0.5 bg-white dark:bg-gray-600 duration-700 -translate-y-2.5 -rotate-45'
+                                : 'w-8 h-0.5 bg-gray-600 dark:bg-white duration-700'
                         }
                     />
                 </button>
