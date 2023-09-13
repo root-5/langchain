@@ -9,7 +9,7 @@ export function Footer() {
     };
 
     return (
-        <footer className="mt-24 pt-12 bg-green-800">
+        <footer className="mt-24 pt-12 bg-green-800 dark:bg-stone-950">
             <div className="flex flex-wrap gap-12 w-11/12 max-w-6xl mx-auto justify-between">
                 <div>
                     <Link href="./" className="text-xl text-white hover:before:scale-x-0">

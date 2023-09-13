@@ -54,6 +54,7 @@ https://zenn.dev/crsc1206/articles/d92548257fb445
 -   add：新規ファイル、新規機能追加
 -   update：機能修正（バグではない）
 -   remove：削除（ファイル）
+-   little：軽微な修正（コメント付与、変数名変更など）
 
 # 現在の方針
 

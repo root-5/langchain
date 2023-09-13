@@ -9,7 +9,7 @@ export function Header() {
     };
 
     return (
-        <header className="fixed top-0 w-full py-4 bg-white z-50 dark:bg-black">
+        <header className="fixed top-0 w-full py-4 bg-white z-50 dark:bg-stone-950">
             <div className="flex w-11/12 max-w-6xl mx-auto justify-between">
                 <Link href="./" className="hover:before:scale-x-0">
                     <h1 className="text-xl">AIを便利に使おう！</h1>
@@ -19,21 +19,21 @@ export function Header() {
                     <div
                         className={
                             openMenu
-                                ? 'w-8 h-0.5 bg-white dark:bg-gray-600 duration-700 translate-y-2.5 rotate-45'
+                                ? 'w-8 h-0.5 bg-white dark:bg-white duration-700 translate-y-2.5 rotate-45'
                                 : 'w-8 h-0.5 bg-gray-600 dark:bg-white duration-700'
                         }
                     />
                     <div
                         className={
                             openMenu
-                                ? 'w-8 h-0.5 bg-white dark:bg-gray-600 duration-700 opacity-0'
+                                ? 'w-8 h-0.5 bg-white dark:bg-white duration-700 opacity-0'
                                 : 'w-8 h-0.5 bg-gray-600 dark:bg-white duration-700'
                         }
                     />
                     <div
                         className={
                             openMenu
-                                ? 'w-8 h-0.5 bg-white dark:bg-gray-600 duration-700 -translate-y-2.5 -rotate-45'
+                                ? 'w-8 h-0.5 bg-white dark:bg-white duration-700 -translate-y-2.5 -rotate-45'
                                 : 'w-8 h-0.5 bg-gray-600 dark:bg-white duration-700'
                         }
                     />
@@ -42,8 +42,8 @@ export function Header() {
                 <nav
                     className={
                         openMenu
-                            ? 'text-left fixed bg-green-800 right-0 top-0 w-9/12 sm:w-5/12 h-screen flex flex-col justify-start pt-8 px-5 duration-700'
-                            : 'text-left fixed bg-green-800 right-[-100%] top-0 w-9/12 sm:w-5/12 h-screen flex flex-col justify-start pt-8 px-5 duration-700'
+                            ? 'text-left fixed bg-green-800 dark:bg-stone-950 right-0 top-0 w-9/12 sm:w-5/12 h-screen flex flex-col justify-start pt-8 px-5 duration-700'
+                            : 'text-left fixed bg-green-800 dark:bg-stone-950 right-[-100%] top-0 w-9/12 sm:w-5/12 h-screen flex flex-col justify-start pt-8 px-5 duration-700'
                     }
                 >
                     <ul className="mt-6">

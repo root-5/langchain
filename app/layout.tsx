@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <link rel="icon" href="img/favicon.ico" />
                 <link rel="stylesheet" href="css/top.css" />
             </head>
-            <body className="font-gothic text-gray-900 text-sm lg:text-base dark:bg-neutral-950 dark:text-white">
+            <body className="font-gothic text-gray-900 text-sm lg:text-base dark:bg-stone-900 dark:text-white">
                 <Header />
                 {children}
                 <Footer />

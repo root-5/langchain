@@ -155,14 +155,8 @@ export default function Page() {
                     {isError.statusBoolean ? isError.messageText : ''}
                 </p>
                 <div className="relative mt-2">
-                    {/* <textarea
-                        placeholder="ここに要約結果が表示されます"
-                        value={result}
-                        className="p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap dark:text-gray-900"
-                    ></textarea> */}
                     <SyntaxHighlighter
                         language={language === 'JavaScript' ? 'javascript' : language === 'Python' ? 'python' : 'vba'}
-                        // style={dark}
                         className="mt-2 p-2 h-64 w-full rounded-md"
                     >
                         {result}
