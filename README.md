@@ -1,4 +1,4 @@
-# 環境構築
+# 初期環境構築
 
 1. `npm create next-app` yarn を利用して、コマンドを実行したフォルダ内に Nextjs のプロジェクトファイルを作成する。
 2. `git remote add origin https://github.com/root-5/langchain.git`
@@ -23,6 +23,9 @@
 6. `npx prisma generate` prisma client への反映
 7. package.json の"build"を"prisma generate && prisma db push && next build"に変更
 
+# three.js
+1. `yarn add three @react-three/fiber @types/three`
+
 # 本番環境
 
 https://langchain-wine-six.vercel.app/
@@ -33,7 +36,7 @@ https://langchain-wine-six.vercel.app/
 
 # 注意点
 
--   vercel が読めなくなってしまうので、gitignore を追加で設定してはいけない
+-   vercel が読めなくなってしまうので、基本的にgitignore を追加で設定してはいけない
 
 # ESLint
 
