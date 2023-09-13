@@ -4,26 +4,38 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { useLoader } from '@react-three/fiber';
 import { Headline2 } from '../components/Headline2';
 
 //====================================================================
 // ==== データ ====
-// 各ページのリンクと説明
+// ドキュメント一覧
+const docArr = [
+    {
+        key: 1,
+        link: 'https://tailwindcss.com/docs/installation',
+        name: 'tailwindcss',
+    },
+    {
+        key: 2,
+        link: 'https://ja.react.dev/learn',
+        name: 'React',
+    },
+    {
+        key: 3,
+        link: 'https://nextjs.org/docs',
+        name: 'Next.js',
+    },
+    {
+        key: 4,
+        link: 'https://js.langchain.com/docs/get_started/introduction/',
+        name: 'LangChain',
+    },
+];
+// 機能一覧
 const pageArr = [
     { key: 1, link: 'summary', name: '文章要約', description: '文章を要約します。日本語以外にも対応しています。' },
     { key: 2, link: 'document', name: '文章生成', description: '見出しを調整し、文章構成に手を加えることができます。' },
 ];
-
-//====================================================================
-// ==== three.js ====
-function Scene() {
-    // const obj = useLoader(OBJLoader, 'img/Lowpoly_tree_sample.obj');
-    // const loader = new OBJLoader();
-    // const obj = loader.load('img/Lowpoly_tree_sample.obj');
-    // return <primitive object={obj} />;
-}
 
 export default function Page() {
     //====================================================================
@@ -57,10 +69,19 @@ export default function Page() {
     }, []);
 
     //====================================================================
-    // ==== ページリンクパーツを生成 ====
+    // ==== ドキュメント一覧パーツを生成 ====
+    const docItems = docArr.map((doc) => (
+        <li key={doc.key} className="block border rounded-lg">
+            <Link href={doc.link} className="block p-6 w-72 hover:opacity-40">
+                <h3 className="text-2xl font-bold">{doc.name}</h3>
+            </Link>
+        </li>
+    ));
+
+    //====================================================================
+    // ==== 機能一覧パーツを生成 ====
     const linkItems = pageArr.map((page) => (
         <li key={page.key} className="block border rounded-lg">
-            {/* 各ページのリンク */}
             <Link href={'./' + page.link} className="block p-6 w-72 hover:opacity-40">
                 <h3 className="text-2xl font-bold">{page.name}</h3>
                 <p className="mt-4 text-lg">{page.description}</p>
@@ -72,19 +93,11 @@ export default function Page() {
     // ==== レンダリング ====
     return (
         <main className="max-w-5xl w-11/12 mx-auto pt-14">
-            <div className="w-full h-96" id="root">
-                <Scene />
-            </div>
-            {/* <Image
-                src="/img/guruguru.png"
-                width={300}
-                height={300}
-                alt={'AIが踊る'}
-                className="block animate-spin mx-auto my-8"
-            /> */}
+            <Headline2>ドキュメント一覧</Headline2>
+            <ul className="flex flex-wrap gap-6 justify-center">{docItems}</ul>
             <Headline2>機能一覧</Headline2>
             <ul className="flex flex-wrap gap-6 justify-center">{linkItems}</ul>
-            {/* <Headline2>ホワイトボード</Headline2> */}
+            <Headline2>ホワイトボード</Headline2>
             <div className="relative mt-16 border-b-8 border-slate-600">
                 <div className="absolute top-0 left-32 w-4 h-3 bg-gray-200 border-slate-400"></div>
                 <div className="absolute top-0 right-32 w-4 h-3 bg-gray-200 border-slate-400"></div>
