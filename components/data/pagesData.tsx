@@ -7,4 +7,10 @@ export const pagesData = [
         name: 'コーディング補助',
         description: 'コードの生成、解説、修正、コメントの付与ができます。',
     },
+    {
+        key: 4,
+        link: 'format',
+        name: 'データフォーマット',
+        description: '任意のデータを、指定したフォーマットに変換します。',
+    },
 ];

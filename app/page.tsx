@@ -31,6 +31,11 @@ const docArr = [
         link: 'https://js.langchain.com/docs/get_started/introduction/',
         name: 'LangChain',
     },
+    {
+        key: 5,
+        link: 'https://www.typescriptlang.org/docs/',
+        name: 'TypeScript',
+    },
 ];
 
 export default function Page() {
