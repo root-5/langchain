@@ -72,30 +72,39 @@ export default function Page() {
         e.preventDefault();
         setIsLoading(true);
 
-        // フォームの内容を取得し、サーバーに送信
-        try {
-            const serverResponse = await fetch('../api/document/getBody', {
-                method: 'POST',
-                body: JSON.stringify({
-                    title: title, // タイトル
-                    headlineNumber: headlineState.number, // 見出しの数
-                    headlines: inputHeadlineText, // 見出しの内容
-                    length: textLength, // 本文の文字数
-                }),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            // レスポンスをJSONとしてパース
-            const serverResponseJson = await serverResponse.json();
+        // レスポンスのテキストと長さを仮保存する変数を宣言
+        let resText = '';
+        let resLength = 0;
 
-            // レスポンスのテキストと長さをステートに保存
-            const text = serverResponseJson.result;
-            const length = text.length;
-            setResult({ resultText: text, resultLength: length });
-        } catch (error) {
-            const messageText = (error as Error).toString();
-            setIsError({ statusBoolean: true, messageText: messageText });
+        // 見出しの数だけループし、見出しの内容を取得
+        for (let i = 0; i < headlineState.number; i++) {
+            // フォームの内容を取得し、サーバーに送信
+            try {
+                const serverResponse = await fetch('../api/document/getBody', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        title: title, // タイトル
+                        headline: inputHeadlineText[i], // 見出しの内容
+                        length: textLength, // 本文の文字数
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                // レスポンスをJSONとしてパース
+                const serverResponseJson = await serverResponse.json();
+
+                // レスポンスのテキストと長さをステートに保存
+                const text = serverResponseJson.result;
+                const length = text.length;
+
+                resText += text;
+                resLength += length;
+            } catch (error) {
+                const messageText = (error as Error).toString();
+                setIsError({ statusBoolean: true, messageText: messageText });
+            }
+            setResult({ resultText: resText, resultLength: resLength });
         }
         setIsLoading(false);
     }

@@ -17,8 +17,7 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const reqTitle = body.title;
-    const reqHeadlineNumber = body.headlineNumber;
-    const reqHeadlines = body.headlines;
+    const reqHeadline = body.headline;
     const reqLength = body.length;
 
     // テンプレートを作成
@@ -28,29 +27,22 @@ export async function POST(req: Request) {
             'あなたは記事ライターです。{title}というタイトルの記事を作成しています。この記事の一部である{headline}という見出しに沿った文章を{length}文字で生成してください。',
     });
 
-    // 生成する本文の宣言
-    let generatedBodyText = '';
+    // テンプレートに入力を埋め込む
+    const formattedMultipleInputPrompt = await multipleInputPrompt.format({
+        title: reqTitle,
+        headline: reqHeadline,
+        length: reqLength,
+    });
 
-    // 見出しの数だけループ
-    for (let i = 0; i < reqHeadlineNumber; i++) {
-        // テンプレートに入力を埋め込む
-        const formattedMultipleInputPrompt = await multipleInputPrompt.format({
-            title: reqTitle,
-            headline: reqHeadlines[i],
-            length: reqLength,
-        });
-
-        // OpenAIへリクエストを送信
-        const res = await llm.predict(formattedMultipleInputPrompt);
-
-        // generatedBodyTextに見出し、生成した本文、改行を追加
-        generatedBodyText += `${i+1}. ${reqHeadlines[i]}\n${res}\n\n`;
-    }
+    // OpenAIへリクエストを送信
+    let res = await llm.predict(formattedMultipleInputPrompt);
+    res = `# ${reqHeadline}\n${res}\n\n`;
+    console.log(res);
 
     // 終了時間を記録し、かかった時間を表示
     const endTime = performance.now();
     // console.log(`要約にかかった時間: ${endTime - startTime}ms`);
 
     // レスポンスを返す
-    return NextResponse.json({ result: generatedBodyText });
+    return NextResponse.json({ result: res });
 }
