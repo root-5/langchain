@@ -7,37 +7,6 @@ import Image from 'next/image';
 import { Headline2 } from '../components/Headline2';
 import { pagesData } from '../components/data/pagesData';
 
-//====================================================================
-// ==== データ ====
-// ドキュメント一覧
-const docArr = [
-    {
-        key: 1,
-        link: 'https://tailwindcss.com/docs/installation',
-        name: 'tailwindcss',
-    },
-    {
-        key: 2,
-        link: 'https://ja.react.dev/learn',
-        name: 'React',
-    },
-    {
-        key: 3,
-        link: 'https://nextjs.org/docs',
-        name: 'Next.js',
-    },
-    {
-        key: 4,
-        link: 'https://js.langchain.com/docs/get_started/introduction/',
-        name: 'LangChain',
-    },
-    {
-        key: 5,
-        link: 'https://www.typescriptlang.org/docs/',
-        name: 'TypeScript',
-    },
-];
-
 export default function Page() {
     //====================================================================
     // ==== ステートの宣言 ====
@@ -70,16 +39,6 @@ export default function Page() {
     }, []);
 
     //====================================================================
-    // ==== ドキュメント一覧パーツを生成 ====
-    const docItems = docArr.map((doc) => (
-        <li key={doc.key} className="block border rounded-lg">
-            <Link href={doc.link} className="block p-6 w-72 hover:opacity-40">
-                <h3 className="text-2xl font-bold">{doc.name}</h3>
-            </Link>
-        </li>
-    ));
-
-    //====================================================================
     // ==== 機能一覧パーツを生成 ====
     const linkItems = pagesData.map((page) => (
         <li key={page.key} className="block border rounded-lg">
@@ -94,8 +53,6 @@ export default function Page() {
     // ==== レンダリング ====
     return (
         <main className="max-w-5xl w-11/12 mx-auto pt-14">
-            <Headline2>ドキュメント一覧</Headline2>
-            <ul className="flex flex-wrap gap-6 justify-center">{docItems}</ul>
             <Headline2>機能一覧</Headline2>
             <ul className="flex flex-wrap gap-6 justify-center">{linkItems}</ul>
             <Headline2>ホワイトボード</Headline2>
