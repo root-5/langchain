@@ -13,8 +13,8 @@ export function Header() {
 
     //====================================================================
     // ==== 機能一覧パーツを生成 ====
-    const linkItems = pagesData.map((page) => (
-        <li key={page.key} className="mt-2">
+    const linkItems = pagesData.map((page, i) => (
+        <li key={i} className="mt-2">
             <Link href={'./' + page.link} className="py-2 w-fit text-xl text-white">
                 {page.name}
             </Link>

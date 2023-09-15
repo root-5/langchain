@@ -4,8 +4,8 @@ import { pagesData } from '../components/data/pagesData';
 export function Footer() {
     //====================================================================
     // ==== 機能一覧パーツを生成 ====
-    const linkItems = pagesData.map((page) => (
-        <li key={page.key}>
+    const linkItems = pagesData.map((page, i) => (
+        <li key={i}>
             <Link href={'./' + page.link} className="py-2 w-fit text-white">
                 {page.name}
             </Link>
