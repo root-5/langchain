@@ -79,6 +79,11 @@ const docData = [
         name: 'TypeScript',
         link: 'https://www.typescriptlang.org/docs/',
     },
+    {
+        short: 'vb',
+        name: 'VBA',
+        link: 'https://learn.microsoft.com/ja-jp/office/vba/api/overview/excel',
+    },
 ];
 
 export default function Page() {
@@ -203,12 +208,18 @@ export default function Page() {
         `}</style>
     );
 
+    // ドキュメントの例を表示するパーツを生成
+    const examples = docData.map((doc) => (
+        <>
+            &quot;{doc.short}&quot; =&gt; {doc.name}, &nbsp;
+        </>
+    ));
+
     //====================================================================
     // ==== レンダリング ====
     return (
         <main className={isZenn ? 'max-w-5xl w-11/12 mx-auto' : 'max-w-5xl w-11/12 mx-auto pt-14'}>
             <Headline2>コーディング補助</Headline2>
-
             {/* 入力フォーム */}
             <form className="mt-8" onSubmit={submitClick}>
                 <div className="relative flex items-center justify-between">
@@ -289,7 +300,6 @@ export default function Page() {
                 </button>
                 <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
             </form>
-
             {/* 出力の表示 */}
             <div className={isZenn ? 'mt-6' : 'mt-10'}>
                 <p hidden={isZenn} className="text-2xl font-black">
@@ -332,11 +342,7 @@ export default function Page() {
             />
             <p hidden={isZenn} className="mt-2">
                 例：
-                {docData.map((doc) => (
-                    <>
-                        "{doc.short}" =&gt; {doc.name},{' '}
-                    </>
-                ))}
+                <span>{examples}</span>
             </p>
         </main>
     );
