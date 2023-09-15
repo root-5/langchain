@@ -2,16 +2,10 @@
 
 import { use, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Headline2 } from '../../components/Headline2';
 
 // =====================================================================
 // ==== サイトデータ ====
 const siteData = [
-    {
-        short: 'ja',
-        name: 'JavaScript',
-        url: 'https://developer.mozilla.org/ja/docs/Web/JavaScript',
-    },
     {
         short: 'ta',
         name: 'Tailwindcss',
@@ -32,11 +26,6 @@ const siteData = [
         name: 'TypeScript',
         url: 'https://www.typescriptlang.org/docs/',
     },
-    {
-        short: 'la',
-        name: 'Langchain',
-        url: 'https://js.langchain.com/docs/get_started/introduction',
-    },
 ];
 
 export default function Page() {
@@ -48,6 +37,9 @@ export default function Page() {
     //====================================================================
     // 検索ボックスの入力があった時の処理
     const seachInputFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (searchInput.value === '') {
+            setSiteUrl('');
+        }
         setSearchInput({ hide: false, value: e.target.value });
         // 入力された値がtailwindcssだった場合は、iframeにフォーカスを当てる
         for (let i = 0; i < siteData.length; i++) {
@@ -64,16 +56,18 @@ export default function Page() {
         }
     };
 
-    // ショートカットキーの処理
-    // command + shift + / でinputHeadlineの内容を全て削除した上でフォーカスを当てる
+    //====================================================================
+    // ==== マウント時の処理 ====
+    // 検索ボックスにフォーカスを当てる
     useEffect(() => {
         const inputHeadline = document.getElementById('inputHeadline');
         inputHeadline?.focus();
     });
 
-    // サイトデータのshortとnameをまとめて一覧にしたitemsパーツを作成
-    const items = siteData.map((item) => (
-        <span>
+    //====================================================================
+    // ==== サイトデータパーツの生成 ====
+    const items = siteData.map((item, i) => (
+        <span key={i}>
             "{item.short}" -&gt; {item.name},{' '}
         </span>
     ));
@@ -86,11 +80,11 @@ export default function Page() {
             <div
                 className={
                     searchInput.hide
-                        ? 'flex gap-2 items-center justify-center w-full absolute bottom-0 left-0 opacity-10 hover:opacity-100'
+                        ? 'flex gap-2 items-center justify-center w-full absolute bottom-0 left-0 opacity-5 hover:opacity-100'
                         : 'flex gap-2 items-center justify-center mt-96 mx-auto flex-wrap'
                 }
             >
-                <div className="block w-full text-center">{items}</div>
+                <div className={searchInput.hide ? 'hidden' : 'block pb-2 w-full text-center'}>{items}</div>
                 <Link
                     href="/"
                     className="block w-fit m-0 py-2 px-4 bg-blue-500 text-white rounded-md duration-300 hover:before:hidden hover:bg-blue-600"
@@ -109,12 +103,12 @@ export default function Page() {
                     id="inputHeadline"
                     value={searchInput.value}
                     onChange={seachInputFunc}
-                    placeholder="ライブラリ名を正式名称、英小文字で入力"
+                    placeholder="上記の短縮表記でドキュメント、それ以外はAIに質問になります"
                     required
                     className={
                         searchInput.hide
                             ? 'block m-0 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-full flex-1'
-                            : 'block m-0 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-96'
+                            : 'block m-0 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-2/3'
                     }
                 />
             </div>
@@ -123,10 +117,8 @@ export default function Page() {
                 id="iframe"
                 src={siteUrl}
                 width="100%"
-                // height="100%"
-                className="focus:border-2 focus:border-yellow-300 h-screen"
+                className={siteUrl == '' ? '' : 'focus:border-2 focus:border-yellow-300 h-screen'}
             ></iframe>
-            {/* <iframe src="https://ja.react.dev/learn" width="100%" height="1000px" className="mt-16"></iframe> */}
 
             {/* ヘッダーとフッターを非表示にする */}
             <style jsx global>{`
