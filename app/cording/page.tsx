@@ -48,41 +48,61 @@ const docData = [
         short: 'py',
         name: 'Python',
         link: 'https://docs.python.org/ja/3/',
+        isLang: true,
     },
     {
         short: 'ja',
         name: 'JavaScript',
         link: 'https://developer.mozilla.org/ja/docs/Web/JavaScript',
-    },
-    {
-        short: 'ta',
-        name: 'Tailwindcss',
-        link: 'https://tailwindcss.com/docs/installation',
-    },
-    {
-        short: 're',
-        name: 'React',
-        link: 'https://ja.react.dev/learn',
-    },
-    {
-        short: 'ne',
-        name: 'Next.js',
-        link: 'https://nextjs.org/docs',
-    },
-    {
-        short: 'la',
-        name: 'LangChain',
-        link: 'https://js.langchain.com/docs/get_started/introduction/',
+        isLang: true,
     },
     {
         short: 'ty',
         name: 'TypeScript',
         link: 'https://www.typescriptlang.org/docs/',
+        isLang: true,
+    },
+    {
+        short: 'ph',
+        name: 'PHP',
+        link: 'https://www.php.net/manual/ja/index.php',
+        isLang: true,
+    },
+    {
+        short: 'ru',
+        name: 'Ruby',
+        link: 'https://www.ruby-lang.org/ja/documentation/',
+        isLang: true,
     },
     {
         short: 'vb',
         name: 'VBA',
         link: 'https://learn.microsoft.com/ja-jp/office/vba/api/overview/excel',
+        isLang: true,
+    },
+    {
+        short: 'ta',
+        name: 'Tailwindcss',
+        link: 'https://tailwindcss.com/docs/installation',
+        isLang: false,
+    },
+    {
+        short: 're',
+        name: 'React',
+        link: 'https://ja.react.dev/learn',
+        isLang: false,
+    },
+    {
+        short: 'ne',
+        name: 'Next.js',
+        link: 'https://nextjs.org/docs',
+        isLang: false,
+    },
+    {
+        short: 'la',
+        name: 'LangChain',
+        link: 'https://js.langchain.com/docs/get_started/introduction/',
+        isLang: false,
     },
 ];
 
@@ -183,7 +203,7 @@ export default function Page() {
                         setMode({ name: item.name, text: item.text, placeholder: item.placeholder });
                     }}
                     value={item.name}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-700  dark:bg-gray-600 dark:border-gray-500"
                 />
                 <label
                     htmlFor={item.name}
@@ -194,6 +214,17 @@ export default function Page() {
             </div>
         </li>
     ));
+
+    // 言語の選択パーツを生成
+    const langItems = docData
+        .filter((doc) => {
+            return doc.isLang === true;
+        })
+        .map((doc, i) => (
+            <option key={i} value={doc.name}>
+                {doc.name}
+            </option>
+        ));
 
     // ヘッダーとフッターを非表示にするパーツを生成
     const zennHeader = (
@@ -252,9 +283,7 @@ export default function Page() {
                                     : 'p-2 w-40 border border-gray-300 rounded-md dark:text-gray-900'
                             }
                         >
-                            <option value={'JavaScript'}>JavaScript</option>
-                            <option value={'Python'}>Python</option>
-                            <option value={'VBA'}>VBA</option>
+                            {langItems}
                         </select>
                     </div>
                     <div className="flex mt-4 gap-5 items-center">
