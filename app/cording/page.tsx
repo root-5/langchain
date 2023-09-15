@@ -45,12 +45,6 @@ const modeData = [
 // ドキュメント一覧
 const docData = [
     {
-        short: 'py',
-        name: 'Python',
-        link: 'https://docs.python.org/ja/3/',
-        isLang: true,
-    },
-    {
         short: 'ja',
         name: 'JavaScript',
         link: 'https://developer.mozilla.org/ja/docs/Web/JavaScript',
@@ -60,6 +54,12 @@ const docData = [
         short: 'ty',
         name: 'TypeScript',
         link: 'https://www.typescriptlang.org/docs/',
+        isLang: true,
+    },
+    {
+        short: 'py',
+        name: 'Python',
+        link: 'https://docs.python.org/ja/3/',
         isLang: true,
     },
     {
@@ -249,7 +249,7 @@ export default function Page() {
     // ==== レンダリング ====
     return (
         <main className={isZenn ? 'max-w-5xl w-11/12 mx-auto' : 'max-w-5xl w-11/12 mx-auto pt-14'}>
-            <Headline2>コーディング補助</Headline2>
+            <Headline2 className={isZenn ? '!text-2xl' : ''}>コーディング補助</Headline2>
             {/* 入力フォーム */}
             <form className="mt-8" onSubmit={submitClick}>
                 <div className="relative flex items-center justify-between">
@@ -353,7 +353,7 @@ export default function Page() {
                     />
                 </div>
             </div>
-            <Headline2 className={isZenn ? 'mt-6' : 'mt-12'}>ドキュメント検索</Headline2>
+            <Headline2 className={isZenn ? '!text-2xl mt-6' : 'mt-12'}>ドキュメント検索</Headline2>
             <input
                 type="text"
                 name="inputDocsName"
@@ -369,7 +369,6 @@ export default function Page() {
                 className={'block m-0 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-2/3'}
             />
             <p hidden={isZenn} className="mt-2">
-                例：
                 <span>{examples}</span>
             </p>
         </main>
