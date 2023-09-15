@@ -173,11 +173,10 @@ export default function Page() {
     // ==== パーツを生成 ====
     // モードの選択パーツを生成
     const modeItems = modeData.map((item, i) => (
-        <li className="w-36 border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <li key={i} className="w-36 border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
             <div className="flex items-center pl-3">
                 <input
                     type="radio"
-                    key={i}
                     id={item.name}
                     name="mode"
                     onChange={(e) => {
@@ -209,10 +208,10 @@ export default function Page() {
     );
 
     // ドキュメントの例を表示するパーツを生成
-    const examples = docData.map((doc) => (
-        <>
+    const examples = docData.map((doc, i) => (
+        <span key={i}>
             &quot;{doc.short}&quot; =&gt; {doc.name}, &nbsp;
-        </>
+        </span>
     ));
 
     //====================================================================
