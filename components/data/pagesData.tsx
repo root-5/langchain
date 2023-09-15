@@ -9,12 +9,6 @@ export const pagesData = [
     },
     {
         key: 4,
-        link: 'document',
-        name: 'ドキュメント一覧',
-        description: 'WEB系言語やライブラリのドキュメントを閲覧できます。',
-    },
-    {
-        key: 5,
         link: 'format',
         name: 'データフォーマット',
         description: '任意のデータを、指定したフォーマットに変換します。',

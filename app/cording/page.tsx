@@ -1,39 +1,83 @@
 'use client';
 
 import { useState } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Headline2 } from '../../components/Headline2';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 
 //====================================================================
 // ==== データ ====
+// モードに関わるデータ
+const modeData = [
+    {
+        name: 'generate',
+        text: 'コードの生成',
+        placeholder:
+            '生成したい処理の内容を入力してください\n※テキストエリアをダブルクリックでクリップボードの内容を貼り付け\n\n例: \n1. 今年の1月1日から今日までの日数を取得する\n2. 取得した日数をconsole.logで出力する',
+    },
+    {
+        name: 'explain',
+        text: 'コードの解説',
+        placeholder:
+            '解説してほしいコードを入力してください\n※テキストエリアをダブルクリックでクリップボードの内容を貼り付け\n\n例: \nRange("A1:B2").Value',
+    },
+    {
+        name: 'fix',
+        text: 'コードの修正',
+        placeholder:
+            '修正してほしいコードを入力してください\n※テキストエリアをダブルクリックでクリップボードの内容を貼り付け\n\n例: \nRange(A1:B2).Value',
+    },
+    {
+        name: 'error',
+        text: 'エラーの解説',
+        placeholder:
+            '解説してほしいエラーを入力してください\n※テキストエリアをダブルクリックでクリップボードの内容を貼り付け\n\n例: \nインデックスが有効範囲にありません。：実行時エラー9',
+    },
+    {
+        name: 'comment',
+        text: 'コメントの挿入',
+        placeholder:
+            'コメントを挿入してほしいコードを入力してください\n※テキストエリアをダブルクリックでクリップボードの内容を貼り付け',
+    },
+];
+
 // ドキュメント一覧
-const docArr = [
+const docData = [
     {
-        key: 1,
+        short: 'py',
+        name: 'Python',
+        link: 'https://docs.python.org/ja/3/',
+    },
+    {
+        short: 'ja',
+        name: 'JavaScript',
+        link: 'https://developer.mozilla.org/ja/docs/Web/JavaScript',
+    },
+    {
+        short: 'ta',
+        name: 'Tailwindcss',
         link: 'https://tailwindcss.com/docs/installation',
-        name: 'tailwindcss',
     },
     {
-        key: 2,
-        link: 'https://ja.react.dev/learn',
+        short: 're',
         name: 'React',
+        link: 'https://ja.react.dev/learn',
     },
     {
-        key: 3,
-        link: 'https://nextjs.org/docs',
+        short: 'ne',
         name: 'Next.js',
+        link: 'https://nextjs.org/docs',
     },
     {
-        key: 4,
-        link: 'https://js.langchain.com/docs/get_started/introduction/',
+        short: 'la',
         name: 'LangChain',
+        link: 'https://js.langchain.com/docs/get_started/introduction/',
     },
     {
-        key: 5,
-        link: 'https://www.typescriptlang.org/docs/',
+        short: 'ty',
         name: 'TypeScript',
+        link: 'https://www.typescriptlang.org/docs/',
     },
 ];
 
@@ -42,12 +86,17 @@ export default function Page() {
     // ==== ステートの宣言 ====
     const [isZenn, setIsZenn] = useState(false); // Zennモードを管理
     const [language, setLanguage] = useState('JavaScript'); // モードを管理
-    const [mode, setMode] = useState('generate'); // モードを管理
+    const [mode, setMode] = useState({
+        name: modeData[0].name,
+        text: modeData[0].text,
+        placeholder: modeData[0].placeholder,
+    }); // モードを管理
     const [formText, setFormText] = useState(''); // フォームのテキストを管理
     const [fixOrder, setFixOrder] = useState(
         'このコードではエラーが出ているので、エラーが発生しないように修正してください'
     ); // 修正指示を管理
     const [result, setResult] = useState(''); //出力の内容を管理
+    const [searchInput, setSearchInput] = useState(''); // 検索ボックスの入力を管理
     const [isError, setIsError] = useState({ statusBoolean: false, messageText: '' }); // エラー状態の有無とエラーメッセージを管理
     const [isLoading, setIsLoading] = useState(false); // 表示状態を管理
 
@@ -86,13 +135,58 @@ export default function Page() {
         setIsLoading(false);
     }
 
+    // 検索ボックスの入力があった時の処理
+    const seachInputFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchInput(e.target.value);
+        for (let i = 0; i < docData.length; i++) {
+            if (!e.target.value.indexOf(docData[i].short)) {
+                window.open(docData[i].link, '_blank');
+                setSearchInput('');
+            }
+        }
+    };
+
     //====================================================================
-    // ==== ドキュメント一覧パーツを生成 ====
-    const docItems = docArr.map((doc) => (
-        <li key={doc.key} className="block border rounded-lg">
-            <Link href={doc.link} className="block p-6 w-72 hover:opacity-40">
-                <h3 className="text-2xl font-bold">{doc.name}</h3>
-            </Link>
+    // ==== マウント時の処理 ====
+    // textareaやinputにフォーカスがついていない時、"/"入力で検索ボックスにフォーカスを当てる
+    useEffect(() => {
+        const inputText = document.getElementById('inputText') as HTMLTextAreaElement;
+        const inputDocsName = document.getElementById('inputDocsName') as HTMLInputElement;
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/') {
+                if (inputText !== document.activeElement && inputDocsName !== document.activeElement) {
+                    e.preventDefault();
+                    setSearchInput('');
+                    inputDocsName.focus();
+                }
+            }
+        });
+    });
+
+    //====================================================================
+    // ==== パーツを生成 ====
+    // モードの選択パーツを生成
+    const modeItems = modeData.map((item) => (
+        <li className="w-36 border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+            <div className="flex items-center pl-3">
+                <input
+                    type="radio"
+                    id={item.name}
+                    name="mode"
+                    onChange={(e) => {
+                        setMode({ name: item.name, text: item.text, placeholder: item.placeholder });
+                    }}
+                    value={item.name}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <label
+                    htmlFor={item.name}
+                    className="w-full py-2 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                    {item.text}
+                </label>
+            </div>
         </li>
     ));
 
@@ -116,26 +210,36 @@ export default function Page() {
 
             {/* 入力フォーム */}
             <form className="mt-8" onSubmit={submitClick}>
-                <div className="flex items-center justify-between">
-                    <p className="text-2xl font-black">入力</p>
+                <div className="relative flex items-center justify-between">
+                    <p hidden={isZenn} className="text-2xl font-black">
+                        入力
+                    </p>
                     <div
                         onClick={() => setIsZenn(!isZenn)}
-                        className="relative ml-auto py-1 px-2 bg-blue-800 text-white rounded-md duration-300 hover:bg-blue-600 hover:cursor-pointer"
+                        className={
+                            isZenn
+                                ? 'absolute right-0 top-0 ml-auto py-1 px-2 bg-blue-800 text-white rounded-md duration-300 hover:bg-blue-600 hover:cursor-pointer'
+                                : 'relative ml-auto py-1 px-2 bg-blue-800 text-white rounded-md duration-300 hover:bg-blue-600 hover:cursor-pointer'
+                        }
                     >
                         Zenn
                     </div>
                     {isZenn ? zennHeader : ''}
                 </div>
                 <div className="flex flex-col">
-                    <div className="flex mt-4 gap-5 items-center">
-                        <label htmlFor="language" className="font-bold">
+                    <div className={isZenn ? 'flex mt-0 gap-5 items-center' : 'flex mt-4 gap-5 items-center'}>
+                        <label htmlFor="language" hidden={isZenn} className="font-bold">
                             言語
                         </label>
                         <select
                             name="language"
                             id="language"
                             onChange={(e) => setLanguage(e.target.value)}
-                            className="p-2 w-40 border border-gray-300 rounded-md dark:text-gray-900"
+                            className={
+                                isZenn
+                                    ? 'p-1 w-28 border border-gray-300 rounded-md dark:text-gray-900'
+                                    : 'p-2 w-40 border border-gray-300 rounded-md dark:text-gray-900'
+                            }
                         >
                             <option value={'JavaScript'}>JavaScript</option>
                             <option value={'Python'}>Python</option>
@@ -143,123 +247,29 @@ export default function Page() {
                         </select>
                     </div>
                     <div className="flex mt-4 gap-5 items-center">
-                        <p className="font-bold">モード</p>
+                        <p hidden={isZenn} className="font-bold">
+                            モード
+                        </p>
                         <ul className="flex-wrap items-center w-fit text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <li className="w-36 border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                <div className="flex items-center pl-3">
-                                    <input
-                                        type="radio"
-                                        id="generate"
-                                        name="mode"
-                                        value={'generate'}
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                                    />
-                                    <label
-                                        htmlFor="generate"
-                                        className="w-full py-2 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                    >
-                                        コードの生成
-                                    </label>
-                                </div>
-                            </li>
-                            <li className="w-36 border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                <div className="flex items-center pl-3">
-                                    <input
-                                        type="radio"
-                                        id="explain"
-                                        name="mode"
-                                        value={'explain'}
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                                    />
-                                    <label
-                                        htmlFor="explain"
-                                        className="w-full py-2 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                    >
-                                        コードの解説
-                                    </label>
-                                </div>
-                            </li>
-                            <li className="w-36 border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                <div className="flex items-center pl-3">
-                                    <input
-                                        type="radio"
-                                        id="fix"
-                                        name="mode"
-                                        value={'fix'}
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                                    />
-                                    <label
-                                        htmlFor="fix"
-                                        className="w-full py-2 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                    >
-                                        コードの修正
-                                    </label>
-                                </div>
-                            </li>
-                            <li className="w-36 dark:border-gray-600">
-                                <div className="flex items-center pl-3">
-                                    <input
-                                        type="radio"
-                                        id="error"
-                                        name="mode"
-                                        value={'error'}
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                                    />
-                                    <label
-                                        htmlFor="error"
-                                        className="w-full py-2 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                    >
-                                        エラーの解説
-                                    </label>
-                                </div>
-                            </li>
-                            <li className="w-36 dark:border-gray-600">
-                                <div className="flex items-center pl-3">
-                                    <input
-                                        type="radio"
-                                        id="comment"
-                                        name="mode"
-                                        value={'comment'}
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                                    />
-                                    <label
-                                        htmlFor="comment"
-                                        className="w-full py-2 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                    >
-                                        コメントの挿入
-                                    </label>
-                                </div>
-                            </li>
+                            {modeItems}
                         </ul>
                     </div>
                     <textarea
                         name="inputText"
                         id="inputText"
                         value={formText}
-                        placeholder={
-                            mode === 'generate'
-                                ? '生成したい処理の内容を入力してください\n※テキストエリアをダブルクリックでクリップボードの内容を貼り付け\n\n例: \n1. 今年の1月1日から今日までの日数を取得する\n2. 取得した日数をconsole.logで出力する'
-                                : mode === 'explain'
-                                ? '解説してほしいコードを入力してください\n※テキストエリアをダブルクリックでクリップボードの内容を貼り付け\n\n例: \nRange("A1:B2").Value'
-                                : mode === 'fix'
-                                ? '修正してほしいコードを入力してください\n※テキストエリアをダブルクリックでクリップボードの内容を貼り付け\n\n例: \nRange(A1:B2).Value'
-                                : mode === 'error'
-                                ? '解説してほしいエラーを入力してください\n※テキストエリアをダブルクリックでクリップボードの内容を貼り付け\n\n例: \nインデックスが有効範囲にありません。：実行時エラー9'
-                                : mode === 'comment'
-                                ? 'コメントを挿入してほしいコードを入力してください\n※テキストエリアをダブルクリックでクリップボードの内容を貼り付け'
-                                : ''
-                        }
+                        placeholder={mode.placeholder}
                         required
                         onChange={(e) => setFormText(e.target.value)}
                         className="mt-4 p-2 h-64 border border-gray-300 rounded-md dark:text-gray-900"
                     ></textarea>
                     <div className="flex mt-4 gap-5 items-center">
-                        <label hidden={mode !== 'fix'} htmlFor="fixOrder" className="font-bold">
+                        <label hidden={mode.name !== 'fix'} htmlFor="fixOrder" className="font-bold">
                             どう修正したいか
                         </label>
                         <input
                             type="text"
-                            hidden={mode !== 'fix'}
+                            hidden={mode.name !== 'fix'}
                             id="fixOrder"
                             name="fixOrder"
                             placeholder={'全てのconsole.logをalertに変更してください'}
@@ -274,24 +284,16 @@ export default function Page() {
                     disabled={isLoading === true}
                     className="relative mt-2 py-2 px-4 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
                 >
-                    {mode === 'generate'
-                        ? '生成する'
-                        : mode === 'explain'
-                        ? '解説する'
-                        : mode === 'fix'
-                        ? '修正する'
-                        : mode === 'error'
-                        ? '解説する'
-                        : mode === 'comment'
-                        ? 'コメントを挿入する'
-                        : ''}
+                    {mode.text}
                 </button>
                 <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
             </form>
 
             {/* 出力の表示 */}
-            <div className="mt-10">
-                <p className="text-2xl font-black">出力</p>
+            <div className={isZenn ? 'mt-6' : 'mt-10'}>
+                <p hidden={isZenn} className="text-2xl font-black">
+                    出力
+                </p>
                 <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
                     {isError.statusBoolean ? isError.messageText : ''}
                 </p>
@@ -312,8 +314,29 @@ export default function Page() {
                     />
                 </div>
             </div>
-            <Headline2 className="mt-12">ドキュメント一覧</Headline2>
-            <ul className="flex flex-wrap gap-6 justify-center">{docItems}</ul>
+            <Headline2 className={isZenn ? 'mt-6' : 'mt-12'}>ドキュメント検索</Headline2>
+            <input
+                type="text"
+                name="inputDocsName"
+                id="inputDocsName"
+                value={searchInput}
+                onChange={seachInputFunc}
+                placeholder={
+                    isZenn
+                        ? 'ショートカット "/"'
+                        : '言語・ライブラリを英小文字表記で入力することで該当のドキュメントを開きます'
+                }
+                required
+                className={'block m-0 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-2/3'}
+            />
+            <p hidden={isZenn}>
+                例：
+                {docData.map((doc) => (
+                    <>
+                        "{doc.short}" =&gt; {doc.name},{' '}
+                    </>
+                ))}
+            </p>
         </main>
     );
 }
