@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { useRef } from 'react';
 import Image from 'next/image';
 import { Headline2 } from '../../components/Headline2';
 
@@ -25,12 +24,10 @@ export default function Page() {
     //====================================================================
     // ==== ステートの宣言 ====
     // const [mode, setMode] = useState(''); // モードを管理
+    const [isZenn, setIsZenn] = useState(false); // Zennモードを管理
     const [chats, setChats] = useState<ChatsInterface[]>(initialChats); // チャットの内容を管理
     const [formText, setFormText] = useState(''); // フォームのテキストを管理
     const [isLoading, setIsLoading] = useState(false); // 表示状態を管理
-
-    const frame = useRef<HTMLDivElement>(null);
-    // const scrollBottomRef = useRef<HTMLDivElement>(null);
 
     //====================================================================
     // ==== ボタンの処理 ====
@@ -128,17 +125,50 @@ export default function Page() {
         );
     });
 
+    // ヘッダーとフッターを非表示にするパーツを生成
+    const zennHeader = (
+        <style jsx global>{`
+            header {
+                display: none;
+            }
+            footer {
+                display: none;
+            }
+        `}</style>
+    );
+
     //====================================================================
     // ==== レンダリング ====
     return (
-        <main className="max-w-5xl w-11/12 mx-auto pt-14">
+        <main className={isZenn ? 'max-w-5xl w-11/12 mx-auto' : 'max-w-5xl w-11/12 mx-auto pt-14'}>
             {/* chatGPTとの対話がチャット形式で出力されるエリア */}
-            <Headline2>チャット</Headline2>
+            <Headline2 className={isZenn ? 'hidden' : ''}>チャット</Headline2>
             <div className="relative">
-                <div id="frame" ref={frame} className="flex flex-col gap-2 h-96 overflow-scroll">
+                <div
+                    id="frame"
+                    className={
+                        isZenn
+                            ? 'flex flex-col gap-2 h-[calc(100vh-100px)] overflow-scroll'
+                            : 'flex flex-col gap-2 h-96 overflow-scroll'
+                    }
+                >
+                    <div
+                        onClick={() => setIsZenn(!isZenn)}
+                        className={
+                            isZenn
+                                ? 'absolute right-12 top-4 py-1 px-2 bg-blue-800 text-white rounded-md duration-300 opacity-20 hover:opacity-100 hover:bg-blue-600 hover:cursor-pointer'
+                                : 'absolute right-12 top-0 py-1 px-2 bg-blue-800 text-white rounded-md duration-300 opacity-20 hover:opacity-100 hover:bg-blue-600 hover:cursor-pointer'
+                        }
+                    >
+                        Zenn
+                    </div>
                     <button
                         onClick={deleteChat}
-                        className="absolute top-0 right-3 w-7 h-7 bg-blue-500 text-white rounded-md duration-300 opacity-20 hover:bg-blue-600 hover:opacity-100"
+                        className={
+                            isZenn
+                                ? 'absolute top-4 right-3 w-7 h-7 bg-blue-500 text-white rounded-md duration-300 opacity-20 hover:bg-blue-600 hover:opacity-100'
+                                : 'absolute top-0 right-3 w-7 h-7 bg-blue-500 text-white rounded-md duration-300 opacity-20 hover:bg-blue-600 hover:opacity-100'
+                        }
                     >
                         ×
                     </button>
@@ -169,6 +199,7 @@ export default function Page() {
                     </button>
                 </div>
             </form>
+            {isZenn ? zennHeader : ''}
         </main>
     );
 }

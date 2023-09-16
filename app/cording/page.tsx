@@ -266,7 +266,6 @@ export default function Page() {
                     >
                         Zenn
                     </div>
-                    {isZenn ? zennHeader : ''}
                 </div>
                 <div className="flex flex-col">
                     <div className={isZenn ? 'flex mt-0 gap-5 items-center' : 'flex mt-4 gap-5 items-center'}>
@@ -371,6 +370,7 @@ export default function Page() {
             <p hidden={isZenn} className="mt-2">
                 <span>{examples}</span>
             </p>
+            {isZenn ? zennHeader : ''}
         </main>
     );
 }
