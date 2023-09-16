@@ -11,4 +11,9 @@ export const pagesData = [
         name: 'データフォーマット',
         description: '任意のデータを、指定したフォーマットに変換します。',
     },
+    {
+        link: 'chat',
+        name: 'チャット',
+        description: 'AIと自由にチャットできます。',
+    },
 ];
