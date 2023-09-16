@@ -172,7 +172,9 @@ export default function Page() {
                     >
                         ×
                     </button>
-                    <div className="flex flex-col p-4 gap-4">{chatParts}</div>
+                    <div className={isZenn ? 'flex flex-col p-4 gap-4 pt-8' : 'flex flex-col p-4 gap-4'}>
+                        {chatParts}
+                    </div>
                 </div>
                 {/* <div id="scrollAreaFin" ref={scrollBottomRef} className="h-0" /> */}
             </div>

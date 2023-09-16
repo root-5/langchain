@@ -117,7 +117,11 @@ export default function Page() {
                     {isError.statusBoolean ? isError.messageText : ''}
                 </p>
                 <div className="relative mt-2">
-                    <textarea value={result} className="mt-2 p-2 h-96 w-full rounded-md dark:text-gray-900"></textarea>
+                    <textarea
+                        value={result}
+                        onChange={(e) => setResult(e.target.value)}
+                        className="mt-2 p-2 h-96 w-full rounded-md dark:text-gray-900"
+                    ></textarea>
                     <Image
                         src="/img/copy.png"
                         width={24}

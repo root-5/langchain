@@ -300,7 +300,7 @@ export default function Page() {
                         placeholder={mode.placeholder}
                         required
                         onChange={(e) => setFormText(e.target.value)}
-                        className="mt-4 p-2 h-64 border border-gray-300 rounded-md dark:text-gray-900"
+                        className="mt-4 p-2 h-40 border border-gray-300 rounded-md dark:text-gray-900"
                     ></textarea>
                     <div className="flex mt-4 gap-5 items-center">
                         <label hidden={mode.name !== 'fix'} htmlFor="fixOrder" className="font-bold">
@@ -338,7 +338,11 @@ export default function Page() {
                 <div className="relative mt-2">
                     <SyntaxHighlighter
                         language={language === 'JavaScript' ? 'javascript' : language === 'Python' ? 'python' : 'vba'}
-                        className={result == '' ? 'mt-2 h-32 w-full rounded-md' : 'mt-2 h-96 w-full rounded-md'}
+                        className={
+                            result == ''
+                                ? 'mt-2 h-40 w-full rounded-md resize-y'
+                                : 'mt-2 h-60 w-full rounded-md resize-y'
+                        }
                     >
                         {result}
                     </SyntaxHighlighter>
