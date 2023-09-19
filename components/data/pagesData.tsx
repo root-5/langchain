@@ -18,7 +18,7 @@ export const pagesData = [
     },
     {
         link: 'test',
-        name: '!TEST!',
+        name: 'TEST',
         description: 'テスト用ページ',
     },
 ];

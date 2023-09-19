@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
-import { Header } from '../components/Header';
+import { HeaderAndSidepanel } from '../components/HeaderAndSidepanel';
 import { Footer } from '../components/Footer';
 
 export const metadata: Metadata = {
@@ -24,9 +24,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <link rel="stylesheet" href="css/top.css" />
             </head>
             <body className="relative font-gothic text-gray-900 text-sm lg:text-base dark:bg-stone-900 dark:text-white">
-                <Header />
-                {children}
-                {/* <Footer /> */}
+                <HeaderAndSidepanel>{children}</HeaderAndSidepanel>
+                <Footer />
                 <Analytics />
             </body>
         </html>
