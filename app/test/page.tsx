@@ -1,8 +1,13 @@
+// エラー回避用のダミーファイル
+export default function Page() {
+    return <></>;
+}
+
 // 'use client';
 // import { Canvas, useLoader } from '@react-three/fiber';
 // import { OrbitControls } from '@react-three/drei';
 // import { TextureLoader } from 'three';
-// export default function BaseGL() {
+// export default function Page() {
 //     const earthMap = useLoader(TextureLoader, 'img/earth.jpg');
 //     return (
 //         <main style={{ width: '100%', height: '100%' }}>
