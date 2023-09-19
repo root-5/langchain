@@ -9,21 +9,21 @@ export function Header(props: { isOpen: boolean; humbergurBtnFunc: () => void })
                     <div
                         className={
                             props.isOpen
-                                ? 'w-6 h-0.5 bg-white duration-300 translate-y-2.5 rotate-45'
+                                ? 'w-6 h-0.5 bg-white duration-300 translate-y-2.5 md:translate-y-0 rotate-45 md:rotate-0'
                                 : 'w-6 h-0.5 bg-white duration-300'
                         }
                     />
                     <div
                         className={
                             props.isOpen
-                                ? 'w-6 h-0.5 bg-white duration-300 opacity-0'
+                                ? 'w-6 h-0.5 bg-white duration-300 opacity-0 md:opacity-100'
                                 : 'w-6 h-0.5 bg-white duration-300'
                         }
                     />
                     <div
                         className={
                             props.isOpen
-                                ? 'w-6 h-0.5 bg-white duration-300 -translate-y-2.5 -rotate-45'
+                                ? 'w-6 h-0.5 bg-white duration-300 -translate-y-2.5 md:translate-y-0 -rotate-45 md:rotate-0'
                                 : 'w-6 h-0.5 bg-white duration-300'
                         }
                     />
