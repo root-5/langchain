@@ -16,4 +16,9 @@ export const pagesData = [
         name: 'チャット',
         description: 'AIと自由にチャットできます。',
     },
+    {
+        link: 'test',
+        name: '!TEST!',
+        description: 'テスト用ページ',
+    },
 ];

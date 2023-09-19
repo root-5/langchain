@@ -69,7 +69,7 @@ export default function Page() {
     //====================================================================
     // ==== レンダリング ====
     return (
-        <main className="max-w-5xl w-11/12 mx-auto pt-14">
+        <main className="max-w-4xl w-11/12 mx-auto pt-14">
             <Headline2>文章要約</Headline2>
 
             {/* 入力フォーム */}

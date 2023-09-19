@@ -248,7 +248,7 @@ export default function Page() {
     //====================================================================
     // ==== レンダリング ====
     return (
-        <main className={isZenn ? 'max-w-5xl w-11/12 mx-auto' : 'max-w-5xl w-11/12 mx-auto pt-14'}>
+        <main className={isZenn ? 'max-w-4xl w-11/12 mx-auto' : 'max-w-4xl w-11/12 mx-auto pt-14'}>
             <Headline2 className={isZenn ? '!text-2xl' : ''}>コーディング補助</Headline2>
             {/* 入力フォーム */}
             <form className="mt-8" onSubmit={submitClick}>

@@ -23,7 +23,6 @@ const initialChats: ChatsInterface[] = [
 export default function Page() {
     //====================================================================
     // ==== ステートの宣言 ====
-    // const [mode, setMode] = useState(''); // モードを管理
     const [isZenn, setIsZenn] = useState(false); // Zennモードを管理
     const [chats, setChats] = useState<ChatsInterface[]>(initialChats); // チャットの内容を管理
     const [formText, setFormText] = useState(''); // フォームのテキストを管理
@@ -140,7 +139,7 @@ export default function Page() {
     //====================================================================
     // ==== レンダリング ====
     return (
-        <main className={isZenn ? 'max-w-5xl w-11/12 mx-auto' : 'max-w-5xl w-11/12 mx-auto pt-14'}>
+        <main className={isZenn ? 'max-w-4xl w-11/12 mx-auto' : 'max-w-4xl w-11/12 mx-auto pt-14'}>
             {/* chatGPTとの対話がチャット形式で出力されるエリア */}
             <Headline2 className={isZenn ? 'hidden' : ''}>チャット</Headline2>
             <div className="relative">
@@ -149,7 +148,7 @@ export default function Page() {
                     className={
                         isZenn
                             ? 'flex flex-col gap-2 h-[calc(100vh-100px)] overflow-scroll'
-                            : 'flex flex-col gap-2 h-96 overflow-scroll'
+                            : 'flex flex-col gap-2 h-[600px] overflow-scroll'
                     }
                 >
                     <div
