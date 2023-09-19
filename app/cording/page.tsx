@@ -241,7 +241,7 @@ export default function Page() {
     // ドキュメントの例を表示するパーツを生成
     const examples = docData.map((doc, i) => (
         <span key={i}>
-            &quot;{doc.short}&quot; =&gt; {doc.name}, &nbsp;
+            {doc.name} &gt; &quot;{doc.short}&quot; , &nbsp;
         </span>
     ));
 
@@ -366,7 +366,7 @@ export default function Page() {
                 placeholder={
                     isZenn
                         ? 'ショートカット "/"'
-                        : '言語・ライブラリを英小文字表記で入力することで該当のドキュメントを開きます'
+                        : '言語などの正式名称を英小文字で入力することで公式ドキュメントを開きます'
                 }
                 required
                 className={'block m-0 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-2/3'}
