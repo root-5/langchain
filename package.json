@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "@prisma/client": "^5.2.0",
+        "@react-three/drei": "^9.83.9",
         "@react-three/fiber": "^8.14.1",
         "@types/node": "20.5.4",
         "@types/react": "18.2.21",

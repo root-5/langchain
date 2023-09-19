@@ -26,7 +26,8 @@
 # その他ライブラリ
 
 1. `yarn add three @react-three/fiber @types/three` three.js
-2. `yarn add react-syntax-highlighter` React-Syntaxhighlihter、のちに`yarn add --dev @types/react-syntax-highlighter`
+2. `yarn add @react-three/drei` three.js
+3. `yarn add react-syntax-highlighter` React-Syntaxhighlihter、のちに`yarn add --dev @types/react-syntax-highlighter`
 
 # 本番環境
 
