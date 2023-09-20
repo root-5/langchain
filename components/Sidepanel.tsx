@@ -21,7 +21,7 @@ export function Sidepanel(props: { isOpen: boolean }) {
             }
         >
             <div className="flex flex-col pl-4 h-full">
-                <ul className="mt-6">{linkItems}</ul>
+                <ul className="mt-16">{linkItems}</ul>
             </div>
         </div>
     );

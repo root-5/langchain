@@ -81,6 +81,12 @@ const docData = [
         isLang: true,
     },
     {
+        short: 'gi',
+        name: 'GitHub',
+        link: 'https://github.com/',
+        isLang: false,
+    },
+    {
         short: 'ta',
         name: 'Tailwindcss',
         link: 'https://tailwindcss.com/docs/installation',
