@@ -153,7 +153,7 @@ export default function Page() {
                     className={
                         isZenn
                             ? 'flex flex-col gap-2 h-[calc(100vh-100px)] overflow-scroll'
-                            : 'flex flex-col gap-2 h-[600px] overflow-scroll'
+                            : 'flex flex-col gap-2 h-[calc(100vh-310px)] overflow-scroll'
                     }
                 >
                     <div
