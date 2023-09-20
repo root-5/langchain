@@ -35,7 +35,12 @@ export default function Page() {
         event.preventDefault();
         setFormText('');
         setIsLoading(true);
-        createNewChat('あなた', formText);
+        createNewChat('user', formText);
+
+        // chatsからspeakerとtext部分を取り出して、chatTextsに格納
+        const chatTexts = chats.map((chat) => {
+            return { role: chat.speaker, content: chat.text };
+        });
 
         // フォームの内容を取得し、サーバーに送信
         try {
@@ -43,7 +48,7 @@ export default function Page() {
             const serverResponse = await fetch('../api/chat/getAnswer', {
                 method: 'POST',
                 body: JSON.stringify({
-                    text: formData.get('inputText'),
+                    messages: chatTexts,
                 }),
                 headers: {
                     'Content-Type': 'application/json',

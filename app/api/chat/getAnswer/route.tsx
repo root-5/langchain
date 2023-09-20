@@ -1,29 +1,42 @@
 import { NextResponse } from 'next/server';
-import { OpenAI } from 'langchain/llms/openai';
+import { ChatOpenAI } from 'langchain/chat_models/openai';
+import { AIMessage, BaseMessageFields, HumanMessage } from 'langchain/schema';
 
 // OpenAIのモデルを作成
-const llm = new OpenAI({
+const chat = new ChatOpenAI({
     openAIApiKey: process.env.API_KEY,
     temperature: 0,
     modelName: 'gpt-3.5-turbo',
+    streaming: true,
 });
 
 export async function POST(req: Request) {
-    // リクエストを受け取った時間を記録
-    const startTime = performance.now();
-
     // リクエストから質問部分を取得
     const body = await req.json();
+    let reqMessages = body.messages;
 
-    const reqText = body.text;
+    // reqMessagesの長さが10以上の場合、最後の10個を残して削除
+    const maxMessages = 10;
+    if (reqMessages.length > maxMessages) {
+        reqMessages = reqMessages.slice(reqMessages.length - maxMessages, reqMessages.length);
+    }
 
     // OpenAIへリクエストを送信
-    const res = await llm.predict(reqText);
-
-    // 終了時間を記録し、かかった時間を表示
-    const endTime = performance.now();
-    // console.log(`要約にかかった時間: ${endTime - startTime}ms`);
+    const res = await chat.call(
+        reqMessages.map((m: { role: string; content: string | BaseMessageFields }) =>
+            m.role == 'user' ? new HumanMessage(m.content) : new AIMessage(m.content)
+        ),
+        {
+            callbacks: [
+                {
+                    handleLLMNewToken(token: string) {
+                        // console.log({ token });
+                    },
+                },
+            ],
+        }
+    );
 
     // レスポンスを返す
-    return NextResponse.json({ result: res });
+    return NextResponse.json({ result: res.content });
 }
