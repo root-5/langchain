@@ -33,7 +33,7 @@ export function Footer() {
     //====================================================================
     // ==== ナビゲーションパーツの生成 ====
     const linkItems = pagesData.map((page, i) => (
-        <Link key={i} href={'./' + page.link} className="block my-2 py-1 w-fit">
+        <Link key={i} href={'./' + page.link} className="block py-1 w-fit">
             {page.name}
         </Link>
     ));
@@ -44,17 +44,17 @@ export function Footer() {
         return (
             <footer className="fixed bottom-0 left-0 w-full z-20 bg-green-800 dark:bg-stone-950">
                 <div
-                    className={isMenuOpen ? 'flex p-2 gap-x-8 gap-y-0 flex-wrap items-center justify-center' : 'hidden'}
+                    className={isMenuOpen ? 'flex p-2 gap-x-8 gap-y-1 flex-wrap items-center justify-center' : 'hidden'}
                 >
                     {linkItems}
                 </div>
                 <div className="flex w-full">
-                    <Link href="./" className="flex py-5 w-2/4 item-center justify-center text-xl">
+                    <Link href="./" className="flex py-1.5 w-2/4 item-center justify-center text-lg">
                         /
                     </Link>
                     <div
                         onClick={menuOpen}
-                        className="flex py-5 w-2/4 item-center justify-center text-xl hover:cursor-pointer"
+                        className="flex py-1.5 w-2/4 item-center justify-center text-lg hover:cursor-pointer"
                     >
                         三
                     </div>
@@ -63,14 +63,13 @@ export function Footer() {
         );
     } else {
         return (
-            <footer className="fixed bottom-0 left-0 py-1 w-full z-20 bg-green-800 dark:bg-stone-950">
-                <Link
-                    href="./"
-                    className="flex mx-auto py-1 w-fit item-center justify-center text-lg hover:before:scale-x-0"
-                >
-                    AIを便利に使おう！
-                </Link>
-                <p className="py-1 text-xs text-white text-center">Copyright © 2023 AIを便利に使おう！ by root-5</p>
+            <footer className="fixed bottom-0 left-0 px-20 py-2.5 w-full z-20 bg-green-800 dark:bg-stone-950">
+                <div className="flex items-center gap-20 ">
+                    <Link href="./" className="block w-fit hover:before:scale-x-0">
+                        AIを便利に使おう！
+                    </Link>
+                    <p className="text-xs text-white text-center">Copyright © 2023 AIを便利に使おう！ by root-5</p>
+                </div>
             </footer>
         );
     }

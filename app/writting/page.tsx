@@ -147,7 +147,7 @@ export default function Page() {
     //====================================================================
     // ==== レンダリング ====
     return (
-        <main className="max-w-4xl w-11/12 mx-auto pt-14">
+        <main className="max-w-4xl w-11/12 mx-auto pt-8 md:pt-14">
             <Headline2>文章作成</Headline2>
 
             {/* 入力エリア */}

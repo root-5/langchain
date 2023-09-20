@@ -1,4 +1,3 @@
-'use client';
 import Link from 'next/link';
 import { pagesData } from './data/pagesData';
 

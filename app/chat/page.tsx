@@ -144,7 +144,7 @@ export default function Page() {
     //====================================================================
     // ==== レンダリング ====
     return (
-        <main className={isZenn ? 'max-w-4xl w-11/12 mx-auto' : 'max-w-4xl w-11/12 mx-auto pt-14'}>
+        <main className={isZenn ? 'max-w-4xl w-11/12 mx-auto' : 'max-w-4xl w-11/12 mx-auto pt-8 md:pt-14'}>
             {/* chatGPTとの対話がチャット形式で出力されるエリア */}
             <Headline2 className={isZenn ? 'hidden' : ''}>チャット</Headline2>
             <div className="relative">
@@ -153,7 +153,7 @@ export default function Page() {
                     className={
                         isZenn
                             ? 'flex flex-col gap-2 h-[calc(100vh-100px)] overflow-scroll'
-                            : 'flex flex-col gap-2 h-[calc(100vh-310px)] overflow-scroll'
+                            : 'flex flex-col gap-2 h-[calc(100vh-250px)] overflow-scroll'
                     }
                 >
                     <div

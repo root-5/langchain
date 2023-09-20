@@ -58,7 +58,7 @@ export default function Page() {
     //====================================================================
     // ==== レンダリング ====
     return (
-        <main className="max-w-4xl w-11/12 mx-auto pt-14">
+        <main className="max-w-4xl w-11/12 mx-auto pt-8 md:pt-14">
             <Headline2>機能一覧</Headline2>
             <ul className="flex flex-wrap gap-6 justify-center">{linkItems}</ul>
             <Headline2>ホワイトボード</Headline2>
