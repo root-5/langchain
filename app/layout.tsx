@@ -2,7 +2,6 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
 import { HeaderAndSidepanel } from '../components/HeaderAndSidepanel';
-import { Footer } from '../components/Footer';
 
 export const metadata: Metadata = {
     title: 'AIを便利に使おう！',
@@ -25,7 +24,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </head>
             <body className="relative font-gothic text-gray-900 text-sm lg:text-base dark:bg-stone-900 dark:text-white">
                 <HeaderAndSidepanel>{children}</HeaderAndSidepanel>
-                <Footer />
                 <Analytics />
             </body>
         </html>

@@ -22,18 +22,24 @@ export default function Page() {
         setMemo(description);
         return;
     }
+
     // データベースにテキストエリアのデータを保存する
     async function setMemoData() {
-        const response = await fetch('/api/memo', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: 1, description: memo }),
-        });
-        const data = await response.json();
-        return;
+        try {
+            const response = await fetch('/api/memo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: 1, description: memo }),
+            });
+            const data = await response.json();
+            return;
+        } catch (error) {
+            console.log(error);
+        }
     }
+
     useEffect(() => {
         getMemoData();
     }, []);
@@ -41,8 +47,8 @@ export default function Page() {
     //====================================================================
     // ==== 機能一覧パーツを生成 ====
     const linkItems = pagesData.map((page, i) => (
-        <li key={i} className="block border rounded-lg">
-            <Link href={'./' + page.link} className="block p-6 w-72 hover:opacity-40">
+        <li key={i} className="block border rounded-lg h-38">
+            <Link href={'./' + page.link} className="block p-6 w-72 h-full hover:opacity-40">
                 <h3 className="text-2xl font-bold">{page.name}</h3>
                 <p className="mt-4 text-lg">{page.description}</p>
             </Link>

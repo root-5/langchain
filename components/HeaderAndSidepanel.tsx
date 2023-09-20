@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Header } from './Header';
+import { Footer } from '../components/Footer';
 import { Sidepanel } from './Sidepanel';
 
 export function HeaderAndSidepanel(props: { children: React.ReactNode }) {
@@ -36,6 +37,7 @@ export function HeaderAndSidepanel(props: { children: React.ReactNode }) {
                 <Sidepanel isOpen={isOpen} />
                 <div className={isOpen ? 'w-full ml-0 duration-300 md:ml-[220px]' : 'w-full ml-0 duration-300'}>
                     {props.children}
+                    <Footer />
                 </div>
             </div>
         </>
