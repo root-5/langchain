@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { Header } from './Header';
 import { Footer } from '../components/Footer';
@@ -7,7 +8,7 @@ import { Sidepanel } from './Sidepanel';
 export function HeaderAndSidepanel(props: { children: React.ReactNode }) {
     //====================================================================
     // ==== ステートの宣言 ====
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
 
     //====================================================================
     // ==== 処理 ====

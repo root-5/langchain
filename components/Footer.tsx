@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { pagesData } from '../components/data/pagesData';
@@ -63,12 +64,14 @@ export function Footer() {
         );
     } else {
         return (
-            <footer className="fixed bottom-0 left-0 px-20 py-2.5 w-full z-20 bg-green-800 dark:bg-stone-950">
-                <div className="flex items-center gap-20 ">
+            <footer className="fixed bottom-0 left-0 pl-4 py-2.5 w-full z-20 bg-green-800 dark:bg-stone-950">
+                <div className="flex items-center gap-10 ">
                     <Link href="./" className="block w-fit hover:before:scale-x-0">
                         AIを便利に使おう！
                     </Link>
-                    <p className="text-xs text-white text-center">Copyright © 2023 AIを便利に使おう！ by root-5</p>
+                    <p className="text-xs text-white text-center">
+                        Copyright © 2023 AIを便利に使おう！powered by GPT-3.5 by root-5
+                    </p>
                 </div>
             </footer>
         );

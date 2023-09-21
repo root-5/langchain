@@ -1,3 +1,5 @@
+import React from "react";
+
 export function Headline2(props: { children: string; className?: string }) {
     return (
         <h2

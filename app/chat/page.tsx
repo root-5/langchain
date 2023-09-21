@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Image from 'next/image';
@@ -90,9 +91,29 @@ export default function Page() {
     });
 
     //====================================================================
-    // ==== ショートカットの処理 ====
-    // command+enterで送信、/でフォームにフォーカス
+    // ==== フォーム幅調整の処理 ====
     useEffect(() => {
+        // main要素の幅を取得し、form要素の幅を同じにする
+
+        function formResize() {
+            const mainEle = document.querySelector('main');
+            const formEle = document.querySelector('form');
+            if (!mainEle || !formEle) return;
+            formEle.style.width = `${mainEle.clientWidth}px`;
+        }
+
+        // ページ読み込み時とリサイズ時に実行
+        setTimeout(() => {
+            // window.eventLisner('load')では、main要素が存在せず取得できなかったため、setTimeoutで遅らせて実行
+            formResize(), 300;
+        });
+        window.addEventListener('resize', formResize);
+    }, []);
+
+    //====================================================================
+    // ==== ショートカットの処理 ====
+    useEffect(() => {
+        // command+enterで送信、/でフォームにフォーカス
         const submitBtnEle = document.getElementById('submit');
         const inputTextEle = document.getElementById('inputText');
 
@@ -131,7 +152,7 @@ export default function Page() {
 
     // ヘッダーとフッターを非表示にするパーツを生成
     const zennHeader = (
-        <style jsx global>{`
+        <style>{`
             header {
                 display: none;
             }
@@ -144,7 +165,11 @@ export default function Page() {
     //====================================================================
     // ==== レンダリング ====
     return (
-        <main className={isZenn ? 'max-w-4xl w-11/12 mx-auto' : 'max-w-4xl w-11/12 mx-auto pt-8 md:pt-14'}>
+        <main
+            className={
+                isZenn ? 'relative max-w-4xl w-11/12 mx-auto' : 'relative max-w-4xl w-11/12 mx-auto pt-8 md:pt-14'
+            }
+        >
             {/* chatGPTとの対話がチャット形式で出力されるエリア */}
             <Headline2 className={isZenn ? 'hidden' : ''}>チャット</Headline2>
             <div className="relative">
@@ -180,12 +205,11 @@ export default function Page() {
                         {chatParts}
                     </div>
                 </div>
-                {/* <div id="scrollAreaFin" ref={scrollBottomRef} className="h-0" /> */}
             </div>
 
             {/* 入力フォーム */}
-            <form className="mt-8" onSubmit={submitClick}>
-                <div className="flex flex-wrap gap-2">
+            <form className="fixed bottom-12 w-full h-10 box-border" onSubmit={submitClick}>
+                <div className="flex gap-2 h-full">
                     <textarea
                         name="inputText"
                         id="inputText"
@@ -193,13 +217,13 @@ export default function Page() {
                         placeholder={'質問を入力してください。'}
                         required
                         onChange={(e) => setFormText(e.target.value)}
-                        className="block mt-4 p-2 h-10 flex-1 border border-gray-300 rounded-md dark:text-gray-900"
+                        className="block p-2 h-10 flex-1 border border-gray-300 rounded-md dark:text-gray-900"
                     ></textarea>
                     <button
                         id="submit"
                         type="submit"
                         disabled={isLoading === true}
-                        className="mt-4 py-2 px-4 h-10 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
+                        className="py-2 px-4 h-10 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
                     >
                         送信
                     </button>

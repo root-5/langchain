@@ -1,4 +1,5 @@
 import './globals.css';
+import React from 'react';
 import type { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
 import { HeaderAndSidepanel } from '../components/HeaderAndSidepanel';

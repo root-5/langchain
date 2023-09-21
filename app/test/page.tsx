@@ -1,3 +1,5 @@
+import React from 'react';
+
 // エラー回避用のダミーファイル
 export default function Page() {
     return <></>;
