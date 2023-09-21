@@ -93,21 +93,22 @@ export default function Page() {
     //====================================================================
     // ==== フォーム幅調整の処理 ====
     useEffect(() => {
-        // main要素の幅を取得し、form要素の幅を同じにする
+        // サイドパネルの変更時、main要素の幅に合わせてform要素の幅を変更
+        const mainEle = document.querySelector('main');
+        const formEle = document.querySelector('form');
+        const sidePanelEle = document.getElementById('sidepanel');
 
-        function formResize() {
-            const mainEle = document.querySelector('main');
-            const formEle = document.querySelector('form');
-            if (!mainEle || !formEle) return;
-            formEle.style.width = `${mainEle.clientWidth}px`;
+        if (mainEle && formEle && sidePanelEle) {
+            const observer = new MutationObserver(() => {
+                console.log('resize');
+                formEle.style.width = `${mainEle.clientWidth}px`;
+            });
+            if (!sidePanelEle || !formEle) return;
+            observer.observe(sidePanelEle, {
+                attributes: true,
+                attributeFilter: ['class'],
+            });
         }
-
-        // ページ読み込み時とリサイズ時に実行
-        setTimeout(() => {
-            // window.eventLisner('load')では、main要素が存在せず取得できなかったため、setTimeoutで遅らせて実行
-            formResize(), 300;
-        });
-        window.addEventListener('resize', formResize);
     }, []);
 
     //====================================================================
@@ -208,7 +209,7 @@ export default function Page() {
             </div>
 
             {/* 入力フォーム */}
-            <form className="fixed bottom-12 w-full h-10 box-border" onSubmit={submitClick}>
+            <form className="fixed bottom-12 w-11/12 md:w-[calc(92%_-_200px)] h-10 box-border" onSubmit={submitClick}>
                 <div className="flex gap-2 h-full">
                     <textarea
                         name="inputText"

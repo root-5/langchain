@@ -14,6 +14,7 @@ export function Sidepanel(props: { isOpen: boolean }) {
     ));
     return (
         <div
+            id="sidepanel"
             className={
                 props.isOpen
                     ? 'w-[220px] h-full bg-green-100 z-10 duration-300 dark:bg-stone-800 fixed left-0'
