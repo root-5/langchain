@@ -4,7 +4,7 @@ import { PromptTemplate } from 'langchain/prompts';
 
 // OpenAIのモデルを作成
 const llm = new OpenAI({
-    openAIApiKey: process.env.API_KEY,
+    openAIApiKey: process.env.OPENAI_API_KEY,
     temperature: 0,
     modelName: 'gpt-3.5-turbo',
 });

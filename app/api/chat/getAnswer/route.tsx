@@ -4,7 +4,7 @@ import { AIMessage, BaseMessageFields, HumanMessage } from 'langchain/schema';
 
 // OpenAIのモデルを作成
 const chat = new ChatOpenAI({
-    openAIApiKey: process.env.API_KEY,
+    openAIApiKey: process.env.OPENAI_API_KEY,
     temperature: 0,
     modelName: 'gpt-3.5-turbo',
     streaming: true,

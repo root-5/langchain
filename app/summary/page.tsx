@@ -127,7 +127,7 @@ export default function Page() {
                         className="p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap dark:text-gray-900"
                     ></textarea>
                     <p
-                        className="absolute z-2 top-0 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
+                        className="absolute z-2 bottom-1.5 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
                         onClick={(e) => {
                             copyText();
                             e.currentTarget.innerText = 'Copied!';
