@@ -4,7 +4,6 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Headline2 } from '../components/Headline2';
 import { pagesData } from '../components/data/pagesData';
 

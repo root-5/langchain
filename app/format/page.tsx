@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useState } from 'react';
-import Image from 'next/image';
 import { Headline2 } from '../../components/Headline2';
 import { Strong } from '../../components/Strong';
 
@@ -124,14 +123,15 @@ export default function Page() {
                         onChange={(e) => setResult(e.target.value)}
                         className="mt-2 p-2 h-96 w-full border border-gray-300 rounded-md dark:text-gray-900"
                     ></textarea>
-                    <Image
-                        src="/img/copy.png"
-                        width={24}
-                        height={24}
-                        alt={'コピー'}
-                        className="absolute z-10 bottom-2 right-1 p-2 w-10 h-10 opacity-30 duration-300 rounded-2xl hover:opacity-100 cursor-pointer active:bg-blue-500"
-                        onClick={() => navigator.clipboard.writeText(result)}
-                    />
+                    <p
+                        className="absolute z-2 top-0 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
+                        onClick={(e) => {
+                            navigator.clipboard.writeText(result);
+                            e.currentTarget.innerText = 'Copied!';
+                        }}
+                    >
+                        Copy
+                    </p>
                 </div>
             </div>
         </main>

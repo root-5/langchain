@@ -1,11 +1,10 @@
 'use client';
 
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { modeData, docData } from '../../components/data/cordingData';
+
+const eyesArr = ['- -', '+ +', '× ×'];
 
 export default function Page() {
     //====================================================================
@@ -25,6 +24,7 @@ export default function Page() {
     ); // 修正指示を管理
     const [result, setResult] = useState(''); //出力の内容を管理
     const [isLoading, setIsLoading] = useState(false); // 表示状態を管理
+    const [eyes, setEyes] = useState(''); // 表示状態を管理
 
     //====================================================================
     // ==== ボタンの処理 ====
@@ -80,6 +80,12 @@ export default function Page() {
             setSearchInput('');
         }
     };
+
+    // useEffectでロード後に目をランダムで表示する
+    useEffect(() => {
+        const randomNum = Math.floor(Math.random() * eyesArr.length);
+        setEyes(eyesArr[randomNum]);
+    }, []);
 
     //====================================================================
     // ==== マウント時の処理 ====
@@ -154,11 +160,15 @@ export default function Page() {
                 id="modal"
                 className={
                     isSearchMode
-                        ? 'absolute top-0 left-0 items-center justify-center w-screen h-screen bg-[#000e] z-10'
-                        : 'absolute top-0 left-0 items-center justify-center w-screen h-screen bg-[#000e] z-10 opacity-0 pointer-events-none'
+                        ? 'absolute top-0 left-0 items-center justify-center w-screen h-screen dark:bg-[#000000fa] bg-white z-10'
+                        : 'absolute top-0 left-0 items-center justify-center w-screen h-screen dark:bg-[#000000fa] bg-white z-10 opacity-0 pointer-events-none'
                 }
             >
-                <form onSubmit={() => window.open('https://www.google.com/search?q=' + searchInput, '_blank')}>
+                <form
+                    onSubmit={() => window.open('https://www.google.com/search?q=' + searchInput, '_blank')}
+                    className="flex flex-col gap-36 w-screen h-screen item-center justify-center"
+                >
+                    <p className="block mx-auto w-fit text-light text-[14rem]">{eyes}</p>
                     <input
                         type="text"
                         name="inputDocsName"
@@ -167,7 +177,7 @@ export default function Page() {
                         onChange={seachInputFunc}
                         placeholder={''}
                         required
-                        className={'block mx-auto mt-96 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-2/3'}
+                        className={'block mx-auto p-2 border-4 border-gray-300 rounded-md dark:text-gray-900 w-96'}
                     />
                 </form>
             </div>
@@ -234,11 +244,7 @@ export default function Page() {
                 <div className="relative mt-2">
                     <SyntaxHighlighter
                         language={language.toLowerCase()}
-                        className={
-                            result == ''
-                                ? 'mt-2 w-full border border-gray-300 rounded-md resize-y h-40'
-                                : 'mt-2 w-full border border-gray-300 rounded-md resize-y h-60'
-                        }
+                        className={'mt-2 w-full border border-gray-300 rounded-md resize-y h-60'}
                     >
                         {result}
                     </SyntaxHighlighter>
@@ -257,9 +263,6 @@ export default function Page() {
                 header {
                     display: none;
                 }
-                // footer {
-                //     display: none;
-                // }
                 #mainpanel {
                     margin-left: 0;
                 }
