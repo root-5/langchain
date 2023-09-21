@@ -4,6 +4,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Headline2 } from '../../components/Headline2';
+import Image from 'next/image';
 
 // chatsの型を定義
 interface ChatsInterface {
