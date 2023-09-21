@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Headline2 } from '../../components/Headline2';
+import { Strong } from '../../components/Strong';
 
 export default function Page() {
     //====================================================================
@@ -74,7 +75,7 @@ export default function Page() {
 
             {/* 入力フォーム */}
             <form className="mt-8" onSubmit={submitClick}>
-                <p className="text-2xl font-black">入力</p>
+                <Strong>入力</Strong>
                 <div className="flex flex-col">
                     <textarea
                         name="inputText"
@@ -114,7 +115,7 @@ export default function Page() {
 
             {/* 出力の表示 */}
             <div className="mt-10">
-                <p className="text-2xl font-black">出力</p>
+                <Strong>出力</Strong>
                 <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
                     {isError.statusBoolean ? isError.messageText : ''}
                 </p>

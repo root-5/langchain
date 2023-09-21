@@ -12,7 +12,7 @@ export function Footer() {
     //====================================================================
     // ==== メソッド ====
     // ハンバーガーメニューの開閉
-    function menuOpen() {
+    function menuOpenToggle() {
         setIsMenuOpen(!isMenuOpen);
     }
 
@@ -33,7 +33,7 @@ export function Footer() {
     //====================================================================
     // ==== ナビゲーションパーツの生成 ====
     const linkItems = pagesData.map((page, i) => (
-        <Link key={i} href={'./' + page.link} className="block py-1 w-fit">
+        <Link key={i} onClick={menuOpenToggle} href={'./' + page.link} className="block py-1 w-fit">
             {page.name}
         </Link>
     ));
@@ -53,7 +53,7 @@ export function Footer() {
                         /
                     </Link>
                     <div
-                        onClick={menuOpen}
+                        onClick={menuOpenToggle}
                         className="flex py-1.5 w-2/4 item-center justify-center text-lg hover:cursor-pointer"
                     >
                         三

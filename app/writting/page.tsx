@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Headline2 } from '../../components/Headline2';
+import { Strong } from '../../components/Strong';
 
 // 見出しの最大数
 const maxHeadlineNumber = 10;
@@ -127,7 +128,7 @@ export default function Page() {
     // 見出しリストを作成
     const listItems = headlineNumberArr.map((num) => (
         <div key={num} className="flex w-full mt-4 gap-3 items-center">
-            <p className="text-lg">{num}. </p>
+            <p className="">{num}. </p>
             <input
                 type="text"
                 name="inputHeadline"
@@ -152,9 +153,9 @@ export default function Page() {
 
             {/* 入力エリア */}
             <div className="mt-8">
-                <p className="text-2xl font-black">入力</p>
+                <Strong>入力</Strong>
                 <form onSubmit={generateHeadline} className="flex flex-col">
-                    <label className="mt-4 font-bold">文章のタイトル</label>
+                    <label className="mt-4 font-bold">タイトル</label>
                     <div className="flex w-full mt-2 gap-3 items-center">
                         <input
                             type="text"
@@ -162,7 +163,7 @@ export default function Page() {
                             id="inputHeadline"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                            placeholder="タイトルを入力"
+                            placeholder="例：AIと人間の共存について"
                             required
                             className="flex-1 p-2 w-full border border-gray-300 rounded-md dark:text-gray-900"
                         />
@@ -187,16 +188,16 @@ export default function Page() {
                             <option>10</option>
                         </select>
                     </div>
+                </form>
+                <form onSubmit={generateBody} className="mt-10">
+                    <label className="block font-bold w-full">章の構成</label>
                     <button
                         type="submit"
                         disabled={isLoading === true}
-                        className="relative mt-4 py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
+                        className="relative mt-4 py-2 px-4 w-fit bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
                     >
-                        見出し生成
+                        タイトルから自動生成
                     </button>
-                </form>
-                <form onSubmit={generateBody} className="mt-10">
-                    <label className="font-bold">見出し構成</label>
                     <ol className="">
                         <ul>{listItems}</ul>
                     </ol>
@@ -215,32 +216,26 @@ export default function Page() {
                             <option value="1000">1000</option>
                         </select>
                     </div>
-                    <div className="flex mt-4 gap-5 items-center">
-                        <button
-                            disabled={isLoading === true}
-                            className="relative py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
-                        >
-                            本文生成
-                        </button>
-                        <p className="text-red-800 dark:text-white">
-                            生成文の長さ次第ですが、
-                            <br className="sm:hidden" />
-                            かなり時間がかかります！！
-                        </p>
-                    </div>
+                    <button
+                        disabled={isLoading === true}
+                        className="relative mt-4 py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
+                    >
+                        本文生成
+                    </button>
                 </form>
                 <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
             </div>
 
             {/* 出力エリア */}
             <div className="mt-14">
-                <p className="text-2xl font-black">出力</p>
+                <Strong>出力</Strong>
                 <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
                     {isError.statusBoolean ? isError.messageText : ''}
                 </p>
                 <div className="relative mt-2">
+                    <p>生成は章ごとに行われ、 全文を生成するまでにはかなり時間がかかります。</p>
                     <textarea
-                        className="p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap dark:text-gray-900"
+                        className="mt-2 p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap dark:text-gray-900"
                         placeholder="ここに生成した文章が表示されます"
                         value={result.resultText}
                         onChange={(e) => setResult({ resultText: e.target.value, resultLength: result.resultLength })}

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Image from 'next/image';
 import { Headline2 } from '../../components/Headline2';
+import { Strong } from '../../components/Strong';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 
 //====================================================================
@@ -259,9 +260,7 @@ export default function Page() {
             {/* 入力フォーム */}
             <form className="mt-8" onSubmit={submitClick}>
                 <div className="relative flex items-center justify-between">
-                    <p hidden={isZenn} className="text-2xl font-black">
-                        入力
-                    </p>
+                    <Strong hidden={isZenn}>入力</Strong>
                     <div
                         onClick={() => setIsZenn(!isZenn)}
                         className={
@@ -335,9 +334,7 @@ export default function Page() {
             </form>
             {/* 出力の表示 */}
             <div className={isZenn ? 'mt-6' : 'mt-10'}>
-                <p hidden={isZenn} className="text-2xl font-black">
-                    出力
-                </p>
+                <Strong hidden={isZenn}>出力</Strong>
                 <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
                     {isError.statusBoolean ? isError.messageText : ''}
                 </p>
