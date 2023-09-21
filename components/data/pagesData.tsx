@@ -17,6 +17,11 @@ export const pagesData = [
         description: 'AIと自由にチャットできます。',
     },
     {
+        link: 'transelate',
+        name: '多言語間翻訳',
+        description: 'DeepLとchatGPTを使って多言語間を翻訳できます。',
+    },
+    {
         link: 'test',
         name: 'TEST',
         description: 'テスト用ページ',

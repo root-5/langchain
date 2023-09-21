@@ -28,6 +28,7 @@
 1. `yarn add three @react-three/fiber @types/three` three.js
 2. `yarn add @react-three/drei` three.js
 3. `yarn add react-syntax-highlighter` React-Syntaxhighlihter、のちに`yarn add --dev @types/react-syntax-highlighter`
+4. `yarn add deepl-node`
 
 # 本番環境
 
@@ -62,6 +63,7 @@ https://zenn.dev/crsc1206/articles/d92548257fb445
 1. 仕事をやる上で便利なサイトにする
 2. 他の人も一部使えるように
 3. three.js などのテスト実装も行う
+4. WARN の解消
 
 # ホワイトボード
 
