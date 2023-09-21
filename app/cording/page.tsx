@@ -47,69 +47,73 @@ const modeData = [
 // ドキュメント一覧
 const docData = [
     {
-        short: 'ja',
         name: 'JavaScript',
         link: 'https://developer.mozilla.org/ja/docs/Web/JavaScript',
         isLang: true,
     },
     {
-        short: 'ty',
         name: 'TypeScript',
         link: 'https://www.typescriptlang.org/docs/',
         isLang: true,
     },
     {
-        short: 'py',
         name: 'Python',
         link: 'https://docs.python.org/ja/3/',
         isLang: true,
     },
     {
-        short: 'ph',
+        name: 'HTML',
+        link: 'https://developer.mozilla.org/ja/docs/Web/HTML',
+        isLang: true,
+    },
+    {
+        name: 'CSS',
+        link: 'https://developer.mozilla.org/ja/docs/Web/CSS',
+        isLang: true,
+    },
+    {
         name: 'PHP',
         link: 'https://www.php.net/manual/ja/index.php',
         isLang: true,
     },
     {
-        short: 'ru',
         name: 'Ruby',
         link: 'https://www.ruby-lang.org/ja/documentation/',
         isLang: true,
     },
     {
-        short: 'vb',
         name: 'VBA',
         link: 'https://learn.microsoft.com/ja-jp/office/vba/api/overview/excel',
         isLang: true,
     },
     {
-        short: 'gi',
-        name: 'GitHub',
-        link: 'https://github.com/',
-        isLang: false,
-    },
-    {
-        short: 'ta',
         name: 'Tailwindcss',
         link: 'https://tailwindcss.com/docs/installation',
         isLang: false,
     },
     {
-        short: 're',
         name: 'React',
         link: 'https://ja.react.dev/learn',
         isLang: false,
     },
     {
-        short: 'ne',
         name: 'Next.js',
         link: 'https://nextjs.org/docs',
         isLang: false,
     },
     {
-        short: 'la',
         name: 'LangChain',
         link: 'https://js.langchain.com/docs/get_started/introduction/',
+        isLang: false,
+    },
+    {
+        name: 'GitHub',
+        link: 'https://github.com/',
+        isLang: false,
+    },
+    {
+        name: 'Notion',
+        link: 'https://www.notion.so/',
         isLang: false,
     },
 ];
@@ -171,21 +175,33 @@ export default function Page() {
     // 検索ボックスの入力があった時の処理
     const seachInputFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchInput(e.target.value);
+
+        let searchHitCount = 0;
+        let searchHitDataNum = 0;
+
+        // ドキュメント一覧から検索ヒットしたものを探す
         for (let i = 0; i < docData.length; i++) {
-            if (!e.target.value.indexOf(docData[i].short)) {
-                window.open(docData[i].link, '_blank');
-                setSearchInput('');
+            const lowerDocData = docData[i].name.toLowerCase();
+            const lowerSearchInput = e.target.value.toLowerCase();
+            if (!lowerDocData.indexOf(lowerSearchInput)) {
+                searchHitCount++;
+                searchHitDataNum = i;
             }
+        }
+
+        if (searchHitCount === 1) {
+            window.open(docData[searchHitDataNum].link, '_blank');
+            setSearchInput('');
         }
     };
 
     //====================================================================
     // ==== マウント時の処理 ====
-    // textareaやinputにフォーカスがついていない時、"/"入力で検索ボックスにフォーカスを当てる
     useEffect(() => {
         const inputText = document.getElementById('inputText') as HTMLTextAreaElement;
         const inputDocsName = document.getElementById('inputDocsName') as HTMLInputElement;
 
+        // textareaやinputにフォーカスがついていない時、"/"入力で検索ボックスにフォーカスを当てる
         document.addEventListener('keydown', (e) => {
             if (e.key === '/') {
                 if (inputText !== document.activeElement && inputDocsName !== document.activeElement) {
@@ -195,13 +211,16 @@ export default function Page() {
                 }
             }
         });
+
+        // ロード時にフォーカスを当てる
+        inputDocsName.focus();
     });
 
     //====================================================================
     // ==== パーツを生成 ====
     // モードの選択パーツを生成
     const modeItems = modeData.map((item, i) => (
-        <li key={i} className="w-36 border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <li key={i} className="w-36 bg-gray-100 dark:bg-gray-800 hover:bg-gray-300 hover:dark:bg-gray-500">
             <div className="flex items-center pl-3">
                 <input
                     type="radio"
@@ -211,12 +230,9 @@ export default function Page() {
                         setMode({ name: item.name, text: item.text, placeholder: item.placeholder });
                     }}
                     value={item.name}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-700  dark:bg-gray-600 dark:border-gray-500"
+                    className="w-4 h-4 text-blue-600 dark:ring-offset-gray-700 hover:cursor-pointer"
                 />
-                <label
-                    htmlFor={item.name}
-                    className="w-full py-2 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
+                <label htmlFor={item.name} className="w-full py-2 ml-2 text-sm hover:cursor-pointer">
                     {item.text}
                 </label>
             </div>
@@ -247,11 +263,7 @@ export default function Page() {
     );
 
     // ドキュメントの例を表示するパーツを生成
-    const examples = docData.map((doc, i) => (
-        <span key={i}>
-            {doc.name} &gt; &quot;{doc.short}&quot; , &nbsp;
-        </span>
-    ));
+    const examples = docData.map((doc, i) => <span key={i}>{doc.name}&nbsp;/&nbsp;</span>);
 
     //====================================================================
     // ==== レンダリング ====
@@ -295,7 +307,7 @@ export default function Page() {
                         <p hidden={isZenn} className="font-bold">
                             モード
                         </p>
-                        <ul className="flex-wrap items-center w-fit text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <ul className="flex flex-1 flex-wrap items-center w-fit text-sm font-medium gap-[1px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
                             {modeItems}
                         </ul>
                     </div>
@@ -341,11 +353,11 @@ export default function Page() {
                 </p>
                 <div className="relative mt-2">
                     <SyntaxHighlighter
-                        language={language === 'JavaScript' ? 'javascript' : language === 'Python' ? 'python' : 'vba'}
+                        language={language.toLowerCase()}
                         className={
                             result == ''
-                                ? 'mt-2 h-40 w-full rounded-md resize-y'
-                                : 'mt-2 h-60 w-full rounded-md resize-y'
+                                ? 'mt-2 w-full border border-gray-300 rounded-md resize-y h-40'
+                                : 'mt-2 w-full border border-gray-300 rounded-md resize-y h-60'
                         }
                     >
                         {result}
@@ -360,23 +372,19 @@ export default function Page() {
                     />
                 </div>
             </div>
-            <Headline2 className={isZenn ? '!text-2xl mt-6' : 'mt-12'}>ドキュメント検索</Headline2>
+            <Headline2 className={isZenn ? '!text-2xl mt-6' : 'mt-12'}>ドキュメント等検索</Headline2>
             <input
                 type="text"
                 name="inputDocsName"
                 id="inputDocsName"
                 value={searchInput}
                 onChange={seachInputFunc}
-                placeholder={
-                    isZenn
-                        ? 'ショートカット "/"'
-                        : '言語などの正式名称を英小文字で入力することで公式ドキュメントを開きます'
-                }
+                placeholder={isZenn ? 'ショートカット "/"' : '正式名称を半角英字で入力（小文字可）'}
                 required
                 className={'block m-0 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-2/3'}
             />
-            <p hidden={isZenn} className="mt-2">
-                <span>{examples}</span>
+            <p hidden={isZenn} className="mt-2 text-xs">
+                {examples}
             </p>
             {isZenn ? zennHeader : ''}
         </main>

@@ -8,7 +8,7 @@ import { Sidepanel } from './Sidepanel';
 export function HeaderAndSidepanel(props: { children: React.ReactNode }) {
     //====================================================================
     // ==== ステートの宣言 ====
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     //====================================================================
     // ==== 処理 ====
@@ -31,11 +31,13 @@ export function HeaderAndSidepanel(props: { children: React.ReactNode }) {
         return;
     }, []);
 
+    //====================================================================
+    // ==== レンダリング ====
     return (
         <>
             <Header isOpen={isOpen} humbergurBtnFunc={handleMenuOpen} />
             <div className="flex">
-                <Sidepanel isOpen={isOpen} />
+                <Sidepanel isOpen={isOpen} setIsOpen={setIsOpen} />
                 <div className={isOpen ? 'w-full pb-12 ml-0 md:ml-[220px]' : 'w-full pb-12 ml-0'}>
                     {props.children}
                     <Footer />

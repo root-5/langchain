@@ -122,7 +122,7 @@ export default function Page() {
                     <textarea
                         value={result}
                         onChange={(e) => setResult(e.target.value)}
-                        className="mt-2 p-2 h-96 w-full rounded-md dark:text-gray-900"
+                        className="mt-2 p-2 h-96 w-full border border-gray-300 rounded-md dark:text-gray-900"
                     ></textarea>
                     <Image
                         src="/img/copy.png"

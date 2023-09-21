@@ -45,6 +45,8 @@ export default function Page() {
         // urlがlocalhostでない時のみgetMemoDataを実行
         if (location.hostname !== 'localhost') {
             getMemoData();
+        } else {
+            setMemo('データベースアクセスは本番環境のみ');
         }
     }, []);
 

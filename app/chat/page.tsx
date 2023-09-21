@@ -45,7 +45,6 @@ export default function Page() {
 
         // フォームの内容を取得し、サーバーに送信
         try {
-            const formData = new FormData(event.currentTarget);
             const serverResponse = await fetch('../api/chat/getAnswer', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -209,7 +208,14 @@ export default function Page() {
             </div>
 
             {/* 入力フォーム */}
-            <form className="fixed bottom-12 w-11/12 md:w-[calc(92%_-_200px)] h-10 box-border" onSubmit={submitClick}>
+            <form
+                className={
+                    isZenn
+                        ? 'fixed w-11/12 md:w-[calc(92%_-_200px)] h-10 box-border bottom-2'
+                        : 'fixed w-11/12 md:w-[calc(92%_-_200px)] h-10 box-border bottom-12'
+                }
+                onSubmit={submitClick}
+            >
                 <div className="flex gap-2 h-full">
                     <textarea
                         name="inputText"
