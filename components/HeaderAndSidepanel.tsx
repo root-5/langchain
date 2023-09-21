@@ -38,11 +38,11 @@ export function HeaderAndSidepanel(props: { children: React.ReactNode }) {
             <Header isOpen={isOpen} humbergurBtnFunc={handleMenuOpen} />
             <div className="flex">
                 <Sidepanel isOpen={isOpen} setIsOpen={setIsOpen} />
-                <div className={isOpen ? 'w-full pb-12 ml-0 md:ml-[220px]' : 'w-full pb-12 ml-0'}>
+                <div id="mainpanel" className={isOpen ? 'w-full pb-12 ml-0 md:ml-[220px]' : 'w-full pb-12 ml-0'}>
                     {props.children}
-                    <Footer />
                 </div>
             </div>
+            <Footer />
         </>
     );
 }
