@@ -127,7 +127,9 @@ export default function Page() {
                         name="inputText"
                         id="inputText"
                         value={formText}
-                        placeholder={'ここに翻訳したい文章を入力してください\n※ダブルクリックでクリップボードから貼り付けられます'}
+                        placeholder={
+                            'ここに翻訳したい文章を入力してください\n※ダブルクリックでクリップボードから貼り付けられます'
+                        }
                         required
                         onDoubleClick={async () => {
                             setFormText(await navigator.clipboard.readText());
@@ -166,12 +168,13 @@ export default function Page() {
                 <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
                     {isError.statusBoolean ? isError.messageText : ''}
                 </p>
-                <div className="flex gap-2 w-full">
+                <div className="flex gap-3 w-full flex-col md:flex-row">
                     <div className="relative w-full">
                         <p className="mb-2">by DeepL</p>
                         <textarea
                             value={deeplResult}
                             onChange={(e) => setDeeplResult(e.target.value)}
+                            placeholder={'DeepLの翻訳結果が表示されます\nこのエリアでそのまま編集もできます'}
                             className="p-2 h-96 w-full border border-gray-300 rounded-md dark:text-gray-900"
                         ></textarea>
                         <p
@@ -189,6 +192,7 @@ export default function Page() {
                         <textarea
                             value={chatgptResult}
                             onChange={(e) => setChatgptResult(e.target.value)}
+                            placeholder={'ChatGPTの翻訳結果が表示されます\nこのエリアでそのまま編集もできます'}
                             className="p-2 h-96 w-full border border-gray-300 rounded-md dark:text-gray-900"
                         ></textarea>
                         <p
