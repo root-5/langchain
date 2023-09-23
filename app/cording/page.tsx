@@ -274,7 +274,7 @@ export default function Page() {
                 required
                 className={'block m-0 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-2/3'}
             />
-            <p hidden={isZenn} className="mt-2 text-xs">
+            <p hidden={isZenn} className="flex flex-wrap mt-2 text-xs">
                 {examples}
             </p>
             {isZenn ? zennHeader : ''}

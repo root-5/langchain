@@ -5,7 +5,7 @@ import Link from 'next/link';
 export function Header(props: { isOpen: boolean; humbergurBtnFunc: () => void }) {
     return (
         <header className="fixed top-0 w-full py-2 md:py-4 bg-green-800 z-50 dark:bg-stone-950">
-            <div className="relative flex pl-4 max-w-7xl mx-auto gap-3 md:gap-6">
+            <div className="relative flex pl-4 mx-auto gap-3 md:gap-6">
                 <button onClick={() => props.humbergurBtnFunc()} type="button" className="z-10 space-y-1 md:space-y-2">
                     <div
                         className={

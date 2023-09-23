@@ -99,7 +99,6 @@ export default function Page() {
 
         if (mainEle && formEle && sidePanelEle) {
             const observer = new MutationObserver(() => {
-                console.log('resize');
                 formEle.style.width = `${mainEle.clientWidth}px`;
             });
             if (!sidePanelEle || !formEle) return;
@@ -211,8 +210,8 @@ export default function Page() {
             <form
                 className={
                     isZenn
-                        ? 'fixed w-11/12 md:w-[calc(92%_-_200px)] h-10 box-border bottom-2'
-                        : 'fixed w-11/12 md:w-[calc(92%_-_200px)] h-10 box-border bottom-12'
+                        ? 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl h-10 box-border bottom-2'
+                        : 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl h-10 box-border bottom-12'
                 }
                 onSubmit={submitClick}
             >

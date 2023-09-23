@@ -53,9 +53,9 @@ export default function Page() {
     // ==== 機能一覧パーツを生成 ====
     const linkItems = pagesData.map((page, i) => (
         <li key={i} className="block border rounded-lg h-30">
-            <Link href={'./' + page.link} className="block p-3 md:p-6 w-72 h-full hover:opacity-40">
-                <h3 className="text-lg md:text-2xl md:font-bold">{page.name}</h3>
-                <p className="mt-1 md:mt-4 md:text-lg">{page.description}</p>
+            <Link href={'./' + page.link} className="block p-3 md:p-6 w-64 h-full hover:opacity-40">
+                <h3 className="text-lg md:text-xl md:font-bold">{page.name}</h3>
+                <p className="mt-1 md:mt-3">{page.description}</p>
             </Link>
         </li>
     ));
