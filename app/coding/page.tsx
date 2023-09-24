@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { Headline2 } from '../../components/Headline2';
 import { Strong } from '../../components/Strong';
-import { modeData, docData } from '../../components/data/cordingData';
+import { modeData, docData } from '../../components/data/codingData';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 
 export default function Page() {
@@ -37,7 +37,7 @@ export default function Page() {
         // フォームの内容を取得し、サーバーに送信
         try {
             const formData = new FormData(event.currentTarget);
-            const serverResponse = await fetch('../api/cording/getAnswer', {
+            const serverResponse = await fetch('../api/coding/getAnswer', {
                 method: 'POST',
                 body: JSON.stringify({
                     language: formData.get('language'),
