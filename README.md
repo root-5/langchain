@@ -58,53 +58,16 @@ https://zenn.dev/crsc1206/articles/d92548257fb445
 
 # API
 
--   > **POST** api/chat/getAnswer
-    >
-    > > { **message** : _string_ }
-    >
-    > > =\> { **result** : _string_ }
-
--   > **POST** api/coding/getAnswer
-    >
-    > > { **language** : _string_, **mode** : _string_, **text** : _string_, **fixOrder** : _string_ }
-    >
-    > > =\> { **result** : _string_ }
-
--   > **POST** api/format/getAnswer
-    >
-    > > { **text** : _string_, **mode** : _string_, **fixOrder** : _string_ }
-    >
-    > > =\> { **result** : _string_ }
-
--   > **POST** api/summary/getSummary
-    >
-    > > { **text** : _string_, **length** : _number_ }
-    >
-    > > =\> { **result** : _string_ }
-
--   > **POST** api/traslate/toChatgpt
-    >
-    > > { **text** : _string_, **language** : _string_ }
-    >
-    > > =\> { **result** : _string_ }
-
--   > **POST** api/traslate/toDeepl
-    >
-    > > { **text** : _string_, **language** : _string_ }
-    >
-    > > =\> { **result** : _string_ }
-
--   > **POST** api/writting/getBody
-    >
-    > > { **message** : _string_ ,**title** : _string_, **headline** : _string_, **length** : _number_ }
-    >
-    > > =\> { **result** : _string_ }
-
--   > **POST** api/writting/getHeadline
-    >
-    > > { **title** : _string_, **length** : _number_ }
-    >
-    > > =\> { **result** : _string_ }
+| **method** | **path**                 | **reqest**                                                                                       | **response**              |
+| :--------- | :----------------------- | :----------------------------------------------------------------------------------------------- | :------------------------ |
+| **POST**   | api/chat/getAnswer       | { **message** : _string_ }                                                                       | { **result** : _string_ } |
+| **POST**   | api/coding/getAnswer     | { **language** : _string_, **mode** : _string_, **text** : _string_, **fixOrder** : _string_ }   | { **result** : _string_ } |
+| **POST**   | api/format/getAnswer     | { **text** : _string_, **mode** : _string_, **fixOrder** : _string_ }                            | { **result** : _string_ } |
+| **POST**   | api/summary/getSummary   | { **text** : _string_, **length** : _number_ }                                                   | { **result** : _string_ } |
+| **POST**   | api/traslate/toChatgpt   | { **text** : _string_, **language** : _string_ }                                                 | { **result** : _string_ } |
+| **POST**   | api/traslate/toDeepl     | { **text** : _string_, **language** : _string_ }                                                 | { **result** : _string_ } |
+| **POST**   | api/writting/getBody     | { **message** : _string_ ,**title** : _string_, **headline** : _string_, **length** : _number_ } | { **result** : _string_ } |
+| **POST**   | api/writting/getHeadline | { **title** : _string_, **length** : _number_ }                                                  | { **result** : _string_ } |
 
 # 現在の方針
 
