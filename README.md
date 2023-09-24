@@ -32,8 +32,6 @@
 
 # 本番環境
 
-https://langchain-wine-six.vercel.app/
-
 1. `yarn dev` 開発環境の実行
 2. `yarn build` 本番環境のビルド（vercel を使っているため基本的に使用しない）
 3. `yarn start` 本番環境の実行（vercel を使っているため基本的に使用しない）
@@ -58,22 +56,63 @@ https://zenn.dev/crsc1206/articles/d92548257fb445
 -   remove：削除（ファイル）
 -   little：軽微な修正（コメント付与、変数名変更など）
 
+# API
+
+-   > **POST** api/chat/getAnswer
+    >
+    > > { **message** : _string_ }
+    >
+    > > =\> { **result** : _string_ }
+
+-   > **POST** api/coding/getAnswer
+    >
+    > > { **language** : _string_, **mode** : _string_, **text** : _string_, **fixOrder** : _string_ }
+    >
+    > > =\> { **result** : _string_ }
+
+-   > **POST** api/format/getAnswer
+    >
+    > > { **text** : _string_, **mode** : _string_, **fixOrder** : _string_ }
+    >
+    > > =\> { **result** : _string_ }
+
+-   > **POST** api/summary/getSummary
+    >
+    > > { **text** : _string_, **length** : _number_ }
+    >
+    > > =\> { **result** : _string_ }
+
+-   > **POST** api/traslate/toChatgpt
+    >
+    > > { **text** : _string_, **language** : _string_ }
+    >
+    > > =\> { **result** : _string_ }
+
+-   > **POST** api/traslate/toDeepl
+    >
+    > > { **text** : _string_, **language** : _string_ }
+    >
+    > > =\> { **result** : _string_ }
+
+-   > **POST** api/writting/getBody
+    >
+    > > { **message** : _string_ ,**title** : _string_, **headline** : _string_, **length** : _number_ }
+    >
+    > > =\> { **result** : _string_ }
+
+-   > **POST** api/writting/getHeadline
+    >
+    > > { **title** : _string_, **length** : _number_ }
+    >
+    > > =\> { **result** : _string_ }
+
 # 現在の方針
 
 1. 仕事をやる上で便利なサイトにする
 2. 他の人も一部使えるように
 3. three.js などのテスト実装も行う
 4. WARN の解消
-
-# ホワイトボード
-
-" 入力後、ホワイトボード以外をクリックすると入力内容が勝手にデータベースに保存されます。
-" =================================================
-" >>バグ報告など
-"
-"
-" =================================================
-" >>更新履歴
-" 2023/09/14 データフォーマット機能を追加
-" 2023/09/13 ダークモード追加、コーディング補助機能を追加
-" 2023/09/12 トップにホワイトボードを追加
+5. DB が pro アカウントではなく通常アカウントに紐づいているので修正
+6. DB でホワイトボードのバックアップを取るようにする
+7. ユーザー認証の実装
+8. ストリームレスポンスの実装
