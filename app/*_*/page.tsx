@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { modeData, docData } from '../../components/data/cordingData';
+import { modeData, docData } from '../../components/data/codingData';
 
 const eyesArr = ['- -', '+ +', '× ×'];
 
@@ -36,7 +36,7 @@ export default function Page() {
         // フォームの内容を取得し、サーバーに送信
         try {
             const formData = new FormData(event.currentTarget);
-            const serverResponse = await fetch('../api/cording/getAnswer', {
+            const serverResponse = await fetch('../api/coding/getAnswer', {
                 method: 'POST',
                 body: JSON.stringify({
                     language: formData.get('language'),
