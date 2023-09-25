@@ -202,6 +202,15 @@ export default function Page() {
                     </button>
                     <div className={isZenn ? 'flex flex-col p-4 gap-4 pt-8' : 'flex flex-col p-4 gap-4'}>
                         {chatParts}
+                        <div hidden={!isLoading} className="animate-pulse">
+                            <Image
+                                src={'/img/guruguru.png'}
+                                alt={'chatGPT'}
+                                width={40}
+                                height={40}
+                                className="animate-spin [animation-duration:3s]"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

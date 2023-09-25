@@ -76,7 +76,7 @@ export function Footer() {
                     <p className="text-xs text-white text-center">
                         Copyright © 2023 AIを便利に使おう！ powered by GPT-3.5
                     </p>
-                    <Link href="https://github.com/" className="block w-fit hover:before:scale-x-0 text-white">
+                    <Link href="https://github.com/" className="block w-fit hover:before:scale-x-0 text-white text-xs">
                         GitHub
                     </Link>
                 </div>
