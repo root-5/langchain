@@ -21,9 +21,4 @@ export const pagesData = [
         name: '多言語間翻訳',
         description: 'DeepLとchatGPTを使って多言語間を翻訳できます。',
     },
-    {
-        link: 'test',
-        name: 'TEST',
-        description: 'テスト用ページ',
-    },
 ];
