@@ -101,4 +101,9 @@ export const docData = [
         link: 'https://www.notion.so/',
         isLang: false,
     },
+    {
+        name: 'MyApp',
+        link: './',
+        isLang: false,
+    },
 ];

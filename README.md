@@ -60,7 +60,7 @@ https://zenn.dev/crsc1206/articles/d92548257fb445
 
 | **method** | **path**                 | **reqest**                                                                                       | **response**              |
 | :--------- | :----------------------- | :----------------------------------------------------------------------------------------------- | :------------------------ |
-| **POST**   | api/chat/getAnswer       | { **message** : _string_ }                                                                       | { **result** : _string_ } |
+| **POST**   | api/chat/getAnswer       | { **messages** : [{ **role** : _string_ , **content** : _string_ }, ...]}                        | { **result** : _string_ } |
 | **POST**   | api/coding/getAnswer     | { **language** : _string_, **mode** : _string_, **text** : _string_, **fixOrder** : _string_ }   | { **result** : _string_ } |
 | **POST**   | api/format/getAnswer     | { **text** : _string_, **mode** : _string_, **fixOrder** : _string_ }                            | { **result** : _string_ } |
 | **POST**   | api/summary/getSummary   | { **text** : _string_, **length** : _number_ }                                                   | { **result** : _string_ } |
