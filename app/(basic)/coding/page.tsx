@@ -1,30 +1,30 @@
 'use client';
 
+import React from 'react';
 import { useState, useEffect } from 'react';
+import { Headline2 } from '../../../components/Headline2';
+import { Strong } from '../../../components/Strong';
+import { modeData, docData } from '../../../components/data/codingData';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { modeData, docData } from '../../components/data/codingData';
-
-const eyesArr = ['- -', '+ +', '× ×'];
 
 export default function Page() {
     //====================================================================
     // ==== ステートの宣言 ====
+    const [isZenn, setIsZenn] = useState(false); // Zennモードを管理
     const [language, setLanguage] = useState('JavaScript'); // モードを管理
     const [mode, setMode] = useState({
         name: modeData[0].name,
         text: modeData[0].text,
         placeholder: modeData[0].placeholder,
     }); // モードを管理
-    const [isShortcutRegisted, setIsShortcutRegisted] = useState(false); // ショートカットキーの登録状態を管理
-    const [isSearchMode, setIsSearchMode] = useState(true); // 検索モードの状態を管理
-    const [searchInput, setSearchInput] = useState(''); // 検索ボックスの入力を管理
     const [formText, setFormText] = useState(''); // フォームのテキストを管理
     const [fixOrder, setFixOrder] = useState(
         'このコードではエラーが出ているので、エラーが発生しないように修正してください'
     ); // 修正指示を管理
     const [result, setResult] = useState(''); //出力の内容を管理
+    const [searchInput, setSearchInput] = useState(''); // 検索ボックスの入力を管理
+    const [isError, setIsError] = useState({ statusBoolean: false, messageText: '' }); // エラー状態の有無とエラーメッセージを管理
     const [isLoading, setIsLoading] = useState(false); // 表示状態を管理
-    const [eyes, setEyes] = useState(''); // 表示状態を管理
 
     //====================================================================
     // ==== ボタンの処理 ====
@@ -54,7 +54,10 @@ export default function Page() {
             // レスポンスのテキストと長さをステートに保存
             const text = serverResponseObj.result;
             setResult(text);
-        } catch (error) {}
+        } catch (error) {
+            const messageText = (error as Error).toString();
+            setIsError({ statusBoolean: true, messageText: messageText });
+        }
         setIsLoading(false);
     }
 
@@ -81,41 +84,42 @@ export default function Page() {
         }
     };
 
-    // useEffectでロード後に目をランダムで表示する
+    //====================================================================
+    // ==== マウント時の処理 ====
     useEffect(() => {
-        const randomNum = Math.floor(Math.random() * eyesArr.length);
-        setEyes(eyesArr[randomNum]);
+        const inputText = document.getElementById('inputText') as HTMLTextAreaElement;
+        const inputDocsName = document.getElementById('inputDocsName') as HTMLInputElement;
+
+        // textareaやinputにフォーカスがついていない時、"/"入力で検索ボックスにフォーカスを当てる
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/') {
+                if (inputText !== document.activeElement && inputDocsName !== document.activeElement) {
+                    e.preventDefault();
+                    setSearchInput('');
+                    inputDocsName.focus();
+                }
+            }
+        });
     }, []);
 
     //====================================================================
-    // ==== マウント時の処理 ====
-    // ショートカットキーの登録とフォーカスの当て方を設定
+    // ==== Zennモードの処理 ====
+    // #zennBtnのdata-isZennStatus属性が変更されたら、isZennのステートを更新
     useEffect(() => {
-        const inputDocsNameEle = document.getElementById('inputDocsName') as HTMLInputElement;
-        const inputTextEle = document.getElementById('inputText') as HTMLTextAreaElement;
-        const modalEle = document.getElementById('modal') as HTMLInputElement;
-
-        if (isShortcutRegisted) return;
-
-        // ショートカットキーの登録
-        document.addEventListener('keydown', (e) => {
-            // Escキーで検索モードの切り替え
-            if (e.key === 'Escape') {
-                e.preventDefault();
-                setIsSearchMode((prevIsSearchMode) => !prevIsSearchMode);
-                setSearchInput('');
-
-                // モーダルが非表示の時は検索ボックスにフォーカスを当てる
-                if (modalEle.classList.contains('opacity-0')) {
-                    inputDocsNameEle.focus();
-                } else {
-                    inputTextEle.focus();
-                }
+        const zennBtnEle = document.getElementById('zennBtn');
+        if (!zennBtnEle) return;
+        const observer = new MutationObserver(() => {
+            const isZennStatus = zennBtnEle.getAttribute('data-zenn-status');
+            if (isZennStatus === 'true') {
+                () => setIsZenn(true);
+            } else {
+                () => setIsZenn(false);
             }
-            setIsShortcutRegisted(true);
         });
-        // ロード時にフォーカスを当てる
-        inputDocsNameEle.focus();
+        observer.observe(zennBtnEle, {
+            attributes: true,
+            attributeFilter: ['data-zenn-status'],
+        });
     }, []);
 
     //====================================================================
@@ -152,56 +156,40 @@ export default function Page() {
             </option>
         ));
 
+    // ドキュメントの例を表示するパーツを生成
+    const examples = docData.map((doc, i) => <span key={i}>{doc.name}&nbsp;/&nbsp;</span>);
+
     //====================================================================
     // ==== レンダリング ====
     return (
-        <main className="max-w-4xl w-11/12 mx-auto">
-            <div
-                id="modal"
-                className={
-                    isSearchMode
-                        ? 'absolute top-0 left-0 items-center justify-center w-screen h-screen dark:bg-black bg-white z-10'
-                        : 'absolute top-0 left-0 items-center justify-center w-screen h-screen dark:bg-black bg-white z-10 opacity-0 pointer-events-none'
-                }
-            >
-                <form
-                    onSubmit={() => window.open('https://www.google.com/search?q=' + searchInput, '_blank')}
-                    className="flex flex-col gap-36 w-screen h-screen item-center justify-center"
-                >
-                    <p className="block mx-auto w-fit text-light text-[14rem]">{eyes}</p>
-                    <input
-                        type="text"
-                        name="inputDocsName"
-                        id="inputDocsName"
-                        value={searchInput}
-                        onChange={seachInputFunc}
-                        placeholder={''}
-                        required
-                        className={'block mx-auto p-2 border-4 border-gray-300 rounded-md dark:text-gray-900 w-96'}
-                    />
-                </form>
-            </div>
+        <main>
+            <Headline2 className={isZenn ? '!text-2xl' : ''}>コーディング補助</Headline2>
             {/* 入力フォーム */}
             <form className="mt-8" onSubmit={submitClick}>
+                <Strong hidden={isZenn}>入力</Strong>
                 <div className="flex flex-col">
-                    <div className={'flex mt-0 gap-5 items-center'}>
-                        <label htmlFor="language" hidden={true} className="font-bold">
+                    <div className={isZenn ? 'flex mt-0 gap-5 items-center' : 'flex mt-4 gap-5 items-center'}>
+                        <label htmlFor="language" hidden={isZenn} className="font-bold">
                             言語
                         </label>
                         <select
                             name="language"
                             id="language"
                             onChange={(e) => setLanguage(e.target.value)}
-                            className={'p-1 w-28 border border-gray-300 rounded-md dark:text-gray-900'}
+                            className={
+                                isZenn
+                                    ? 'p-1 w-28 border border-gray-300 rounded-md dark:text-gray-900'
+                                    : 'p-2 w-40 border border-gray-300 rounded-md dark:text-gray-900'
+                            }
                         >
                             {langItems}
                         </select>
                     </div>
                     <div className="flex mt-4 gap-5 items-center">
-                        <p hidden={true} className="font-bold">
+                        <p hidden={isZenn} className="font-bold">
                             モード
                         </p>
-                        <ul className="flex items-center w-fit text-sm font-medium gap-[1px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
+                        <ul className="flex flex-1 flex-wrap items-center w-fit text-sm font-medium gap-[1px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
                             {modeItems}
                         </ul>
                     </div>
@@ -240,11 +228,19 @@ export default function Page() {
                 <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
             </form>
             {/* 出力の表示 */}
-            <div className={'mt-6'}>
+            <div className={isZenn ? 'mt-6' : 'mt-10'}>
+                <Strong hidden={isZenn}>出力</Strong>
+                <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
+                    {isError.statusBoolean ? isError.messageText : ''}
+                </p>
                 <div className="relative mt-2">
                     <SyntaxHighlighter
                         language={language.toLowerCase()}
-                        className={'mt-2 w-full border border-gray-300 rounded-md resize-y h-60'}
+                        className={
+                            result == ''
+                                ? 'mt-2 w-full border border-gray-300 rounded-md resize-y h-40'
+                                : 'mt-2 w-full border border-gray-300 rounded-md resize-y h-60'
+                        }
                     >
                         {result}
                     </SyntaxHighlighter>
@@ -259,17 +255,20 @@ export default function Page() {
                     </p>
                 </div>
             </div>
-            <style>{`
-                header {
-                    display: none;
-                }
-                #mainpanel {
-                    margin-left: 0;
-                }
-                #sidepanel {
-                    display: none;
-                }
-            `}</style>
+            <Headline2 className={isZenn ? '!text-2xl mt-6' : 'mt-12'}>ドキュメント等検索</Headline2>
+            <input
+                type="text"
+                name="inputDocsName"
+                id="inputDocsName"
+                value={searchInput}
+                onChange={seachInputFunc}
+                placeholder={isZenn ? 'ショートカット "/"' : '正式名称を半角英字で入力（小文字可）'}
+                required
+                className={'block m-0 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-2/3'}
+            />
+            <p hidden={isZenn} className="flex flex-wrap mt-2 text-xs">
+                {examples}
+            </p>
         </main>
     );
 }

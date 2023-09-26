@@ -22,8 +22,8 @@ export function Sidepanel(props: {
             hidden={props.hidden}
             className={
                 props.isOpen
-                    ? 'w-[220px] h-full bg-green-700 z-10 dark:bg-stone-800 fixed left-0'
-                    : 'w-[220px] h-full bg-green-700 z-10 dark:bg-stone-800 fixed left-[-220px]'
+                    ? 'w-[220px] h-full duration-300 bg-green-700 z-10 dark:bg-stone-800 fixed left-0'
+                    : 'w-[220px] h-full duration-300 bg-green-700 z-10 dark:bg-stone-800 fixed left-[-220px]'
             }
         >
             <div className="flex flex-col pl-4 h-full">

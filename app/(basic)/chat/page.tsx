@@ -3,8 +3,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Headline2 } from '../../components/Headline2';
-import { BasicLayout } from '../../components/BasicLayout';
+import { Headline2 } from '../../../components/Headline2';
 import Image from 'next/image';
 
 // chatsの型を定義
@@ -22,10 +21,10 @@ const initialChats: ChatsInterface[] = [
     },
 ];
 
-export default function Page() {
+export default function Page(props: { isZenn: boolean }) {
     //====================================================================
     // ==== ステートの宣言 ====
-    const [isZenn, setIsZenn] = useState(false); // Zennモードを管理
+    const [isZenn, setIsZenn] = useState(props.isZenn); // Zennモードを管理
     const [chats, setChats] = useState<ChatsInterface[]>(initialChats); // チャットの内容を管理
     const [formText, setFormText] = useState(''); // フォームのテキストを管理
     const [isLoading, setIsLoading] = useState(false); // 表示状態を管理
@@ -130,6 +129,26 @@ export default function Page() {
     });
 
     //====================================================================
+    // ==== Zennモードの処理 ====
+    // #zennBtnのdata-isZennStatus属性が変更されたら、isZennのステートを更新
+    useEffect(() => {
+        const zennBtnEle = document.getElementById('zennBtn');
+        if (!zennBtnEle) return;
+        const observer = new MutationObserver(() => {
+            const isZennStatus = zennBtnEle.getAttribute('data-zenn-status');
+            if (isZennStatus === 'true') {
+                () => setIsZenn(true);
+            } else {
+                () => setIsZenn(false);
+            }
+        });
+        observer.observe(zennBtnEle, {
+            attributes: true,
+            attributeFilter: ['data-zenn-status'],
+        });
+    }, []);
+
+    //====================================================================
     // ==== チャットパーツの生成 ====
     const chatParts = chats.map((chat) => {
         return (
@@ -153,84 +172,72 @@ export default function Page() {
     //====================================================================
     // ==== レンダリング ====
     return (
-        <BasicLayout hidden={isZenn}>
-            <main className="relative max-w-4xl w-11/12 mx-auto">
-                {/* chatGPTとの対話がチャット形式で出力されるエリア */}
-                <Headline2 className={isZenn ? 'hidden' : ''}>チャット</Headline2>
-                <div className="relative">
-                    <div
-                        id="frame"
+        <main>
+            {/* chatGPTとの対話がチャット形式で出力されるエリア */}
+            <Headline2 className={isZenn ? 'hidden' : ''}>チャット</Headline2>
+            <div className="relative">
+                <div
+                    id="frame"
+                    className={
+                        isZenn
+                            ? 'flex flex-col gap-2 h-[calc(100vh-100px)] overflow-scroll'
+                            : 'flex flex-col gap-2 h-[calc(100vh-240px)] md:h-[calc(100vh-300px)] overflow-scroll'
+                    }
+                >
+                    <button
+                        onClick={deleteChat}
                         className={
                             isZenn
-                                ? 'flex flex-col gap-2 h-[calc(100vh-100px)] overflow-scroll'
-                                : 'flex flex-col gap-2 h-[calc(100vh-240px)] md:h-[calc(100vh-300px)] overflow-scroll'
+                                ? 'absolute top-2 right-14 w-7 h-7 bg-blue-500 text-white rounded-md duration-300 opacity-20 hover:bg-blue-600 hover:opacity-100'
+                                : 'absolute top-0 right-0 w-7 h-7 bg-blue-500 text-white rounded-md duration-300 opacity-20 hover:bg-blue-600 hover:opacity-100'
                         }
                     >
-                        <div
-                            onClick={() => setIsZenn(!isZenn)}
-                            className={
-                                isZenn
-                                    ? 'absolute right-12 top-4 py-1 px-2 bg-blue-800 text-white rounded-md duration-300 opacity-20 hover:opacity-100 hover:bg-blue-600 hover:cursor-pointer'
-                                    : 'absolute right-12 top-0 py-1 px-2 bg-blue-800 text-white rounded-md duration-300 opacity-20 hover:opacity-100 hover:bg-blue-600 hover:cursor-pointer'
-                            }
-                        >
-                            Zenn
-                        </div>
-                        <button
-                            onClick={deleteChat}
-                            className={
-                                isZenn
-                                    ? 'absolute top-4 right-3 w-7 h-7 bg-blue-500 text-white rounded-md duration-300 opacity-20 hover:bg-blue-600 hover:opacity-100'
-                                    : 'absolute top-0 right-3 w-7 h-7 bg-blue-500 text-white rounded-md duration-300 opacity-20 hover:bg-blue-600 hover:opacity-100'
-                            }
-                        >
-                            ×
-                        </button>
-                        <div className={isZenn ? 'flex flex-col p-4 gap-4 pt-8' : 'flex flex-col p-4 gap-4'}>
-                            {chatParts}
-                            <div hidden={!isLoading} className="animate-pulse">
-                                <Image
-                                    src={'/img/guruguru.png'}
-                                    alt={'chatGPT'}
-                                    width={40}
-                                    height={40}
-                                    className="animate-spin [animation-duration:3s]"
-                                />
-                            </div>
+                        ×
+                    </button>
+                    <div className={isZenn ? 'flex flex-col p-4 gap-4 pt-8' : 'flex flex-col p-4 gap-4'}>
+                        {chatParts}
+                        <div hidden={!isLoading} className="animate-pulse">
+                            <Image
+                                src={'/img/guruguru.png'}
+                                alt={'chatGPT'}
+                                width={40}
+                                height={40}
+                                className="animate-spin [animation-duration:3s]"
+                            />
                         </div>
                     </div>
                 </div>
+            </div>
 
-                {/* 入力フォーム */}
-                <form
-                    className={
-                        isZenn
-                            ? 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl h-10 box-border bottom-2'
-                            : 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl h-10 box-border bottom-12'
-                    }
-                    onSubmit={submitClick}
-                >
-                    <div className="flex gap-2 h-full">
-                        <textarea
-                            name="inputText"
-                            id="inputText"
-                            value={formText}
-                            placeholder={'質問を入力してください。'}
-                            required
-                            onChange={(e) => setFormText(e.target.value)}
-                            className="block p-2 h-10 flex-1 border border-gray-300 rounded-md dark:text-gray-900"
-                        ></textarea>
-                        <button
-                            id="submit"
-                            type="submit"
-                            disabled={isLoading === true}
-                            className="py-2 px-4 h-10 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
-                        >
-                            送信
-                        </button>
-                    </div>
-                </form>
-            </main>
-        </BasicLayout>
+            {/* 入力フォーム */}
+            <form
+                className={
+                    isZenn
+                        ? 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl h-10 box-border bottom-2'
+                        : 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl h-10 box-border bottom-12'
+                }
+                onSubmit={submitClick}
+            >
+                <div className="flex gap-2 h-full">
+                    <textarea
+                        name="inputText"
+                        id="inputText"
+                        value={formText}
+                        placeholder={'質問を入力してください。'}
+                        required
+                        onChange={(e) => setFormText(e.target.value)}
+                        className="block p-2 h-10 flex-1 border border-gray-300 rounded-md dark:text-gray-900"
+                    ></textarea>
+                    <button
+                        id="submit"
+                        type="submit"
+                        disabled={isLoading === true}
+                        className="py-2 px-4 h-10 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
+                    >
+                        送信
+                    </button>
+                </div>
+            </form>
+        </main>
     );
 }
