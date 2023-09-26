@@ -21,10 +21,10 @@ const initialChats: ChatsInterface[] = [
     },
 ];
 
-export default function Page(props: { isZenn: boolean }) {
+export default function Page() {
     //====================================================================
     // ==== ステートの宣言 ====
-    const [isZenn, setIsZenn] = useState(props.isZenn); // Zennモードを管理
+    const [isZenn, setIsZenn] = useState(false); // Zennモードを管理
     const [chats, setChats] = useState<ChatsInterface[]>(initialChats); // チャットの内容を管理
     const [formText, setFormText] = useState(''); // フォームのテキストを管理
     const [isLoading, setIsLoading] = useState(false); // 表示状態を管理
