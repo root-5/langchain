@@ -2,10 +2,10 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Header } from './Header';
-import { Footer } from '../components/Footer';
+import { Footer } from './Footer';
 import { Sidepanel } from './Sidepanel';
 
-export function HeaderAndSidepanel(props: { children: React.ReactNode }) {
+export function BasicLayout(props: { children: React.ReactNode; hidden?: boolean }) {
     //====================================================================
     // ==== ステートの宣言 ====
     const [isOpen, setIsOpen] = useState(false);
@@ -34,15 +34,22 @@ export function HeaderAndSidepanel(props: { children: React.ReactNode }) {
     //====================================================================
     // ==== レンダリング ====
     return (
-        <>
-            <Header isOpen={isOpen} humbergurBtnFunc={handleMenuOpen} />
+        <div>
+            <Header hidden={props.hidden} isOpen={isOpen} humbergurBtnFunc={handleMenuOpen} />
             <div className="flex">
-                <Sidepanel isOpen={isOpen} setIsOpen={setIsOpen} />
-                <div id="mainpanel" className={isOpen ? 'w-full pb-12 ml-0 md:ml-[220px]' : 'w-full pb-12 ml-0'}>
+                <Sidepanel hidden={props.hidden} isOpen={isOpen} setIsOpen={setIsOpen} />
+                <div
+                    id="mainpanel"
+                    className={
+                        !props.hidden && isOpen
+                            ? 'relative w-full pb-12 ml-0 md:ml-[220px]'
+                            : 'relative w-full pb-12 ml-0'
+                    }
+                >
                     {props.children}
                 </div>
             </div>
-            <Footer />
-        </>
+            <Footer hidden={props.hidden} />
+        </div>
     );
 }

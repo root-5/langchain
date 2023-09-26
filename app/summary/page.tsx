@@ -4,6 +4,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Headline2 } from '../../components/Headline2';
 import { Strong } from '../../components/Strong';
+import { BasicLayout } from '../../components/BasicLayout';
 
 export default function Page() {
     //====================================================================
@@ -70,74 +71,76 @@ export default function Page() {
     //====================================================================
     // ==== レンダリング ====
     return (
-        <main className="max-w-4xl w-11/12 mx-auto pt-8 md:pt-14">
-            <Headline2>文章要約</Headline2>
+        <BasicLayout>
+            <main className="max-w-4xl w-11/12 mx-auto">
+                <Headline2>文章要約</Headline2>
 
-            {/* 入力フォーム */}
-            <form className="mt-8" onSubmit={submitClick}>
-                <Strong>入力</Strong>
-                <div className="flex flex-col">
-                    <textarea
-                        name="inputText"
-                        id="inputText"
-                        placeholder={
-                            'ここに要約したい文章を入力してください\n日本語以外の文章を入れた場合は要約された日本語訳を取得できます'
-                        }
-                        required
-                        onChangeCapture={showFormTextLength}
-                        className="mt-2 p-2 h-64 border border-gray-300 rounded-md dark:text-gray-900"
-                    />
-                    <p className="text-gray-700 text-right dark:text-white">{formTextLength}文字</p>
-                    <div className="flex gap-5 items-center">
-                        <label className="font-bold">要約後の文字数</label>
-                        <select
-                            name="textLength"
-                            id="textLength"
-                            className="p-2 w-20 border border-gray-300 rounded-md dark:text-gray-900"
-                        >
-                            <option>100</option>
-                            <option>250</option>
-                            <option>500</option>
-                            <option>750</option>
-                            <option>1000</option>
-                        </select>
+                {/* 入力フォーム */}
+                <form className="mt-8" onSubmit={submitClick}>
+                    <Strong>入力</Strong>
+                    <div className="flex flex-col">
+                        <textarea
+                            name="inputText"
+                            id="inputText"
+                            placeholder={
+                                'ここに要約したい文章を入力してください\n日本語以外の文章を入れた場合は要約された日本語訳を取得できます'
+                            }
+                            required
+                            onChangeCapture={showFormTextLength}
+                            className="mt-2 p-2 h-64 border border-gray-300 rounded-md dark:text-gray-900"
+                        />
+                        <p className="text-gray-700 text-right dark:text-white">{formTextLength}文字</p>
+                        <div className="flex gap-5 items-center">
+                            <label className="font-bold">要約後の文字数</label>
+                            <select
+                                name="textLength"
+                                id="textLength"
+                                className="p-2 w-20 border border-gray-300 rounded-md dark:text-gray-900"
+                            >
+                                <option>100</option>
+                                <option>250</option>
+                                <option>500</option>
+                                <option>750</option>
+                                <option>1000</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <button
-                    type="submit"
-                    disabled={isLoading === true}
-                    className="relative mt-4 py-2 px-4 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
-                >
-                    要約する
-                </button>
-                <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
-            </form>
-
-            {/* 出力の表示 */}
-            <div className="mt-10">
-                <Strong>出力</Strong>
-                <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
-                    {isError.statusBoolean ? isError.messageText : ''}
-                </p>
-                <div className="relative mt-2">
-                    <textarea
-                        placeholder="ここに要約結果が表示されます"
-                        onChange={textareaChange}
-                        value={result.text}
-                        className="p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap dark:text-gray-900"
-                    ></textarea>
-                    <p
-                        className="absolute z-2 bottom-1.5 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
-                        onClick={(e) => {
-                            copyText();
-                            e.currentTarget.innerText = 'Copied!';
-                        }}
+                    <button
+                        type="submit"
+                        disabled={isLoading === true}
+                        className="relative mt-4 py-2 px-4 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
                     >
-                        Copy
+                        要約する
+                    </button>
+                    <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
+                </form>
+
+                {/* 出力の表示 */}
+                <div className="mt-10">
+                    <Strong>出力</Strong>
+                    <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
+                        {isError.statusBoolean ? isError.messageText : ''}
                     </p>
+                    <div className="relative mt-2">
+                        <textarea
+                            placeholder="ここに要約結果が表示されます"
+                            onChange={textareaChange}
+                            value={result.text}
+                            className="p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap dark:text-gray-900"
+                        ></textarea>
+                        <p
+                            className="absolute z-2 bottom-1.5 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
+                            onClick={(e) => {
+                                copyText();
+                                e.currentTarget.innerText = 'Copied!';
+                            }}
+                        >
+                            Copy
+                        </p>
+                    </div>
+                    <p className="text-gray-700 text-right dark:text-white">{result.length}文字</p>
                 </div>
-                <p className="text-gray-700 text-right dark:text-white">{result.length}文字</p>
-            </div>
-        </main>
+            </main>
+        </BasicLayout>
     );
 }

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { Headline2 } from '../../components/Headline2';
 import { Strong } from '../../components/Strong';
+import { BasicLayout } from '../../components/BasicLayout';
 import { modeData, docData } from '../../components/data/codingData';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 
@@ -140,144 +141,133 @@ export default function Page() {
             </option>
         ));
 
-    // ヘッダーとフッターを非表示にするパーツを生成
-    const zennHeader = (
-        <style jsx global>{`
-            header {
-                display: none;
-            }
-            footer {
-                display: none;
-            }
-        `}</style>
-    );
-
     // ドキュメントの例を表示するパーツを生成
     const examples = docData.map((doc, i) => <span key={i}>{doc.name}&nbsp;/&nbsp;</span>);
 
     //====================================================================
     // ==== レンダリング ====
     return (
-        <main className={isZenn ? 'max-w-4xl w-11/12 mx-auto' : 'max-w-4xl w-11/12 mx-auto pt-8 md:pt-14'}>
-            <Headline2 className={isZenn ? '!text-2xl' : ''}>コーディング補助</Headline2>
-            {/* 入力フォーム */}
-            <form className="mt-8" onSubmit={submitClick}>
-                <div className="relative flex items-center justify-between">
-                    <Strong hidden={isZenn}>入力</Strong>
-                    <div
-                        onClick={() => setIsZenn(!isZenn)}
-                        className={
-                            isZenn
-                                ? 'absolute right-0 top-0 ml-auto py-1 px-2 bg-blue-800 text-white rounded-md duration-300 hover:bg-blue-600 hover:cursor-pointer'
-                                : 'relative ml-auto py-1 px-2 bg-blue-800 text-white rounded-md duration-300 hover:bg-blue-600 hover:cursor-pointer'
-                        }
-                    >
-                        Zenn
-                    </div>
-                </div>
-                <div className="flex flex-col">
-                    <div className={isZenn ? 'flex mt-0 gap-5 items-center' : 'flex mt-4 gap-5 items-center'}>
-                        <label htmlFor="language" hidden={isZenn} className="font-bold">
-                            言語
-                        </label>
-                        <select
-                            name="language"
-                            id="language"
-                            onChange={(e) => setLanguage(e.target.value)}
+        <BasicLayout hidden={isZenn}>
+            <main className="max-w-4xl w-11/12 mx-auto">
+                <Headline2 className={isZenn ? '!text-2xl' : ''}>コーディング補助</Headline2>
+                {/* 入力フォーム */}
+                <form className="mt-8" onSubmit={submitClick}>
+                    <div className="relative flex items-center justify-between">
+                        <Strong hidden={isZenn}>入力</Strong>
+                        <div
+                            onClick={() => setIsZenn(!isZenn)}
                             className={
                                 isZenn
-                                    ? 'p-1 w-28 border border-gray-300 rounded-md dark:text-gray-900'
-                                    : 'p-2 w-40 border border-gray-300 rounded-md dark:text-gray-900'
+                                    ? 'absolute right-0 top-0 ml-auto py-1 px-2 bg-blue-800 text-white rounded-md duration-300 hover:bg-blue-600 hover:cursor-pointer'
+                                    : 'relative ml-auto py-1 px-2 bg-blue-800 text-white rounded-md duration-300 hover:bg-blue-600 hover:cursor-pointer'
                             }
                         >
-                            {langItems}
-                        </select>
+                            Zenn
+                        </div>
                     </div>
-                    <div className="flex mt-4 gap-5 items-center">
-                        <p hidden={isZenn} className="font-bold">
-                            モード
-                        </p>
-                        <ul className="flex flex-1 flex-wrap items-center w-fit text-sm font-medium gap-[1px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
-                            {modeItems}
-                        </ul>
+                    <div className="flex flex-col">
+                        <div className={isZenn ? 'flex mt-0 gap-5 items-center' : 'flex mt-4 gap-5 items-center'}>
+                            <label htmlFor="language" hidden={isZenn} className="font-bold">
+                                言語
+                            </label>
+                            <select
+                                name="language"
+                                id="language"
+                                onChange={(e) => setLanguage(e.target.value)}
+                                className={
+                                    isZenn
+                                        ? 'p-1 w-28 border border-gray-300 rounded-md dark:text-gray-900'
+                                        : 'p-2 w-40 border border-gray-300 rounded-md dark:text-gray-900'
+                                }
+                            >
+                                {langItems}
+                            </select>
+                        </div>
+                        <div className="flex mt-4 gap-5 items-center">
+                            <p hidden={isZenn} className="font-bold">
+                                モード
+                            </p>
+                            <ul className="flex flex-1 flex-wrap items-center w-fit text-sm font-medium gap-[1px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
+                                {modeItems}
+                            </ul>
+                        </div>
+                        <textarea
+                            name="inputText"
+                            id="inputText"
+                            value={formText}
+                            placeholder={mode.placeholder}
+                            required
+                            onChange={(e) => setFormText(e.target.value)}
+                            className="mt-4 p-2 h-40 border border-gray-300 rounded-md dark:text-gray-900"
+                        ></textarea>
+                        <div className="flex mt-4 gap-5 items-center">
+                            <label hidden={mode.name !== 'fix'} htmlFor="fixOrder" className="font-bold">
+                                どう修正したいか
+                            </label>
+                            <input
+                                type="text"
+                                hidden={mode.name !== 'fix'}
+                                id="fixOrder"
+                                name="fixOrder"
+                                placeholder={'全てのconsole.logをalertに変更してください'}
+                                value={fixOrder}
+                                onChange={(e) => setFixOrder(e.target.value)}
+                                className="flex-1 p-2 w-full border border-gray-300 rounded-md dark:text-gray-900"
+                            />
+                        </div>
                     </div>
-                    <textarea
-                        name="inputText"
-                        id="inputText"
-                        value={formText}
-                        placeholder={mode.placeholder}
-                        required
-                        onChange={(e) => setFormText(e.target.value)}
-                        className="mt-4 p-2 h-40 border border-gray-300 rounded-md dark:text-gray-900"
-                    ></textarea>
-                    <div className="flex mt-4 gap-5 items-center">
-                        <label hidden={mode.name !== 'fix'} htmlFor="fixOrder" className="font-bold">
-                            どう修正したいか
-                        </label>
-                        <input
-                            type="text"
-                            hidden={mode.name !== 'fix'}
-                            id="fixOrder"
-                            name="fixOrder"
-                            placeholder={'全てのconsole.logをalertに変更してください'}
-                            value={fixOrder}
-                            onChange={(e) => setFixOrder(e.target.value)}
-                            className="flex-1 p-2 w-full border border-gray-300 rounded-md dark:text-gray-900"
-                        />
-                    </div>
-                </div>
-                <button
-                    type="submit"
-                    disabled={isLoading === true}
-                    className="relative mt-2 py-2 px-4 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
-                >
-                    {mode.text}
-                </button>
-                <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
-            </form>
-            {/* 出力の表示 */}
-            <div className={isZenn ? 'mt-6' : 'mt-10'}>
-                <Strong hidden={isZenn}>出力</Strong>
-                <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
-                    {isError.statusBoolean ? isError.messageText : ''}
-                </p>
-                <div className="relative mt-2">
-                    <SyntaxHighlighter
-                        language={language.toLowerCase()}
-                        className={
-                            result == ''
-                                ? 'mt-2 w-full border border-gray-300 rounded-md resize-y h-40'
-                                : 'mt-2 w-full border border-gray-300 rounded-md resize-y h-60'
-                        }
+                    <button
+                        type="submit"
+                        disabled={isLoading === true}
+                        className="relative mt-2 py-2 px-4 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
                     >
-                        {result}
-                    </SyntaxHighlighter>
-                    <p
-                        className="absolute z-2 bottom-1.5 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
-                        onClick={(e) => {
-                            navigator.clipboard.writeText(result);
-                            e.currentTarget.innerText = 'Copied!';
-                        }}
-                    >
-                        Copy
+                        {mode.text}
+                    </button>
+                    <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
+                </form>
+                {/* 出力の表示 */}
+                <div className={isZenn ? 'mt-6' : 'mt-10'}>
+                    <Strong hidden={isZenn}>出力</Strong>
+                    <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
+                        {isError.statusBoolean ? isError.messageText : ''}
                     </p>
+                    <div className="relative mt-2">
+                        <SyntaxHighlighter
+                            language={language.toLowerCase()}
+                            className={
+                                result == ''
+                                    ? 'mt-2 w-full border border-gray-300 rounded-md resize-y h-40'
+                                    : 'mt-2 w-full border border-gray-300 rounded-md resize-y h-60'
+                            }
+                        >
+                            {result}
+                        </SyntaxHighlighter>
+                        <p
+                            className="absolute z-2 bottom-1.5 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
+                            onClick={(e) => {
+                                navigator.clipboard.writeText(result);
+                                e.currentTarget.innerText = 'Copied!';
+                            }}
+                        >
+                            Copy
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <Headline2 className={isZenn ? '!text-2xl mt-6' : 'mt-12'}>ドキュメント等検索</Headline2>
-            <input
-                type="text"
-                name="inputDocsName"
-                id="inputDocsName"
-                value={searchInput}
-                onChange={seachInputFunc}
-                placeholder={isZenn ? 'ショートカット "/"' : '正式名称を半角英字で入力（小文字可）'}
-                required
-                className={'block m-0 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-2/3'}
-            />
-            <p hidden={isZenn} className="flex flex-wrap mt-2 text-xs">
-                {examples}
-            </p>
-            {isZenn ? zennHeader : ''}
-        </main>
+                <Headline2 className={isZenn ? '!text-2xl mt-6' : 'mt-12'}>ドキュメント等検索</Headline2>
+                <input
+                    type="text"
+                    name="inputDocsName"
+                    id="inputDocsName"
+                    value={searchInput}
+                    onChange={seachInputFunc}
+                    placeholder={isZenn ? 'ショートカット "/"' : '正式名称を半角英字で入力（小文字可）'}
+                    required
+                    className={'block m-0 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-2/3'}
+                />
+                <p hidden={isZenn} className="flex flex-wrap mt-2 text-xs">
+                    {examples}
+                </p>
+            </main>
+        </BasicLayout>
     );
 }

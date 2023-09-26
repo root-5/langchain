@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { pagesData } from '../components/data/pagesData';
 
-export function Footer() {
+export function Footer(props: { hidden?: boolean }) {
     //====================================================================
     // ==== ステートの宣言 ====
     const [isSpMode, setIsSpMode] = useState(false);
@@ -43,7 +43,7 @@ export function Footer() {
     // ==== レンダリング ====
     if (isSpMode) {
         return (
-            <footer className="fixed bottom-0 left-0 w-full z-20 bg-green-800 dark:bg-stone-950">
+            <footer hidden={props.hidden} className="fixed bottom-0 left-0 w-full z-20 bg-green-800 dark:bg-stone-950">
                 <div
                     className={
                         isMenuOpen
@@ -68,7 +68,10 @@ export function Footer() {
         );
     } else {
         return (
-            <footer className="fixed bottom-0 left-0 pl-4 py-2.5 w-full z-20 bg-green-800 dark:bg-stone-950">
+            <footer
+                hidden={props.hidden}
+                className="fixed bottom-0 left-0 pl-4 py-2.5 w-full z-20 bg-green-800 dark:bg-stone-950"
+            >
                 <div className="flex items-center gap-10 ">
                     <Link href="./" className="block w-fit hover:before:scale-x-0 text-white">
                         AIを便利に使おう！

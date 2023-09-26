@@ -4,6 +4,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Headline2 } from '../../components/Headline2';
 import { Strong } from '../../components/Strong';
+import { BasicLayout } from '../../components/BasicLayout';
 
 // 見出しの最大数
 const maxHeadlineNumber = 10;
@@ -148,110 +149,114 @@ export default function Page() {
     //====================================================================
     // ==== レンダリング ====
     return (
-        <main className="max-w-4xl w-11/12 mx-auto pt-8 md:pt-14">
-            <Headline2>文章作成</Headline2>
+        <BasicLayout>
+            <main className="max-w-4xl w-11/12 mx-auto">
+                <Headline2>文章作成</Headline2>
 
-            {/* 入力エリア */}
-            <div className="mt-8">
-                <Strong>入力</Strong>
-                <form onSubmit={generateHeadline} className="flex flex-col">
-                    <label className="mt-4 font-bold">タイトル</label>
-                    <div className="flex w-full mt-2 gap-3 items-center">
-                        <input
-                            type="text"
-                            name="inputHeadline"
-                            id="inputHeadline"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            placeholder="例：AIと人間の共存について"
-                            required
-                            className="flex-1 p-2 w-full border border-gray-300 rounded-md dark:text-gray-900"
-                        />
-                    </div>
-                    <div className="flex mt-4 gap-5 items-center">
-                        <label className="font-bold">作成したい章数</label>
-                        <select
-                            name="textLength"
-                            id="textLength"
-                            className="p-2 w-20 border border-gray-300 rounded-md font-normal dark:text-gray-900"
-                            onChange={(e) =>
-                                setHeadlineState({ toggle: headlineState.toggle, number: parseInt(e.target.value) })
-                            }
+                {/* 入力エリア */}
+                <div className="mt-8">
+                    <Strong>入力</Strong>
+                    <form onSubmit={generateHeadline} className="flex flex-col">
+                        <label className="mt-4 font-bold">タイトル</label>
+                        <div className="flex w-full mt-2 gap-3 items-center">
+                            <input
+                                type="text"
+                                name="inputHeadline"
+                                id="inputHeadline"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                placeholder="例：AIと人間の共存について"
+                                required
+                                className="flex-1 p-2 w-full border border-gray-300 rounded-md dark:text-gray-900"
+                            />
+                        </div>
+                        <div className="flex mt-4 gap-5 items-center">
+                            <label className="font-bold">作成したい章数</label>
+                            <select
+                                name="textLength"
+                                id="textLength"
+                                className="p-2 w-20 border border-gray-300 rounded-md font-normal dark:text-gray-900"
+                                onChange={(e) =>
+                                    setHeadlineState({ toggle: headlineState.toggle, number: parseInt(e.target.value) })
+                                }
+                            >
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                            </select>
+                        </div>
+                    </form>
+                    <form onSubmit={generateBody} className="mt-10">
+                        <label className="block font-bold w-full">章の構成</label>
+                        <button
+                            type="submit"
+                            disabled={isLoading === true}
+                            className="relative mt-4 py-2 px-4 w-fit bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
                         >
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                        </select>
-                    </div>
-                </form>
-                <form onSubmit={generateBody} className="mt-10">
-                    <label className="block font-bold w-full">章の構成</label>
-                    <button
-                        type="submit"
-                        disabled={isLoading === true}
-                        className="relative mt-4 py-2 px-4 w-fit bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
-                    >
-                        タイトルから自動生成
-                    </button>
-                    <ol className="">
-                        <ul>{listItems}</ul>
-                    </ol>
-                    <div className="flex mt-4 gap-5 items-center">
-                        <label className="font-bold">見出し毎の文字数</label>
-                        <select
-                            name="textLength"
-                            id="textLength"
-                            className="p-2 w-20 border border-gray-300 rounded-md dark:text-gray-900"
-                            onChange={(e) => setTextLength(parseInt(e.target.value))}
+                            タイトルから自動生成
+                        </button>
+                        <ol className="">
+                            <ul>{listItems}</ul>
+                        </ol>
+                        <div className="flex mt-4 gap-5 items-center">
+                            <label className="font-bold">見出し毎の文字数</label>
+                            <select
+                                name="textLength"
+                                id="textLength"
+                                className="p-2 w-20 border border-gray-300 rounded-md dark:text-gray-900"
+                                onChange={(e) => setTextLength(parseInt(e.target.value))}
+                            >
+                                <option value="100">100</option>
+                                <option value="250">250</option>
+                                <option value="500">500</option>
+                                <option value="750">750</option>
+                                <option value="1000">1000</option>
+                            </select>
+                        </div>
+                        <button
+                            disabled={isLoading === true}
+                            className="relative mt-4 py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
                         >
-                            <option value="100">100</option>
-                            <option value="250">250</option>
-                            <option value="500">500</option>
-                            <option value="750">750</option>
-                            <option value="1000">1000</option>
-                        </select>
-                    </div>
-                    <button
-                        disabled={isLoading === true}
-                        className="relative mt-4 py-2 px-4 w-28 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
-                    >
-                        本文生成
-                    </button>
-                </form>
-                <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
-            </div>
-
-            {/* 出力エリア */}
-            <div className="mt-14">
-                <Strong>出力</Strong>
-                <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
-                    {isError.statusBoolean ? isError.messageText : ''}
-                </p>
-                <div className="relative mt-2">
-                    <p>生成は章ごとに行われ、 全文を生成するまでにはかなり時間がかかります。</p>
-                    <textarea
-                        className="mt-2 p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap dark:text-gray-900"
-                        placeholder="ここに生成した文章が表示されます"
-                        value={result.resultText}
-                        onChange={(e) => setResult({ resultText: e.target.value, resultLength: result.resultLength })}
-                    ></textarea>
-                    <p
-                        className="absolute z-2 bottom-1.5 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
-                        onClick={(e) => {
-                            copyText();
-                            e.currentTarget.innerText = 'Copied!';
-                        }}
-                    >
-                        Copy
-                    </p>
+                            本文生成
+                        </button>
+                    </form>
+                    <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
                 </div>
-                <p className="text-gray-700 text-right dark:text-white">{result.resultLength}文字</p>
-            </div>
-        </main>
+
+                {/* 出力エリア */}
+                <div className="mt-14">
+                    <Strong>出力</Strong>
+                    <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
+                        {isError.statusBoolean ? isError.messageText : ''}
+                    </p>
+                    <div className="relative mt-2">
+                        <p>生成は章ごとに行われ、 全文を生成するまでにはかなり時間がかかります。</p>
+                        <textarea
+                            className="mt-2 p-2 h-64 w-full border border-gray-300 rounded-md overflow-y-scroll whitespace-pre-wrap dark:text-gray-900"
+                            placeholder="ここに生成した文章が表示されます"
+                            value={result.resultText}
+                            onChange={(e) =>
+                                setResult({ resultText: e.target.value, resultLength: result.resultLength })
+                            }
+                        ></textarea>
+                        <p
+                            className="absolute z-2 bottom-1.5 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
+                            onClick={(e) => {
+                                copyText();
+                                e.currentTarget.innerText = 'Copied!';
+                            }}
+                        >
+                            Copy
+                        </p>
+                    </div>
+                    <p className="text-gray-700 text-right dark:text-white">{result.resultLength}文字</p>
+                </div>
+            </main>
+        </BasicLayout>
     );
 }
