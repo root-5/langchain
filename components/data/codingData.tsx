@@ -92,6 +92,26 @@ export const docData = [
         isLang: false,
     },
     {
+        name: 'YouTube',
+        link: 'https://www.youtube.com/',
+        isLang: false,
+    },
+    {
+        name: 'Gmail',
+        link: 'https://mail.google.com/mail/u/0/#inbox',
+        isLang: false,
+    },
+    {
+        name: 'TradingView',
+        link: 'https://jp.tradingview.com/chart/',
+        isLang: false,
+    },
+    {
+        name: 'Gkeep',
+        link: 'https://keep.google.com/u/0/',
+        isLang: false,
+    },
+    {
         name: 'GitHub',
         link: 'https://github.com/',
         isLang: false,

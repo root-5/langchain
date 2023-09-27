@@ -61,6 +61,8 @@ export default function Page() {
         e.preventDefault();
 
         if (isSearchMode === 'ai') {
+            setIsLoading(true);
+
             // テキストをapi/chat/getAnswer
             const response = await fetch('../api/chat/getAnswer', {
                 method: 'POST',
@@ -72,6 +74,8 @@ export default function Page() {
             const responseObj = await response.json();
             const text = responseObj.result;
             setcChatText(text);
+
+            setIsLoading(false);
         } else {
             window.open('https://www.google.com/search?q=' + searchInput, '_blank');
             setSearchInput('');
@@ -215,11 +219,13 @@ export default function Page() {
                 }
             >
                 <form onSubmit={searchSubmit} className="flex flex-col w-screen h-screen item-center justify-center">
+                    {/* <p className="block mx-auto w-fit text-light text-[8rem] font-serif mb-[-40px]">Google</p> */}
                     <p className="block mx-auto w-fit text-light text-[14rem]">+ +</p>
                     <input
                         type="text"
                         name="inputDocsName"
                         id="inputDocsName"
+                        disabled={isLoading === true}
                         value={searchInput}
                         onChange={seachInputFunc}
                         placeholder={
@@ -233,8 +239,10 @@ export default function Page() {
                         }
                         required
                         className={
-                            isSearchMode === 'google'
-                                ? 'block mt-36 mx-auto p-2 w-96 border-8 focus-visible:outline-none border-gray-300 rounded-md dark:text-gray-900 border-t-blue-500 border-r-red-500 border-b-yellow-400 border-l-green-600'
+                            isLoading === true
+                                ? 'block mt-36 mx-auto p-2 w-96 border-8 focus-visible:outline-none animate-pulse rounded-md border-gray-300'
+                                : isSearchMode === 'google'
+                                ? 'block mt-36 mx-auto p-2 w-96 border-8 focus-visible:outline-none rounded-md dark:text-gray-900 border-t-blue-500 border-r-red-500 border-b-yellow-400 border-l-green-600'
                                 : isSearchMode === 'private'
                                 ? 'block mt-36 mx-auto p-2 w-96 border-8 focus-visible:outline-none border-blue-600 rounded-md dark:text-gray-900 bg-blue-100'
                                 : isSearchMode === 'ai'
@@ -260,6 +268,13 @@ export default function Page() {
                         }
                     ></textarea>
                 </form>
+                <p className="fixed z-30 py-3 px-10 bottom-0 left-0 w-screen bg-black text-white">
+                    Escape&nbsp;&nbsp;&nbsp;Coding assist
+                    <br />
+                    Space&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Private search
+                    <br />
+                    ?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ask AI
+                </p>
             </div>
             {/* 入力フォーム */}
             <form onSubmit={submitClick}>
