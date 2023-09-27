@@ -73,6 +73,12 @@ export default function Page() {
         e.preventDefault();
         setIsLoading(true);
 
+        // 見出しの配列を作成
+        let headlineArray: string[] = [];
+        for (let i = 0; i < headlineState.number; i++) {
+            headlineArray.push(inputHeadlineText[i]);
+        }
+
         // レスポンスのテキストと長さを仮保存する変数を宣言
         let resText = '';
         let resLength = 0;
@@ -85,6 +91,7 @@ export default function Page() {
                     method: 'POST',
                     body: JSON.stringify({
                         title: title, // タイトル
+                        headlineArray: headlineArray, // 見出し全体の配列
                         headline: inputHeadlineText[i], // 見出しの内容
                         length: textLength, // 本文の文字数
                     }),
@@ -188,16 +195,16 @@ export default function Page() {
                             <option>10</option>
                         </select>
                     </div>
-                </form>
-                <form onSubmit={generateBody} className="mt-10">
-                    <label className="block font-bold w-full">章の構成</label>
                     <button
                         type="submit"
                         disabled={isLoading === true}
                         className="relative mt-4 py-2 px-4 w-fit bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse"
                     >
-                        タイトルから自動生成
+                        章の構成を自動生成
                     </button>
+                </form>
+                <form onSubmit={generateBody} className="mt-10">
+                    <label className="block font-bold w-full">章の構成</label>
                     <ol className="">
                         <ul>{listItems}</ul>
                     </ol>

@@ -17,27 +17,28 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const reqTitle = body.title;
+    const reqHeadlineArray = body.headlineArray;
     const reqHeadline = body.headline;
     const reqLength = body.length;
 
-    // テンプレートを作成
-    const multipleInputPrompt = new PromptTemplate({
-        inputVariables: ['title', 'headline', 'length'],
-        template:
-            'あなたは記事ライターです。{title}というタイトルの記事を作成しています。この記事の一部である{headline}という見出しに沿った文章を{length}文字で生成してください。',
-    });
+    let reqHeadlineArrayString = '';
+    for (let i = 0; i < reqHeadlineArray.length; i++) {
+        reqHeadlineArrayString += `${i + 1}. ${reqHeadlineArray[i]}\n`;
+    }
 
-    // テンプレートに入力を埋め込む
-    const formattedMultipleInputPrompt = await multipleInputPrompt.format({
-        title: reqTitle,
-        headline: reqHeadline,
-        length: reqLength,
-    });
+    // テンプレートに変数を挿入
+    const formattedMultipleInputPrompt = `
+    あなたは文章ライターです。${reqTitle}というタイトルの文章を作成しています。章の構成は以下の通りです。
+
+    # 章の構成
+    ${reqHeadlineArrayString}
+
+    この文章の一部である${reqHeadline}という見出しに沿った文章を${reqLength}文字で生成してください。
+    `;
 
     // OpenAIへリクエストを送信
     let res = await llm.predict(formattedMultipleInputPrompt);
     res = `# ${reqHeadline}\n${res}\n\n`;
-    console.log(res);
 
     // 終了時間を記録し、かかった時間を表示
     const endTime = performance.now();
