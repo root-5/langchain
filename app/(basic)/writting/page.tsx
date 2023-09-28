@@ -83,6 +83,9 @@ export default function Page() {
         let resText = '';
         let resLength = 0;
 
+        // 直前の生成結果を仮保存する変数を宣言
+        let prevText = 'なし';
+
         // 見出しの数だけループし、見出しの内容を取得
         for (let i = 0; i < headlineState.number; i++) {
             // フォームの内容を取得し、サーバーに送信
@@ -94,6 +97,7 @@ export default function Page() {
                         headlineArray: headlineArray, // 見出し全体の配列
                         headline: inputHeadlineText[i], // 見出しの内容
                         length: textLength, // 本文の文字数
+                        prevText: prevText, // 直前の生成結果
                     }),
                     headers: {
                         'Content-Type': 'application/json',
@@ -108,6 +112,10 @@ export default function Page() {
 
                 resText += text;
                 resLength += length;
+
+                // textから改行を削除した上で最後の1文だけ抜き出し、直前の生成結果を仮保存
+                const textArray = text.split('。');
+                prevText = textArray[textArray.length - 2]; // この"2"は「〜です。/n/n」の"/n/n"の分を考慮している
             } catch (error) {
                 const messageText = (error as Error).toString();
                 setIsError({ statusBoolean: true, messageText: messageText });
@@ -216,7 +224,6 @@ export default function Page() {
                             className="p-2 w-20 border border-gray-300 rounded-md dark:text-gray-900"
                             onChange={(e) => setTextLength(parseInt(e.target.value))}
                         >
-                            <option value="100">100</option>
                             <option value="250">250</option>
                             <option value="500">500</option>
                             <option value="750">750</option>

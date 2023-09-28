@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { OpenAI } from 'langchain/llms/openai';
-import { PromptTemplate } from 'langchain/prompts';
 
 // OpenAIのモデルを作成
 const llm = new OpenAI({
@@ -10,9 +9,6 @@ const llm = new OpenAI({
 });
 
 export async function POST(req: Request) {
-    // リクエストを受け取った時間を記録
-    const startTime = performance.now();
-
     // リクエストから質問部分を取得
     const body = await req.json();
 
@@ -20,6 +16,7 @@ export async function POST(req: Request) {
     const reqHeadlineArray = body.headlineArray;
     const reqHeadline = body.headline;
     const reqLength = body.length;
+    const reqPrevText = body.prevText;
 
     let reqHeadlineArrayString = '';
     for (let i = 0; i < reqHeadlineArray.length; i++) {
@@ -28,21 +25,21 @@ export async function POST(req: Request) {
 
     // テンプレートに変数を挿入
     const formattedMultipleInputPrompt = `
-    あなたは文章ライターです。${reqTitle}というタイトルの文章を作成しています。章の構成は以下の通りです。
+    以下に示す"文章のタイトル"、"章の構成"、"直前の一文"を強く意識し、"${reqHeadline}"という章を**${reqLength}文字以内で**書いて
 
-    # 章の構成
+    ### タイトル
+    ${reqTitle}
+
+    ### 章の構成
     ${reqHeadlineArrayString}
 
-    この文章の一部である${reqHeadline}という見出しに沿った文章を${reqLength}文字で生成してください。
+    ### 直前の一文
+    ${reqPrevText}
     `;
 
     // OpenAIへリクエストを送信
     let res = await llm.predict(formattedMultipleInputPrompt);
     res = `# ${reqHeadline}\n${res}\n\n`;
-
-    // 終了時間を記録し、かかった時間を表示
-    const endTime = performance.now();
-    // console.log(`要約にかかった時間: ${endTime - startTime}ms`);
 
     // レスポンスを返す
     return NextResponse.json({ result: res });
