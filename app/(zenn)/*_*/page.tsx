@@ -77,7 +77,7 @@ export default function Page() {
 
             setIsLoading(false);
         } else {
-            window.open('https://www.google.com/search?q=' + searchInput);
+            window.open('https://www.google.com/search?q=' + searchInput, '_self');
             setSearchInput('');
         }
     }
@@ -112,7 +112,7 @@ export default function Page() {
             }
 
             if (searchHitCount === 1) {
-                window.open(docData[searchHitDataNum].link);
+                window.open(docData[searchHitDataNum].link, '_self');
                 setSearchInput('');
             }
         }
