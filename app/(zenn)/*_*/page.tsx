@@ -77,7 +77,7 @@ export default function Page() {
 
             setIsLoading(false);
         } else {
-            window.open('https://www.google.com/search?q=' + searchInput, '_blank');
+            window.open('https://www.google.com/search?q=' + searchInput);
             setSearchInput('');
         }
     }
@@ -112,7 +112,7 @@ export default function Page() {
             }
 
             if (searchHitCount === 1) {
-                window.open(docData[searchHitDataNum].link, '_blank');
+                window.open(docData[searchHitDataNum].link);
                 setSearchInput('');
             }
         }
@@ -164,14 +164,6 @@ export default function Page() {
         });
     }, []);
 
-    // ページを離れる前に確認を出す
-    // useEffect(() => {
-    //     window.addEventListener('beforeunload', function (e) {
-    //         e.preventDefault();
-    //         e.returnValue = '';
-    //     });
-    // }, []);
-
     //====================================================================
     // ==== パーツを生成 ====
     // モードの選択パーツを生成
@@ -218,38 +210,50 @@ export default function Page() {
                         : 'absolute top-0 left-0 items-center justify-center w-screen h-screen dark:bg-black bg-white z-10'
                 }
             >
-                <form onSubmit={searchSubmit} className="flex flex-col w-screen h-screen item-center justify-center">
+                <form onSubmit={searchSubmit} className="flex flex-col w-screen h-screen item-center">
                     {/* <p className="block mx-auto w-fit text-light text-[8rem] font-serif mb-[-40px]">Google</p> */}
-                    <p className="block mx-auto w-fit text-light text-[14rem]">+ +</p>
-                    <input
-                        type="text"
-                        name="inputDocsName"
-                        id="inputDocsName"
-                        disabled={isLoading === true}
-                        value={searchInput}
-                        onChange={seachInputFunc}
-                        placeholder={
-                            isSearchMode === 'google'
-                                ? 'Google Search...'
-                                : isSearchMode === 'ai'
-                                ? 'Ask AI...'
-                                : isSearchMode === 'private'
-                                ? 'Private Search...'
-                                : ''
-                        }
-                        required
-                        className={
-                            isLoading === true
-                                ? 'block mt-36 mx-auto p-2 w-96 border-8 focus-visible:outline-none animate-pulse rounded-md border-gray-300'
-                                : isSearchMode === 'google'
-                                ? 'block mt-36 mx-auto p-2 w-96 border-8 focus-visible:outline-none rounded-md dark:text-gray-900 border-t-blue-500 border-r-red-500 border-b-yellow-400 border-l-green-600'
-                                : isSearchMode === 'private'
-                                ? 'block mt-36 mx-auto p-2 w-96 border-8 focus-visible:outline-none border-blue-600 rounded-md dark:text-gray-900 bg-blue-100'
-                                : isSearchMode === 'ai'
-                                ? 'block mt-36 mx-auto p-2 w-96 border-8 focus-visible:outline-none border-white rounded-md dark:text-white bg-gray-900'
-                                : ''
-                        }
-                    />
+                    <p className="block mt-24 mx-auto w-fit text-light text-[14rem]">+ +</p>
+                    <div className="relative mt-36 mx-auto w-fit h-fit">
+                        <input
+                            type="text"
+                            name="inputDocsName"
+                            id="inputDocsName"
+                            disabled={isLoading === true}
+                            value={searchInput}
+                            onChange={seachInputFunc}
+                            placeholder={
+                                isSearchMode === 'google'
+                                    ? 'Google Search...'
+                                    : isSearchMode === 'ai'
+                                    ? 'Ask AI...'
+                                    : isSearchMode === 'private'
+                                    ? 'Private Search...'
+                                    : ''
+                            }
+                            required
+                            className={
+                                'relative block p-2 w-[400px] border-8 text-[20px] focus-visible:outline-none ' +
+                                (isLoading === true
+                                    ? 'rounded-md border-gray-300'
+                                    : isSearchMode === 'google'
+                                    ? 'rounded-md dark:text-gray-900 border-t-blue-500 border-r-red-500 border-b-yellow-400 border-l-green-600'
+                                    : isSearchMode === 'private'
+                                    ? 'border-blue-600 rounded-md dark:text-gray-900 bg-blue-100'
+                                    : isSearchMode === 'ai'
+                                    ? 'border-white rounded-md dark:text-white bg-gray-900'
+                                    : '')
+                            }
+                        />
+                        {/* <span
+                            className={
+                                searchInput === ''
+                                    ? 'absolute top-3 left-4 z-50 text-gray-400 text-2xl animate-spin [animation-duration:1.5s]'
+                                    : 'hidden'
+                            }
+                        >
+                            あ
+                        </span> */}
+                    </div>
                     <div
                         className={
                             !(isSearchMode === 'ai' && chatText !== '')
