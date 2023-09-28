@@ -12,9 +12,6 @@ const model = new OpenAI({
 });
 
 export async function POST(req: Request) {
-    // リクエストを受け取った時間を記録
-    const startTime = performance.now();
-
     // リクエストから質問部分を取得
     const body = await req.json();
     const text = body.text;
@@ -44,10 +41,6 @@ export async function POST(req: Request) {
     const res = await chain.call({
         input_documents: docs,
     });
-
-    // 終了時間を記録し、かかった時間を表示
-    const endTime = performance.now();
-    // console.log(`要約にかかった時間: ${endTime - startTime}ms`);
 
     // レスポンスを返す
     return NextResponse.json({ result: res.text });
