@@ -107,7 +107,7 @@ export default function Page() {
                 attributeFilter: ['class'],
             });
         }
-    }, []);
+    }, [isZenn]);
 
     //====================================================================
     // ==== ショートカットの処理 ====
@@ -137,9 +137,9 @@ export default function Page() {
         const observer = new MutationObserver(() => {
             const isZennStatus = zennBtnEle.getAttribute('data-zenn-status');
             if (isZennStatus === 'true') {
-                () => setIsZenn(true);
+                setIsZenn(true);
             } else {
-                () => setIsZenn(false);
+                setIsZenn(false);
             }
         });
         observer.observe(zennBtnEle, {

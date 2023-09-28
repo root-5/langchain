@@ -111,9 +111,9 @@ export default function Page() {
         const observer = new MutationObserver(() => {
             const isZennStatus = zennBtnEle.getAttribute('data-zenn-status');
             if (isZennStatus === 'true') {
-                () => setIsZenn(true);
+                setIsZenn(true);
             } else {
-                () => setIsZenn(false);
+                setIsZenn(false);
             }
         });
         observer.observe(zennBtnEle, {
@@ -236,11 +236,7 @@ export default function Page() {
                 <div className="relative mt-2">
                     <SyntaxHighlighter
                         language={language.toLowerCase()}
-                        className={
-                            result == ''
-                                ? 'mt-2 w-full border border-gray-300 rounded-md resize-y h-40'
-                                : 'mt-2 w-full border border-gray-300 rounded-md resize-y h-60'
-                        }
+                        className="mt-2 w-full border border-gray-300 rounded-md resize-y h-60"
                     >
                         {result}
                     </SyntaxHighlighter>
