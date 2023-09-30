@@ -102,18 +102,28 @@ export const docData = [
         isLang: false,
     },
     {
-        name: 'TradingView',
-        link: 'https://jp.tradingview.com/chart/',
-        isLang: false,
-    },
-    {
         name: 'Gkeep',
         link: 'https://keep.google.com/u/0/',
         isLang: false,
     },
     {
+        name: 'Gdrive',
+        link: 'https://drive.google.com/drive/my-drive',
+        isLang: false,
+    },
+    {
+        name: 'TradingView',
+        link: 'https://jp.tradingview.com/chart/',
+        isLang: false,
+    },
+    {
         name: 'GitHub',
         link: 'https://github.com/',
+        isLang: false,
+    },
+    {
+        name: 'Vercel',
+        link: 'https://vercel.com/dashboard',
         isLang: false,
     },
     {

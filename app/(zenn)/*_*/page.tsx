@@ -244,15 +244,6 @@ export default function Page() {
                                     : '')
                             }
                         />
-                        {/* <span
-                            className={
-                                searchInput === ''
-                                    ? 'absolute top-3 left-4 z-50 text-gray-400 text-2xl animate-spin [animation-duration:1.5s]'
-                                    : 'hidden'
-                            }
-                        >
-                            あ
-                        </span> */}
                     </div>
                     <div
                         className={
@@ -268,7 +259,7 @@ export default function Page() {
                         className={
                             !(isSearchMode === 'ai' && chatText !== '')
                                 ? 'hidden'
-                                : 'block mx-auto p-2 w-96 h-60 border-4 border-white rounded-md dark:text-gray-900 focus-visible:outline-none'
+                                : 'block mx-auto p-2 w-[80%] h-96 border-4 border-white rounded-md dark:text-gray-900 focus-visible:outline-none'
                         }
                     ></textarea>
                 </form>
