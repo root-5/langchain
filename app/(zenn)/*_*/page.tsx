@@ -210,7 +210,7 @@ export default function Page() {
                         : 'absolute top-0 left-0 items-center justify-center w-screen h-screen dark:bg-black bg-white z-10'
                 }
             >
-                <form onSubmit={searchSubmit} className="flex flex-col w-screen h-screen item-center">
+                <form onSubmit={searchSubmit} className="flex flex-col pb-24 w-screen h-screen item-center">
                     {/* <p className="block mx-auto w-fit text-light text-[8rem] font-serif mb-[-40px]">Google</p> */}
                     <p className="block mt-24 mx-auto w-fit text-light text-[14rem]">+ +</p>
                     <div className="relative mt-36 mx-auto w-fit h-fit">
@@ -266,7 +266,7 @@ export default function Page() {
                         <p
                             className="absolute z-2 bottom-1.5 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
                             onClick={(e) => {
-                                navigator.clipboard.writeText(result);
+                                navigator.clipboard.writeText(chatText);
                                 e.currentTarget.innerText = 'Copied!';
                             }}
                         >
