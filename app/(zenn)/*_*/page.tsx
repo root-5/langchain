@@ -252,16 +252,27 @@ export default function Page() {
                                 : 'mt-8 mx-auto w-0 h-0 border-t-0 border-r-[18px] border-b-[18px] border-l-[18px] border-t-transparent border-r-transparent border-b-white border-l-transparent'
                         }
                     ></div>
-                    <textarea
-                        id="hukidashi"
-                        value={chatText}
-                        readOnly
-                        className={
-                            !(isSearchMode === 'ai' && chatText !== '')
-                                ? 'hidden'
-                                : 'block mx-auto p-2 w-[80%] h-96 border-4 border-white rounded-md dark:text-gray-900 focus-visible:outline-none'
-                        }
-                    ></textarea>
+                    <div className="relative mx-auto w-[80%]">
+                        <textarea
+                            id="hukidashi"
+                            value={chatText}
+                            readOnly
+                            className={
+                                !(isSearchMode === 'ai' && chatText !== '')
+                                    ? 'hidden'
+                                    : 'block p-2 w-full h-96 border-4 border-white rounded-md dark:text-gray-900 focus-visible:outline-none'
+                            }
+                        ></textarea>
+                        <p
+                            className="absolute z-2 bottom-1.5 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
+                            onClick={(e) => {
+                                navigator.clipboard.writeText(result);
+                                e.currentTarget.innerText = 'Copied!';
+                            }}
+                        >
+                            Copy
+                        </p>
+                    </div>
                 </form>
                 <p className="fixed z-30 py-3 px-10 bottom-0 left-0 w-screen bg-black text-white">
                     Escape&nbsp;&nbsp;&nbsp;Coding assist
