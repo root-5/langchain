@@ -234,7 +234,7 @@ export default function Page() {
                             className={
                                 'relative block p-2 w-[400px] border-8 text-[20px] focus-visible:outline-none ' +
                                 (isLoading === true
-                                    ? 'rounded-md border-gray-300'
+                                    ? 'rounded-md border-gray-300 animate-pulse'
                                     : isSearchMode === 'google'
                                     ? 'rounded-md dark:text-gray-900 border-t-blue-500 border-r-red-500 border-b-yellow-400 border-l-green-600'
                                     : isSearchMode === 'private'
