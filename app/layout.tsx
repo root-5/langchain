@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
-    title: 'AIを便利に使おう！',
+    title: '*_*',
     description:
         'このサイトは「AIを便利に使おう！」をスローガンとして作成されました。皆が使いやすいアプリを手軽に提供していく予定です。',
     openGraph: {

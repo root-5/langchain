@@ -76,6 +76,9 @@ export default function Page() {
             setcChatText(text);
 
             setIsLoading(false);
+        } else if (searchInput.startsWith('http')) {
+            window.open(searchInput);
+            setSearchInput('');
         } else {
             window.open('https://www.google.com/search?q=' + searchInput, '_self');
             setSearchInput('');
