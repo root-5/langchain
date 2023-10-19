@@ -3,5 +3,8 @@
         "app/api/*": {
             "maxDuration": 30
         }
+        "api/*": {
+            "maxDuration": 300
+        }
     }
 }
