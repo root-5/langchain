@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { AIMessage, BaseMessageFields, HumanMessage } from 'langchain/schema';
 
+export const maxDuration = 300;
+
 // OpenAIのモデルを作成
 const chat = new ChatOpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY,
