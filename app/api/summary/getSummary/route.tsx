@@ -4,6 +4,8 @@ import { loadSummarizationChain } from 'langchain/chains';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import { PromptTemplate } from 'langchain/prompts';
 
+export const maxDuration = 300;
+
 // OpenAIのモデルを作成
 const model = new OpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY,
