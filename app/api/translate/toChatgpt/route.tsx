@@ -3,6 +3,8 @@ import { OpenAI } from 'langchain/llms/openai';
 import { PromptTemplate } from 'langchain/prompts';
 import { translateData } from '../../../../components/data/translateData';
 
+export const maxDuration = 300;
+
 // OpenAIのモデルを作成
 const llm = new OpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY,
