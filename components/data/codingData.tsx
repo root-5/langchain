@@ -127,6 +127,11 @@ export const docData = [
         isLang: false,
     },
     {
+        name: 'DockerHub',
+        link: 'https://hub.docker.com/',
+        isLang: false,
+    },
+    {
         name: 'Notion',
         link: 'https://www.notion.so/',
         isLang: false,
