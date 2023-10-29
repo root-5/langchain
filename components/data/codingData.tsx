@@ -47,6 +47,11 @@ export const docData = [
         isLang: true,
     },
     {
+        name: 'Go',
+        link: 'https://go.dev/doc/',
+        isLang: true,
+    },
+    {
         name: 'HTML',
         link: 'https://developer.mozilla.org/ja/docs/Web/HTML',
         isLang: true,
