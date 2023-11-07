@@ -79,7 +79,10 @@ export function Footer(props: { hidden?: boolean }) {
                     <p className="text-xs text-white text-center">
                         Copyright © 2023 AIを便利に使おう！ powered by GPT-4
                     </p>
-                    <Link href="https://github.com/" className="block w-fit hover:before:scale-x-0 text-white text-xs">
+                    <Link
+                        href="https://github.com/root-5"
+                        className="block w-fit hover:before:scale-x-0 text-white text-xs"
+                    >
                         GitHub
                     </Link>
                 </div>
