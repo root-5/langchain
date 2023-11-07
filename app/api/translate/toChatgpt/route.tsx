@@ -9,7 +9,7 @@ export const maxDuration = 300;
 const llm = new OpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY,
     temperature: 0,
-    modelName: 'gpt-3.5-turbo',
+    modelName: 'gpt-4-1106-preview',
 });
 
 export async function POST(req: Request) {
