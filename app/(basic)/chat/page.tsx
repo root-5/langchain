@@ -21,6 +21,24 @@ const initialChats: ChatsInterface[] = [
     },
 ];
 
+const templateList = [
+    {
+        id: 1,
+        title: '概要説明',
+        text: 'AAAAの概要について、メリットとデメリット、具体例を踏まえて説明してください。',
+    },
+    {
+        id: 2,
+        title: '比較検討',
+        text: 'AAAAとBBBBの違いについて、どういった点が異なるのか、それぞれのメリットとデメリット、それぞれの具体例の3つの観点から説明してください。',
+    },
+    {
+        id: 3,
+        title: '問題解決',
+        text: '私は現在、TARGETを目的としてACTIONを行なっていますが、PROBLEMに直面しています。どういった解決策が考えられますか？解決策は複数挙げ、理由を添えて回答してください。',
+    },
+];
+
 export default function Page() {
     //====================================================================
     // ==== ステートの宣言 ====
@@ -28,6 +46,7 @@ export default function Page() {
     const [chats, setChats] = useState<ChatsInterface[]>(initialChats); // チャットの内容を管理
     const [formText, setFormText] = useState(''); // フォームのテキストを管理
     const [isLoading, setIsLoading] = useState(false); // 表示状態を管理
+    const [isTooltip, setIsTooltip] = useState(false); // ツールチップの表示状態を管理
 
     //====================================================================
     // ==== ボタンの処理 ====
@@ -161,10 +180,30 @@ export default function Page() {
                         height={40}
                     />
                 </div>
-                <div className="flex flex-col gap-1 flex-1">
+                <div className="flex flex-col mt-[-4px] gap-1 flex-1">
                     <p className="font-bold">{chat.speaker}</p>
                     <p className="text-sm whitespace-pre-wrap">{chat.text}</p>
                 </div>
+            </div>
+        );
+    });
+
+    //====================================================================
+    // ==== テンプレートの生成 ====
+    const templateParts = templateList.map((template) => {
+        return (
+            <div key={template.id} className="relative flex gap-1 text-xs text-gray-600">
+                <p className="block font-bold w-14">{template.title}</p>
+                {/* クリックでテンプレートの内容をフォームに入力 */}
+                <p
+                    onClick={() => {
+                        setFormText(template.text);
+                        setIsTooltip(false);
+                    }}
+                    className="block flex-1 cursor-pointer hover:text-blue-500"
+                >
+                    {template.text}
+                </p>
             </div>
         );
     });
@@ -213,8 +252,8 @@ export default function Page() {
             <form
                 className={
                     isZenn
-                        ? 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl h-10 box-border bottom-2'
-                        : 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl h-10 box-border bottom-9'
+                        ? 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl box-border bottom-2'
+                        : 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl box-border bottom-9'
                 }
                 onSubmit={submitClick}
             >
@@ -226,8 +265,31 @@ export default function Page() {
                         placeholder={'Ctrl + Enterで送信'}
                         required
                         onChange={(e) => setFormText(e.target.value)}
+                        // フォーカスされている間だけ高さを自動調整
+                        onFocus={(e) => (e.target.style.height = '150px')}
+                        onBlur={(e) => (e.target.style.height = '40px')}
                         className="block p-2 h-10 flex-1 border border-gray-300 rounded-md dark:text-gray-900"
                     ></textarea>
+                    <div
+                        id="tooltipBtn"
+                        onClick={() => setIsTooltip(!isTooltip)}
+                        className="relative py-2.5 px-3 h-10 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse cursor-pointer"
+                    >
+                        ？
+                    </div>
+                    <div
+                        id="tooltipBack"
+                        hidden={!isTooltip}
+                        className="fixed inset-0 z-10"
+                        onClick={() => setIsTooltip(false)}
+                    ></div>
+                    <div
+                        id="tooltip"
+                        hidden={!isTooltip}
+                        className="absolute z-20 bottom-12 right-0 w-96 p-2 bg-gray-100 rounded-md shadow-md"
+                    >
+                        <div className="flex flex-col gap-2 mt-2">{templateParts}</div>
+                    </div>
                     <button
                         id="submit"
                         type="submit"
