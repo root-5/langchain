@@ -70,20 +70,17 @@ export function Footer(props: { hidden?: boolean }) {
         return (
             <footer
                 hidden={props.hidden}
-                className="fixed bottom-0 left-0 pl-4 py-2.5 w-full z-20 bg-green-800 dark:bg-stone-950"
+                className="fixed bottom-0 left-0 pl-4 py-1.5 w-full z-20 bg-green-800 dark:bg-stone-950"
             >
                 <div className="flex items-center gap-10 ">
-                    <Link href="./" className="block w-fit hover:before:scale-x-0 text-white">
-                        AIを便利に使おう！
-                    </Link>
-                    <p className="text-xs text-white text-center">
-                        Copyright © 2023 AIを便利に使おう！ powered by GPT-4
+                    <p className="pl-4 text-xs text-white text-center">
+                        Copyright©2023 Powered by GPT-4
                     </p>
                     <Link
                         href="https://github.com/root-5"
                         className="block w-fit hover:before:scale-x-0 text-white text-xs"
                     >
-                        GitHub
+                        #GitHub
                     </Link>
                 </div>
             </footer>

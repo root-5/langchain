@@ -117,7 +117,7 @@ export default function Page() {
         const inputTextEle = document.getElementById('inputText');
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && e.metaKey) {
+            if (((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) && e.key == 'Enter') {
                 e.preventDefault();
                 submitBtnEle ? submitBtnEle.click() : null;
             }
@@ -181,7 +181,7 @@ export default function Page() {
                     className={
                         isZenn
                             ? 'flex flex-col gap-2 h-[calc(100vh-100px)] overflow-y-scroll'
-                            : 'flex flex-col gap-2 h-[calc(100vh-240px)] md:h-[calc(100vh-300px)] overflow-y-scroll'
+                            : 'flex flex-col gap-2 h-[calc(100vh-240px)] md:h-[calc(100vh-240px)] overflow-y-scroll'
                     }
                 >
                     <button
@@ -214,7 +214,7 @@ export default function Page() {
                 className={
                     isZenn
                         ? 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl h-10 box-border bottom-2'
-                        : 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl h-10 box-border bottom-12'
+                        : 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl h-10 box-border bottom-9'
                 }
                 onSubmit={submitClick}
             >
@@ -223,7 +223,7 @@ export default function Page() {
                         name="inputText"
                         id="inputText"
                         value={formText}
-                        placeholder={'質問を入力してください。'}
+                        placeholder={'Ctrl + Enterで送信'}
                         required
                         onChange={(e) => setFormText(e.target.value)}
                         className="block p-2 h-10 flex-1 border border-gray-300 rounded-md dark:text-gray-900"
