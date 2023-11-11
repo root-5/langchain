@@ -241,7 +241,7 @@ export default function Page() {
                         {result}
                     </SyntaxHighlighter>
                     <p
-                        className="absolute z-2 bottom-1.5 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
+                        className="absolute z-2 bottom-2.5 right-2 flex items-center justify-center w-10 h-4 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
                         onClick={(e) => {
                             navigator.clipboard.writeText(result);
                             e.currentTarget.innerText = 'Copied!';
