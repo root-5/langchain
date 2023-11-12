@@ -31,7 +31,7 @@ export default function Page() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: 1, description: memo }),
+                body: JSON.stringify({ description: memo }),
             });
             const data = await response.json();
             return;
