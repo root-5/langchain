@@ -10,23 +10,23 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
     const reqObj = await request.json();
-    let discription = reqObj.description;
+    let description = reqObj.description;
 
     // discriptionをサニタイズ
-    discription = discription.replace(/</g, '&lt;');
-    discription = discription.replace(/>/g, '&gt;');
-    discription = discription.replace(/&/g, '&amp;');
-    discription = discription.replace(/"/g, '&quot;');
-    discription = discription.replace(/'/g, '&#39;');
-    discription = discription.replace(/`/g, '&#x60;');
-    discription = discription.replace(/=/g, '&#x3D;');
+    description = description.replace(/</g, '&lt;');
+    description = description.replace(/>/g, '&gt;');
+    description = description.replace(/&/g, '&amp;');
+    description = description.replace(/"/g, '&quot;');
+    description = description.replace(/'/g, '&#39;');
+    description = description.replace(/`/g, '&#x60;');
+    description = description.replace(/=/g, '&#x3D;');
 
     const memo = await prisma.memo.update({
         where: {
             id: 1,
         },
         data: {
-            description: reqObj.description,
+            description: description,
         },
     });
 
