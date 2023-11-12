@@ -18,7 +18,15 @@ export default function Page() {
     async function getMemoData() {
         const response = await fetch('/api/memo');
         const data = await response.json();
-        const description = data[0].description;
+        let description = data[0].description;
+
+        // サニタイズされたデータを再度変換して元に戻してからステートにセット
+        description = description.replace(/&lt;/g, '<');
+        description = description.replace(/&gt;/g, '>');
+        description = description.replace(/&quot;/g, '"');
+        description = description.replace(/&#39;/g, "'");
+        description = description.replace(/&#x60;/g, '`');
+        description = description.replace(/&#x3D;/g, '=');
         setMemo(description);
         return;
     }

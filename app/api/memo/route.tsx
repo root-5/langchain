@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
     // discriptionをサニタイズ
     description = description.replace(/</g, '&lt;');
     description = description.replace(/>/g, '&gt;');
-    description = description.replace(/&/g, '&amp;');
     description = description.replace(/"/g, '&quot;');
     description = description.replace(/'/g, '&#39;');
     description = description.replace(/`/g, '&#x60;');
