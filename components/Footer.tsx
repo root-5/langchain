@@ -54,12 +54,12 @@ export function Footer(props: { hidden?: boolean }) {
                     {linkItems}
                 </div>
                 <div className="flex w-full">
-                    <Link href="./" className="flex py-1.5 w-2/4 item-center justify-center text-lg text-white">
+                    <Link href="./" className="flex py-1 w-2/4 item-center justify-center text-lg text-white">
                         /
                     </Link>
                     <div
                         onClick={menuOpenToggle}
-                        className="flex py-1.5 w-2/4 item-center justify-center text-lg text-white hover:cursor-pointer"
+                        className="flex py-1 w-2/4 item-center justify-center text-lg text-white hover:cursor-pointer"
                     >
                         三
                     </div>
@@ -73,9 +73,7 @@ export function Footer(props: { hidden?: boolean }) {
                 className="fixed bottom-0 left-0 pl-4 py-1.5 w-full z-20 bg-green-800 dark:bg-stone-950"
             >
                 <div className="flex items-center gap-10 ">
-                    <p className="pl-4 text-xs text-white text-center">
-                        Copyright©2023 Powered by GPT-4
-                    </p>
+                    <p className="pl-4 text-xs text-white text-center">Copyright©2023 Powered by GPT-4</p>
                     <Link
                         href="https://github.com/root-5"
                         className="block w-fit hover:before:scale-x-0 text-white text-xs"
