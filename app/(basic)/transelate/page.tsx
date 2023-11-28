@@ -9,7 +9,7 @@ import { translateData } from '../../../components/data/translateData';
 export default function Page() {
     //====================================================================
     // ==== ステートの宣言 ====
-    const [isZenn, setIsZenn] = useState(false); // zennモードを管理
+    const [isZen, setIsZen] = useState(false); // zenモードを管理
     const [language, setLanguage] = useState('ja'); // モードを管理
     const [formText, setFormText] = useState(''); // フォームのテキストを管理
     const [chatgptResult, setChatgptResult] = useState(''); // ChatGPT出力の内容を管理
@@ -76,22 +76,22 @@ export default function Page() {
     }
 
     //====================================================================
-    // ==== Zennモードの処理 ====
-    // #zennBtnのdata-isZennStatus属性が変更されたら、isZennのステートを更新
+    // ==== Zenモードの処理 ====
+    // #zenBtnのdata-isZenStatus属性が変更されたら、isZenのステートを更新
     useEffect(() => {
-        const zennBtnEle = document.getElementById('zennBtn');
-        if (!zennBtnEle) return;
+        const zenBtnEle = document.getElementById('zenBtn');
+        if (!zenBtnEle) return;
         const observer = new MutationObserver(() => {
-            const isZennStatus = zennBtnEle.getAttribute('data-zenn-status');
-            if (isZennStatus === 'true') {
-                setIsZenn(true);
+            const isZenStatus = zenBtnEle.getAttribute('data-zen-status');
+            if (isZenStatus === 'true') {
+                setIsZen(true);
             } else {
-                setIsZenn(false);
+                setIsZen(false);
             }
         });
-        observer.observe(zennBtnEle, {
+        observer.observe(zenBtnEle, {
             attributes: true,
-            attributeFilter: ['data-zenn-status'],
+            attributeFilter: ['data-zen-status'],
         });
     }, []);
 
@@ -110,10 +110,10 @@ export default function Page() {
     // ==== レンダリング ====
     return (
         <main>
-            <Headline2 hidden={isZenn}>多言語間翻訳</Headline2>
+            <Headline2 hidden={isZen}>多言語間翻訳</Headline2>
             {/* 入力フォーム */}
-            <form className={isZenn ? 'relative mt-0' : 'relative mt-8'} onSubmit={submitClick}>
-                <Strong hidden={isZenn}>入力</Strong>
+            <form className={isZen ? 'relative mt-0' : 'relative mt-8'} onSubmit={submitClick}>
+                <Strong hidden={isZen}>入力</Strong>
                 <div className="flex flex-col">
                     <textarea
                         name="inputText"
@@ -156,7 +156,7 @@ export default function Page() {
 
             {/* 出力の表示 */}
             <div className="mt-10">
-                <Strong hidden={isZenn}>出力</Strong>
+                <Strong hidden={isZen}>出力</Strong>
                 <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
                     {isError.statusBoolean ? isError.messageText : ''}
                 </p>

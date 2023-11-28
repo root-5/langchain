@@ -42,7 +42,7 @@ const templateList = [
 export default function Page() {
     //====================================================================
     // ==== ステートの宣言 ====
-    const [isZenn, setIsZenn] = useState(false); // Zennモードを管理
+    const [isZen, setIsZen] = useState(false); // Zenモードを管理
     const [chats, setChats] = useState<ChatsInterface[]>(initialChats); // チャットの内容を管理
     const [formText, setFormText] = useState(''); // フォームのテキストを管理
     const [isLoading, setIsLoading] = useState(false); // 表示状態を管理
@@ -126,7 +126,7 @@ export default function Page() {
                 attributeFilter: ['class'],
             });
         }
-    }, [isZenn]);
+    }, [isZen]);
 
     //====================================================================
     // ==== ショートカットの処理 ====
@@ -148,22 +148,22 @@ export default function Page() {
     });
 
     //====================================================================
-    // ==== Zennモードの処理 ====
-    // #zennBtnのdata-isZennStatus属性が変更されたら、isZennのステートを更新
+    // ==== Zenモードの処理 ====
+    // #zenBtnのdata-isZenStatus属性が変更されたら、isZenのステートを更新
     useEffect(() => {
-        const zennBtnEle = document.getElementById('zennBtn');
-        if (!zennBtnEle) return;
+        const zenBtnEle = document.getElementById('zenBtn');
+        if (!zenBtnEle) return;
         const observer = new MutationObserver(() => {
-            const isZennStatus = zennBtnEle.getAttribute('data-zenn-status');
-            if (isZennStatus === 'true') {
-                setIsZenn(true);
+            const isZenStatus = zenBtnEle.getAttribute('data-zen-status');
+            if (isZenStatus === 'true') {
+                setIsZen(true);
             } else {
-                setIsZenn(false);
+                setIsZen(false);
             }
         });
-        observer.observe(zennBtnEle, {
+        observer.observe(zenBtnEle, {
             attributes: true,
-            attributeFilter: ['data-zenn-status'],
+            attributeFilter: ['data-zen-status'],
         });
     }, []);
 
@@ -213,12 +213,12 @@ export default function Page() {
     return (
         <main>
             {/* chatGPTとの対話がチャット形式で出力されるエリア */}
-            <Headline2 className={isZenn ? 'hidden' : ''}>チャット</Headline2>
+            <Headline2 className={isZen ? 'hidden' : ''}>チャット</Headline2>
             <div className="relative">
                 <div
                     id="frame"
                     className={
-                        isZenn
+                        isZen
                             ? 'flex flex-col gap-2 h-[calc(100vh-100px)] overflow-y-scroll'
                             : 'flex flex-col gap-2 h-[calc(100vh-240px)] md:h-[calc(100vh-240px)] overflow-y-scroll'
                     }
@@ -226,14 +226,14 @@ export default function Page() {
                     <button
                         onClick={deleteChat}
                         className={
-                            isZenn
+                            isZen
                                 ? 'absolute top-2 right-14 w-7 h-7 bg-blue-500 text-white rounded-md duration-300 opacity-20 hover:bg-blue-600 hover:opacity-100'
                                 : 'absolute top-0 right-0 w-7 h-7 bg-blue-500 text-white rounded-md duration-300 opacity-20 hover:bg-blue-600 hover:opacity-100'
                         }
                     >
                         ×
                     </button>
-                    <div className={isZenn ? 'flex flex-col p-4 gap-4 pt-8' : 'flex flex-col p-4 gap-4'}>
+                    <div className={isZen ? 'flex flex-col p-4 gap-4 pt-8' : 'flex flex-col p-4 gap-4'}>
                         {chatParts}
                         <div hidden={!isLoading} className="animate-pulse">
                             <Image
@@ -251,7 +251,7 @@ export default function Page() {
             {/* 入力フォーム */}
             <form
                 className={
-                    isZenn
+                    isZen
                         ? 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl box-border bottom-2'
                         : 'fixed w-11/12 md:w-[calc(92%_-_200px)] md:max-w-4xl box-border bottom-9'
                 }

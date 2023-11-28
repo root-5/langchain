@@ -10,7 +10,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 export default function Page() {
     //====================================================================
     // ==== ステートの宣言 ====
-    const [isZenn, setIsZenn] = useState(false); // Zennモードを管理
+    const [isZen, setIsZen] = useState(false); // Zenモードを管理
     const [language, setLanguage] = useState('JavaScript'); // モードを管理
     const [mode, setMode] = useState({
         name: modeData[0].name,
@@ -103,22 +103,22 @@ export default function Page() {
     }, []);
 
     //====================================================================
-    // ==== Zennモードの処理 ====
-    // #zennBtnのdata-isZennStatus属性が変更されたら、isZennのステートを更新
+    // ==== Zenモードの処理 ====
+    // #zenBtnのdata-isZenStatus属性が変更されたら、isZenのステートを更新
     useEffect(() => {
-        const zennBtnEle = document.getElementById('zennBtn');
-        if (!zennBtnEle) return;
+        const zenBtnEle = document.getElementById('zenBtn');
+        if (!zenBtnEle) return;
         const observer = new MutationObserver(() => {
-            const isZennStatus = zennBtnEle.getAttribute('data-zenn-status');
-            if (isZennStatus === 'true') {
-                setIsZenn(true);
+            const isZenStatus = zenBtnEle.getAttribute('data-zen-status');
+            if (isZenStatus === 'true') {
+                setIsZen(true);
             } else {
-                setIsZenn(false);
+                setIsZen(false);
             }
         });
-        observer.observe(zennBtnEle, {
+        observer.observe(zenBtnEle, {
             attributes: true,
-            attributeFilter: ['data-zenn-status'],
+            attributeFilter: ['data-zen-status'],
         });
     }, []);
 
@@ -163,13 +163,13 @@ export default function Page() {
     // ==== レンダリング ====
     return (
         <main>
-            <Headline2 className={isZenn ? '!text-2xl' : ''}>コーディング補助</Headline2>
+            <Headline2 className={isZen ? '!text-2xl' : ''}>コーディング補助</Headline2>
             {/* 入力フォーム */}
             <form className="mt-8" onSubmit={submitClick}>
-                <Strong hidden={isZenn}>入力</Strong>
+                <Strong hidden={isZen}>入力</Strong>
                 <div className="flex flex-col">
-                    <div className={isZenn ? 'flex mt-0 gap-5 items-center' : 'flex mt-4 gap-5 items-center'}>
-                        <label htmlFor="language" hidden={isZenn} className="font-bold">
+                    <div className={isZen ? 'flex mt-0 gap-5 items-center' : 'flex mt-4 gap-5 items-center'}>
+                        <label htmlFor="language" hidden={isZen} className="font-bold">
                             言語
                         </label>
                         <select
@@ -177,7 +177,7 @@ export default function Page() {
                             id="language"
                             onChange={(e) => setLanguage(e.target.value)}
                             className={
-                                isZenn
+                                isZen
                                     ? 'p-1 w-28 border border-gray-300 rounded-md dark:text-gray-900'
                                     : 'p-2 w-40 border border-gray-300 rounded-md dark:text-gray-900'
                             }
@@ -186,7 +186,7 @@ export default function Page() {
                         </select>
                     </div>
                     <div className="flex mt-4 gap-5 items-center">
-                        <p hidden={isZenn} className="font-bold">
+                        <p hidden={isZen} className="font-bold">
                             モード
                         </p>
                         <ul className="flex flex-1 flex-wrap items-center w-fit text-sm font-medium gap-[1px] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
@@ -228,8 +228,8 @@ export default function Page() {
                 <div className="flex w-fit m-0 justify-center" aria-label="読み込み中"></div>
             </form>
             {/* 出力の表示 */}
-            <div className={isZenn ? 'mt-6' : 'mt-10'}>
-                <Strong hidden={isZenn}>出力</Strong>
+            <div className={isZen ? 'mt-6' : 'mt-10'}>
+                <Strong hidden={isZen}>出力</Strong>
                 <p hidden={isError.statusBoolean} className="mt-2 text-gray-700">
                     {isError.statusBoolean ? isError.messageText : ''}
                 </p>
@@ -251,18 +251,18 @@ export default function Page() {
                     </p>
                 </div>
             </div>
-            <Headline2 className={isZenn ? '!text-2xl mt-6' : 'mt-12'}>ドキュメント等検索</Headline2>
+            <Headline2 className={isZen ? '!text-2xl mt-6' : 'mt-12'}>ドキュメント等検索</Headline2>
             <input
                 type="text"
                 name="inputDocsName"
                 id="inputDocsName"
                 value={searchInput}
                 onChange={seachInputFunc}
-                placeholder={isZenn ? 'ショートカット "/"' : '正式名称を半角英字で入力（小文字可）'}
+                placeholder={isZen ? 'ショートカット "/"' : '正式名称を半角英字で入力（小文字可）'}
                 required
                 className={'block m-0 p-2 border border-gray-300 rounded-md dark:text-gray-900 w-2/3'}
             />
-            <p hidden={isZenn} className="flex flex-wrap mt-2 text-xs">
+            <p hidden={isZen} className="flex flex-wrap mt-2 text-xs">
                 {examples}
             </p>
         </main>
