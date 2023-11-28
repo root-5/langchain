@@ -14,7 +14,7 @@ export default function Page() {
         placeholder: modeData[0].placeholder,
     }); // モードを管理
     const [isShortcutRegisted, setIsShortcutRegisted] = useState(false); // ショートカットキーの登録状態を管理
-    const [isSearchMode, setIsSearchMode] = useState('private'); // 検索モードの状態を管理
+    const [isSearchMode, setIsSearchMode] = useState('google'); // 検索モードの状態を管理
     const [searchInput, setSearchInput] = useState(''); // 検索ボックスの入力を管理
     const [formText, setFormText] = useState(''); // フォームのテキストを管理
     const [chatText, setcChatText] = useState(''); // フォームのテキストを管理
