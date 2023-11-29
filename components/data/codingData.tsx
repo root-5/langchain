@@ -146,4 +146,14 @@ export const docData = [
         link: './',
         isLang: false,
     },
+    {
+        name: 'MChat',
+        link: './chat',
+        isLang: false,
+    },
+    {
+        name: 'MTranselate',
+        link: './transelate',
+        isLang: false,
+    },
 ];
