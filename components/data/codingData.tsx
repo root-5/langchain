@@ -97,8 +97,8 @@ export const docData = [
         isLang: false,
     },
     {
-        name: 'YouTube',
-        link: 'https://www.youtube.com/',
+        name: 'Django',
+        link: 'https://docs.djangoproject.com/ja',
         isLang: false,
     },
     {
@@ -114,11 +114,6 @@ export const docData = [
     {
         name: 'Gdrive',
         link: 'https://drive.google.com/drive/my-drive',
-        isLang: false,
-    },
-    {
-        name: 'TradingView',
-        link: 'https://jp.tradingview.com/chart/',
         isLang: false,
     },
     {
