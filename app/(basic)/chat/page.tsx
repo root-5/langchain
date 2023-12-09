@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useChat } from 'ai/react';
 import { Headline2 } from '../../../components/Headline2';
 import Image from 'next/image';
 
@@ -64,6 +64,10 @@ export default function Page() {
 
         // フォームの内容を取得し、サーバーに送信
         try {
+            // レスポンスは以下のストリーム形式で返ってくるので、それに合わせて処理
+            // 0:"人"
+            // 0:"生"
+            // 0:"は"
             const serverResponse = await fetch('../api/chat/getAnswer', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -73,13 +77,33 @@ export default function Page() {
                     'Content-Type': 'application/json',
                 },
             });
-            // レスポンスをJSONとしてパース
-            const serverResponseObj = await serverResponse.json();
 
-            // レスポンスのテキストと長さをステートに保存
-            const text = serverResponseObj.result;
+            const stream = await serverResponse.body;
+            if (!stream) return;
+            const reader = stream.getReader();
+
+            // chatGPTの返答を生成
+            let text = '';
             createNewChat('chatGPT', text);
-        } catch (error) {}
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                // valueはUint8Array型なので、文字列に変換
+                const valueConverted = new TextDecoder().decode(value);
+
+                // 不要な文字列を削除して、返答文に追加
+                text += valueConverted.replace(/0:"/g, '').replace(/"\n/g, '');
+
+                setChats((prevChats) => {
+                    const newChats = [...prevChats];
+                    newChats[newChats.length - 1].text = text;
+                    return newChats;
+                });
+            }
+        } catch (error) {
+            console.error(error);
+        }
         setIsLoading(false);
     }
 

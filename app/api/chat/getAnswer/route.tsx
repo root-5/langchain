@@ -1,44 +1,46 @@
-import { NextResponse } from 'next/server';
-import { ChatOpenAI } from 'langchain/chat_models/openai';
-import { AIMessage, BaseMessageFields, HumanMessage } from 'langchain/schema';
+import { LangChainStream, StreamingTextResponse, experimental_StreamData } from 'ai';
+import { LLMChain } from 'langchain/chains';
+import { OpenAI } from 'langchain/llms/openai';
+import { PromptTemplate } from 'langchain/prompts';
 
-export const maxDuration = 300;
-
-// OpenAIのモデルを作成
-const chat = new ChatOpenAI({
-    openAIApiKey: process.env.OPENAI_API_KEY,
-    temperature: 0,
-    modelName: 'gpt-4-1106-preview',
-    streaming: true,
-});
+export const runtime = 'edge';
 
 export async function POST(req: Request) {
     // リクエストから質問部分を取得
     const body = await req.json();
     let reqMessages = body.messages;
 
-    // reqMessagesの長さが10以上の場合、最後の10個を残して削除
-    const maxMessages = 10;
+    // reqMessagesの長さがmaxMessages以上の場合、最後のmaxMessages個を残して削除
+    const maxMessages = 5;
     if (reqMessages.length > maxMessages) {
         reqMessages = reqMessages.slice(reqMessages.length - maxMessages, reqMessages.length);
     }
 
-    // OpenAIへリクエストを送信
-    const res = await chat.call(
-        reqMessages.map((m: { role: string; content: string | BaseMessageFields }) =>
-            m.role == 'user' ? new HumanMessage(m.content) : new AIMessage(m.content)
-        ),
-        {
-            callbacks: [
-                {
-                    handleLLMNewToken(token: string) {
-                        // console.log({ token });
-                    },
-                },
-            ],
+    // プロンプトを作成
+    const prompt =
+        PromptTemplate.fromTemplate(`以下の文章の流れを読んで、「AI」として続きをマークダウン形式で回答してください。
+    ${reqMessages.map((m: { role: string; content: string }) => {
+        if (m.role == 'user') {
+            return `    User: ${m.content}\n`;
+        } else {
+            return `    AI: ${m.content}\n`;
         }
-    );
+    })}
+    AI: `);
 
-    // レスポンスを返す
-    return NextResponse.json({ result: res.content });
+    const model = new OpenAI({ temperature: 0, streaming: true });
+    const chain = new LLMChain({ llm: model, prompt });
+    const data = new experimental_StreamData();
+
+    // ストリーミングで回答を返答
+    const { stream, handlers } = LangChainStream({
+        onFinal: () => {
+            data.close();
+        },
+        experimental_streamData: true,
+    });
+
+    await chain.stream({ callbacks: [handlers] });
+
+    return new StreamingTextResponse(stream, {}, data);
 }
