@@ -44,9 +44,6 @@ export async function POST(req: Request) {
             onFinal: () => {
                 data.close();
             },
-            onToken: (token) => {
-                console.log(token);
-            },
             experimental_streamData: true,
         });
 
