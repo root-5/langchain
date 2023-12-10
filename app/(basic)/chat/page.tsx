@@ -108,6 +108,27 @@ export default function Page() {
     }
 
     //====================================================================
+    // ==== 検索ボックスの入力があった時の処理 ====
+    const seachInputFunc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setFormText(e.target.value);
+        if (e.target.value.startsWith('/')) {
+            e.preventDefault();
+            setIsTooltip(true);
+
+            // テンプレート番号を取得
+            const templateNum = e.target.value.replace('/', '');
+            // テンプレート番号が存在するかチェック
+            if (templateNum.match(/^[0-9]+$/)) {
+                // テンプレート番号が存在する場合は、テンプレートを表示
+                const template = templateList[Number(templateNum) - 1];
+                setFormText(template.text);
+            }
+        } else {
+            setIsTooltip(false);
+        }
+    };
+
+    //====================================================================
     // ==== チャットの処理 ====
     // チャットの内容を生成
     function createNewChat(speaker: string, text: string) {
@@ -217,7 +238,9 @@ export default function Page() {
     const templateParts = templateList.map((template) => {
         return (
             <div key={template.id} className="relative flex gap-1 text-xs text-gray-600">
-                <p className="block font-bold w-14">{template.title}</p>
+                <p className="block font-bold w-20">
+                    {template.id}. {template.title}
+                </p>
                 {/* クリックでテンプレートの内容をフォームに入力 */}
                 <p
                     onClick={() => {
@@ -281,38 +304,40 @@ export default function Page() {
                 }
                 onSubmit={submitClick}
             >
-                <div className="flex gap-2 h-full">
+                <div
+                    id="tooltip"
+                    hidden={!isTooltip}
+                    className="ml-auto mb-2 z-20 w-96 p-2 bg-gray-100 rounded-md shadow-md"
+                >
+                    <div className="flex flex-col gap-2 mt-2">{templateParts}</div>
+                </div>
+                <div className="flex gap-2">
                     <textarea
                         name="inputText"
                         id="inputText"
                         value={formText}
-                        placeholder={'Ctrl + Enterで送信'}
+                        placeholder={'Ctrl + Enterで送信（テンプレート使用："/ " + テンプレNo）'}
                         required
-                        onChange={(e) => setFormText(e.target.value)}
+                        onChange={seachInputFunc}
                         // フォーカスされている間だけ高さを自動調整
-                        onFocus={(e) => (e.target.style.height = '150px')}
+                        onFocus={(e) => (e.target.style.height = '200px')}
                         onBlur={(e) => (e.target.style.height = '40px')}
                         className="block p-2 h-10 flex-1 border border-gray-300 rounded-md dark:text-gray-900"
                     ></textarea>
-                    <div
-                        id="tooltipBtn"
-                        onClick={() => setIsTooltip(!isTooltip)}
-                        className="relative py-2.5 px-3 h-10 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse cursor-pointer"
-                    >
-                        ？
-                    </div>
-                    <div
-                        id="tooltipBack"
-                        hidden={!isTooltip}
-                        className="fixed inset-0 z-10"
-                        onClick={() => setIsTooltip(false)}
-                    ></div>
-                    <div
-                        id="tooltip"
-                        hidden={!isTooltip}
-                        className="absolute z-20 bottom-12 right-0 w-96 p-2 bg-gray-100 rounded-md shadow-md"
-                    >
-                        <div className="flex flex-col gap-2 mt-2">{templateParts}</div>
+                    <div id="tooltipArea">
+                        <div
+                            id="tooltipBtn"
+                            onClick={() => setIsTooltip(!isTooltip)}
+                            className="relative py-2.5 px-3 h-10 bg-blue-500 text-white rounded-md duration-300 hover:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse cursor-pointer"
+                        >
+                            ？
+                        </div>
+                        <div
+                            id="tooltipBack"
+                            hidden={!isTooltip}
+                            className="fixed inset-0 z-10"
+                            onClick={() => setIsTooltip(false)}
+                        ></div>
                     </div>
                     <button
                         id="submit"
