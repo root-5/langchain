@@ -4,6 +4,24 @@ import { useState, useEffect } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { modeData, docData } from '../../../components/data/codingData';
 
+const templateList = [
+    {
+        id: 1,
+        title: '概要説明',
+        text: 'AAAAについて、概要、メリットとデメリット、基本的な流れ、具体例の4つの観点から説明してください。',
+    },
+    {
+        id: 2,
+        title: '比較検討',
+        text: 'AAAAとBBBBの違いについて、どういった点が異なるのか、それぞれのメリットとデメリット、それぞれの具体例の3つの観点から説明してください。',
+    },
+    {
+        id: 3,
+        title: '問題解決',
+        text: '私は現在、TARGETを目的としてACTIONを行なっていますが、PROBLEMに直面しています。どういった解決策が考えられますか？解決策は複数挙げ、理由を添えて回答してください。',
+    },
+];
+
 export default function Page() {
     //====================================================================
     // ==== ステートの宣言 ====
@@ -23,10 +41,11 @@ export default function Page() {
     ); // 修正指示を管理
     const [result, setResult] = useState(''); //出力の内容を管理
     const [isLoading, setIsLoading] = useState(false); // 表示状態を管理
+    const [isTooltip, setIsTooltip] = useState(false); // ツールチップの表示状態を管理
 
     //====================================================================
     // ==== ボタンの処理 ====
-    // フォームの送信ボタンが押されたときの処理
+    // コーディング補助フォームの送信ボタンが押されたときの処理
     async function submitClick(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         setIsLoading(true);
@@ -71,10 +90,26 @@ export default function Page() {
                     'Content-Type': 'application/json',
                 },
             });
-            const responseObj = await response.json();
-            const text = responseObj.result;
-            setcChatText(text);
+            // const responseObj = await response.json();
 
+            const stream = await response.body;
+            if (!stream) return;
+            const reader = stream.getReader();
+
+            // chatGPTの返答を生成
+            let text = '';
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                // valueはUint8Array型なので、文字列に変換
+                const valueConverted = new TextDecoder().decode(value);
+
+                // 不要な文字列を削除して、返答文に追加
+                text += valueConverted.replace(/0:"/g, '').replace(/"\n/g, '');
+
+                setcChatText(text);
+            }
             setIsLoading(false);
         } else if (searchInput.startsWith('http')) {
             window.open(searchInput);
@@ -89,17 +124,20 @@ export default function Page() {
     const seachInputFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchInput(e.target.value);
 
+        // Googleモードとプライベート検索の切り替え
         if (e.target.value.startsWith(' ') || e.target.value.startsWith('　')) {
             isSearchMode === 'private' ? setIsSearchMode('google') : setIsSearchMode('private');
             setSearchInput('');
             return;
         }
+        // AIモードとGoogleモードの切り替え
         if (e.target.value.startsWith('?') || e.target.value.startsWith('？')) {
             isSearchMode === 'ai' ? setIsSearchMode('google') : setIsSearchMode('ai');
             setSearchInput('');
             return;
         }
 
+        // プライベート検索の時は、検索ボックスに入力があったらリンクを開く
         if (isSearchMode === 'private') {
             let searchHitCount = 0;
             let searchHitDataNum = 0;
@@ -117,6 +155,25 @@ export default function Page() {
             if (searchHitCount === 1) {
                 window.open(docData[searchHitDataNum].link, '_self');
                 setSearchInput('');
+            }
+        }
+
+        // AIモードの時は'/'キーでテンプレートツールチップを表示
+        if (isSearchMode === 'ai') {
+            if (e.target.value.startsWith('/')) {
+                e.preventDefault();
+                setIsTooltip(true);
+
+                // テンプレート番号を取得
+                const templateNum = e.target.value.replace('/', '');
+                // テンプレート番号が存在するかチェック
+                if (templateNum.match(/^[0-9]+$/)) {
+                    // テンプレート番号が存在する場合は、テンプレートを表示
+                    const template = templateList[Number(templateNum) - 1];
+                    setSearchInput(template.text);
+                }
+            } else {
+                setIsTooltip(false);
             }
         }
     };
@@ -201,6 +258,27 @@ export default function Page() {
             </option>
         ));
 
+    // テンプレートの生成
+    const templateParts = templateList.map((template) => {
+        return (
+            <div key={template.id} className="relative flex gap-1 text-xs text-gray-600">
+                <p className="block font-bold w-20">
+                    {template.id}. {template.title}
+                </p>
+                {/* クリックでテンプレートの内容をフォームに入力 */}
+                <p
+                    onClick={() => {
+                        setSearchInput(template.text);
+                        setIsTooltip(false);
+                    }}
+                    className="block flex-1 cursor-pointer hover:text-blue-500"
+                >
+                    {template.text}
+                </p>
+            </div>
+        );
+    });
+
     //====================================================================
     // ==== レンダリング ====
     return (
@@ -228,7 +306,7 @@ export default function Page() {
                                 isSearchMode === 'google'
                                     ? 'Google Search...'
                                     : isSearchMode === 'ai'
-                                    ? 'Ask AI...'
+                                    ? 'Ask AI...  (Template: Press "/" + ID)'
                                     : isSearchMode === 'private'
                                     ? 'Private Search...'
                                     : ''
@@ -243,38 +321,59 @@ export default function Page() {
                                     : isSearchMode === 'private'
                                     ? 'border-blue-600 rounded-md dark:text-gray-900 bg-blue-100'
                                     : isSearchMode === 'ai'
-                                    ? 'border-white rounded-md dark:text-white bg-gray-900'
+                                    ? 'border-white rounded-md dark:text-white bg-gray-900 text-[14px]'
                                     : '')
                             }
                         />
+                        <div id="tooltipArea" className={isSearchMode === 'ai' ? 'w-7' : 'hidden'}>
+                            <div
+                                id="tooltipBack"
+                                hidden={!isTooltip}
+                                className="fixed inset-0 z-10"
+                                onClick={() => setIsTooltip(false)}
+                            ></div>
+                            <div
+                                id="tooltip"
+                                hidden={!isTooltip}
+                                className="absolute z-20 bottom-12 p-2 bg-gray-100 rounded-md shadow-md"
+                            >
+                                <div className="flex flex-col gap-2 mt-2">{templateParts}</div>
+                            </div>
+                        </div>
                     </div>
-                    <div
-                        className={
-                            !(isSearchMode === 'ai' && chatText !== '')
-                                ? 'hidden'
-                                : 'mt-8 mx-auto w-0 h-0 border-t-0 border-r-[18px] border-b-[18px] border-l-[18px] border-t-transparent border-r-transparent border-b-white border-l-transparent'
-                        }
-                    ></div>
-                    <div className="relative mx-auto w-[80%]">
-                        <textarea
-                            id="hukidashi"
-                            value={chatText}
-                            readOnly
+                    <div id="hukidashiArea">
+                        <div
                             className={
                                 !(isSearchMode === 'ai' && chatText !== '')
                                     ? 'hidden'
-                                    : 'block p-2 w-full h-96 border-4 border-white rounded-md dark:text-gray-900 focus-visible:outline-none'
+                                    : 'mt-8 mx-auto w-0 h-0 border-t-0 border-r-[18px] border-b-[18px] border-l-[18px] border-t-transparent border-r-transparent border-b-white border-l-transparent'
                             }
-                        ></textarea>
-                        <p
-                            className="absolute z-2 bottom-1.5 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200"
-                            onClick={(e) => {
-                                navigator.clipboard.writeText(chatText);
-                                e.currentTarget.innerText = 'Copied!';
-                            }}
-                        >
-                            Copy
-                        </p>
+                        ></div>
+                        <div className="relative mx-auto w-[80%]">
+                            <textarea
+                                id="hukidashi"
+                                value={chatText}
+                                readOnly
+                                className={
+                                    !(isSearchMode === 'ai' && chatText !== '')
+                                        ? 'hidden'
+                                        : 'block p-2 w-full h-96 border-4 border-white rounded-md dark:text-gray-900 focus-visible:outline-none'
+                                }
+                            ></textarea>
+                            <p
+                                className={
+                                    !(isSearchMode === 'ai' && chatText !== '')
+                                        ? 'hidden'
+                                        : 'absolute z-2 bottom-1.5 right-0 flex items-center justify-center w-16 h-8 opacity-30 text-black text-sm duration-300 rounded-lg hover:opacity-100 cursor-pointer select-none active:bg-blue-200'
+                                }
+                                onClick={(e) => {
+                                    navigator.clipboard.writeText(chatText);
+                                    e.currentTarget.innerText = 'Copied!';
+                                }}
+                            >
+                                Copy
+                            </p>
+                        </div>
                     </div>
                 </form>
                 <p className="fixed z-30 py-3 px-10 bottom-0 left-0 w-screen bg-black text-white">
@@ -282,7 +381,7 @@ export default function Page() {
                     <br />
                     Space&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Private search
                     <br />
-                    ?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ask AI
+                    '?'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ask AI
                 </p>
             </div>
             {/* 入力フォーム */}

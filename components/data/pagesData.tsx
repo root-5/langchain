@@ -1,4 +1,5 @@
 export const pagesData = [
+    { link: '*_*', name: 'ホームページ設定用', description: 'ホームページ設定用。' },
     { link: 'summary', name: '文章要約', description: '文章を要約します。日本語以外にも対応しています。' },
     { link: 'writting', name: '文章生成', description: '見出しを調整し、文章構成に手を加えることができます。' },
     {
