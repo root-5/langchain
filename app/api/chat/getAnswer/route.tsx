@@ -4,6 +4,7 @@ import { OpenAI } from 'langchain/llms/openai';
 import { PromptTemplate } from 'langchain/prompts';
 
 export const runtime = 'edge';
+export const maxDuration = 300;
 
 export async function POST(req: Request) {
     // リクエストから質問部分を取得
@@ -28,19 +29,31 @@ export async function POST(req: Request) {
     })}
     AI: `);
 
-    const model = new OpenAI({ temperature: 0, streaming: true });
+    const model = new OpenAI({
+        openAIApiKey: process.env.OPENAI_API_KEY,
+        temperature: 0,
+        streaming: true,
+        modelName: 'gpt-4-1106-preview',
+    });
     const chain = new LLMChain({ llm: model, prompt });
     const data = new experimental_StreamData();
 
-    // ストリーミングで回答を返答
-    const { stream, handlers } = LangChainStream({
-        onFinal: () => {
-            data.close();
-        },
-        experimental_streamData: true,
-    });
+    try {
+        // ストリーミングで回答を返答
+        const { stream, handlers } = LangChainStream({
+            onFinal: () => {
+                data.close();
+            },
+            onToken: (token) => {
+                console.log(token);
+            },
+            experimental_streamData: true,
+        });
 
-    await chain.stream({ callbacks: [handlers] });
+        await chain.stream({ callbacks: [handlers] });
 
-    return new StreamingTextResponse(stream, {}, data);
+        return new StreamingTextResponse(stream, {}, data);
+    } catch (e) {
+        console.error(e);
+    }
 }

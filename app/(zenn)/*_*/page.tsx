@@ -90,8 +90,6 @@ export default function Page() {
                     'Content-Type': 'application/json',
                 },
             });
-            // const responseObj = await response.json();
-
             const stream = await response.body;
             if (!stream) return;
             const reader = stream.getReader();
@@ -103,10 +101,19 @@ export default function Page() {
                 if (done) break;
 
                 // valueはUint8Array型なので、文字列に変換
-                const valueConverted = new TextDecoder().decode(value);
+                const valueDecorded = new TextDecoder().decode(value);
 
                 // 不要な文字列を削除して、返答文に追加
-                text += valueConverted.replace(/0:"/g, '').replace(/"\n/g, '');
+                let textPart = valueDecorded.replace(/0:"/g, '').replace(/"\n/g, '');
+
+                // \\nは改行に変換
+                if (textPart.includes('\\n')) textPart = textPart.replace(/\\n/g, '\n');
+
+                // textPartの最後に改行を追加
+                text += textPart;
+
+                // textの中身が改行のみの場合は、textを空に初期化する
+                if (text === '\n') text = '';
 
                 setcChatText(text);
             }
@@ -306,7 +313,7 @@ export default function Page() {
                                 isSearchMode === 'google'
                                     ? 'Google Search...'
                                     : isSearchMode === 'ai'
-                                    ? 'Ask AI...  (Template: Press "/" + ID)'
+                                    ? 'Ask AI...  (Template: "/" + No.)'
                                     : isSearchMode === 'private'
                                     ? 'Private Search...'
                                     : ''
@@ -321,7 +328,7 @@ export default function Page() {
                                     : isSearchMode === 'private'
                                     ? 'border-blue-600 rounded-md dark:text-gray-900 bg-blue-100'
                                     : isSearchMode === 'ai'
-                                    ? 'border-white rounded-md dark:text-white bg-gray-900 text-[14px]'
+                                    ? 'border-white rounded-md dark:text-white bg-gray-900 !text-[14px]'
                                     : '')
                             }
                         />
