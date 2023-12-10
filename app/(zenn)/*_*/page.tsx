@@ -207,7 +207,7 @@ export default function Page() {
         });
         // ロード時にフォーカスを当てる
         inputDocsNameEle.focus();
-    }, []);
+    }, [isShortcutRegisted]);
 
     // #modalをクリックした時に検索ボックスにフォーカスを当てる
     useEffect(() => {
@@ -381,7 +381,7 @@ export default function Page() {
                     <br />
                     Space&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Private search
                     <br />
-                    '?'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ask AI
+                    &apos;?&apos;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ask AI
                 </p>
             </div>
             {/* 入力フォーム */}
