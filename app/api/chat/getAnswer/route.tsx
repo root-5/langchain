@@ -18,8 +18,7 @@ export async function POST(req: Request) {
     }
 
     // プロンプトを作成
-    const prompt =
-        PromptTemplate.fromTemplate(`以下の文章の流れを読んで、「AI」として続きをマークダウン形式で回答してください。
+    const prompt = PromptTemplate.fromTemplate(`以下の文章の流れを読んで、「AI」として続きを回答してください。
     ${reqMessages.map((m: { role: string; content: string }) => {
         if (m.role == 'user') {
             return `    User: ${m.content}\n`;
@@ -44,7 +43,10 @@ export async function POST(req: Request) {
             onFinal: () => {
                 data.close();
             },
-            experimental_streamData: true,
+            // onToken: (token) => {
+            //     data.append({ ['token']: token });
+            // },
+            experimental_streamData: false,
         });
 
         await chain.stream({ callbacks: [handlers] });
