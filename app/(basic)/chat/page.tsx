@@ -91,26 +91,10 @@ export default function Page() {
                 if (done) break;
 
                 // valueはUint8Array型なので、文字列に変換
-                const valueDecorded = new TextDecoder().decode(value);
+                const textPart = new TextDecoder().decode(value);
 
-                // 不要な文字列を削除
-                // let textPart = valueDecorded.replace(/0:"/g, '').replace(/"\n/g, '');
-
-                // // デコードした文字列をjsonとしてパース
-                // const textPart = JSON.parse(valueDecorded);
-                // console.log(textPart);
-                // console.log(textPart[0]);
-
-                // \\nは改行に変換
-                // if (textPart[0].includes('\\n')) textPart[0] = textPart[0].replace(/\\n/g, '\n');
-
-                // // textPartの最後に改行を追加
-                // text += textPart[0];
-                text += valueDecorded;
-
-                // textの中身が改行のみの場合は、textを空に初期化する
-                if (text === '\n') text = '';
-
+                // textに追加して、chatTextにセット
+                text += textPart;
                 setChats((prevChats) => {
                     const newChats = [...prevChats];
                     newChats[newChats.length - 1].text = text;
