@@ -74,11 +74,11 @@ export default function Page() {
                     messages: chatTexts,
                 }),
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json;charset=utf-8',
                 },
             });
 
-            const stream = await serverResponse.body;
+            const stream = serverResponse.body;
             if (!stream) return;
             const reader = stream.getReader();
 
@@ -92,6 +92,7 @@ export default function Page() {
 
                 // valueはUint8Array型なので、文字列に変換
                 const textPart = new TextDecoder().decode(value);
+                console.log(textPart);
 
                 // textに追加して、chatTextにセット
                 text += textPart;
@@ -101,6 +102,7 @@ export default function Page() {
                     return newChats;
                 });
             }
+            console.log(text);
         } catch (error) {
             console.error(error);
         }
