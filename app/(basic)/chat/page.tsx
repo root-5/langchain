@@ -153,6 +153,16 @@ export default function Page() {
         frameEle.scrollTop = frameEle.scrollHeight;
     });
 
+    // 送信処理がされたら、フォームのフォーカスを外す
+    useEffect(() => {
+        const inputTextEle = document.getElementById('inputText');
+        const formEle = document.querySelector('form');
+        if (!inputTextEle || !formEle) return;
+        formEle.addEventListener('submit', () => {
+            inputTextEle.blur();
+        });
+    });
+
     //====================================================================
     // ==== フォーム幅調整の処理 ====
     useEffect(() => {
