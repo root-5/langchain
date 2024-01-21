@@ -101,22 +101,6 @@ export default function Page() {
 
                 if (done) break;
             }
-
-            // while (true) {
-            //     const { done, value } = await reader.read();
-
-            //     // valueはUint8Array型なので、文字列に変換
-            //     const textPart = decoder.decode(value, { stream: !done });
-
-            //     // textに追加して、chatTextにセット
-            //     text += textPart;
-            //     setChats((prevChats) => {
-            //         const newChats = [...prevChats];
-            //         newChats[newChats.length - 1].text = text;
-            //         return newChats;
-            //     });
-            //     if (done) break;
-            // }
         } catch (error) {
             console.error(error);
         }

@@ -90,22 +90,25 @@ export default function Page() {
                     'Content-Type': 'application/json',
                 },
             });
-            const stream = await response.body;
+            const stream = response.body;
             if (!stream) return;
             const reader = stream.getReader();
+            const decoder = new TextDecoder();
 
             // chatGPTの返答を生成
             let text = '';
             while (true) {
                 const { done, value } = await reader.read();
-                if (done) break;
 
                 // valueはUint8Array型なので、文字列に変換
-                const textPart = new TextDecoder().decode(value);
+                // ストリームの終わりまで到達していない場合は、最後の文字が完全にデコードされていない可能性があると伝える
+                const textPart = decoder.decode(value, { stream: !done });
 
                 // textに追加して、chatTextにセット
                 text += textPart;
                 setcChatText(text);
+
+                if (done) break;
             }
             setIsLoading(false);
         } else if (searchInput.startsWith('http')) {
