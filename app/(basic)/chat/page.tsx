@@ -64,14 +64,14 @@ export default function Page() {
 
         // フォームの内容を取得し、サーバーに送信
         try {
-            // レスポンスはストリーム形式で返ってくる
+            // レスポンスは以下のストリーム形式で返ってくるので、それに合わせて処理
             const serverResponse = await fetch('../api/chat/getAnswer', {
                 method: 'POST',
                 body: JSON.stringify({
                     messages: chatTexts,
                 }),
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8',
+                    'Content-Type': 'application/json',
                 },
             });
 
@@ -84,35 +84,20 @@ export default function Page() {
             createNewChat('chatGPT', text);
 
             while (true) {
-                reader.read().then(({ done, value }) => {
-                    if (done) return;
-                    console.log(value);
-                    const textPart = new TextDecoder().decode(value);
-                    console.log(textPart);
-                    text += textPart;
-                    setChats((prevChats) => {
-                        const newChats = [...prevChats];
-                        newChats[newChats.length - 1].text = text;
-                        return newChats;
-                    });
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                // valueはUint8Array型なので、文字列に変換
+                const textPart = new TextDecoder().decode(value, { stream: !done });
+
+                // textに追加して、chatTextにセット
+                text += textPart;
+                setChats((prevChats) => {
+                    const newChats = [...prevChats];
+                    newChats[newChats.length - 1].text = text;
+                    return newChats;
                 });
-
-                // const { done, value } = await reader.read();
-                // if (done) break;
-
-                // // valueはUint8Array型なので、文字列に変換
-                // const textPart = new TextDecoder().decode(value);
-                // console.log(textPart);
-
-                // // textに追加して、chatTextにセット
-                // text += textPart;
-                // setChats((prevChats) => {
-                //     const newChats = [...prevChats];
-                //     newChats[newChats.length - 1].text = text;
-                //     return newChats;
-                // });
             }
-            console.log(text);
         } catch (error) {
             console.error(error);
         }
