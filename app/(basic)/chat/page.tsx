@@ -78,6 +78,7 @@ export default function Page() {
             const stream = serverResponse.body;
             if (!stream) return;
             const reader = stream.getReader();
+            const decoder = new TextDecoder();
 
             // chatGPTの返答を生成
             let text = '';
@@ -85,10 +86,10 @@ export default function Page() {
 
             while (true) {
                 const { done, value } = await reader.read();
-                if (done) break;
 
                 // valueはUint8Array型なので、文字列に変換
-                const textPart = new TextDecoder().decode(value, { stream: !done });
+                // ストリームの終わりまで到達していない場合は、最後の文字が完全にデコードされていない可能性があると伝える
+                const textPart = decoder.decode(value, { stream: !done });
 
                 // textに追加して、chatTextにセット
                 text += textPart;
@@ -97,7 +98,25 @@ export default function Page() {
                     newChats[newChats.length - 1].text = text;
                     return newChats;
                 });
+
+                if (done) break;
             }
+
+            // while (true) {
+            //     const { done, value } = await reader.read();
+
+            //     // valueはUint8Array型なので、文字列に変換
+            //     const textPart = decoder.decode(value, { stream: !done });
+
+            //     // textに追加して、chatTextにセット
+            //     text += textPart;
+            //     setChats((prevChats) => {
+            //         const newChats = [...prevChats];
+            //         newChats[newChats.length - 1].text = text;
+            //         return newChats;
+            //     });
+            //     if (done) break;
+            // }
         } catch (error) {
             console.error(error);
         }
