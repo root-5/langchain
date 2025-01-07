@@ -87,3 +87,4 @@ WSL debian での環境構築
 3. `yarn dev`
 4. OPENAI の API キーを再度取得
 5. モデルを gpt-4o-mini に変更
+6. そもそも workers の無料枠だと OPENAI のリクエストには到底処理時間が足りない・・・
