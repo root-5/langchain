@@ -6,7 +6,7 @@ import { PromptTemplate } from 'langchain/prompts';
 const llm = new OpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY,
     temperature: 0,
-    modelName: 'gpt-4-1106-preview',
+    modelName: 'gpt-4o-mini',
 });
 
 export async function POST(req: Request) {

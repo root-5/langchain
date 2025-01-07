@@ -79,3 +79,11 @@ https://zenn.dev/crsc1206/articles/d92548257fb445
 5. DB が pro アカウントではなく通常アカウントに紐づいているので修正
 6. DB でホワイトボードのバックアップを取るようにする
 7. ユーザー認証の実装
+
+# 久しぶりに触ったので追加メモ
+WSL debian での環境構築
+1. yarn のインストール
+2. `yarn install`
+3. `yarn dev`
+4. OPENAI の API キーを再度取得
+5. モデルを gpt-4o-mini に変更

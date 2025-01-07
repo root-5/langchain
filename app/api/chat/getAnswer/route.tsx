@@ -32,8 +32,7 @@ export async function POST(req: Request) {
         openAIApiKey: process.env.OPENAI_API_KEY,
         temperature: 0,
         streaming: true,
-        // modelName: 'gpt-4-1106-preview',
-        modelName: 'gpt-3.5-turbo',
+        modelName: 'gpt-4o-mini',
     });
     const chain = new LLMChain({ llm: model, prompt });
     const data = new experimental_StreamData();
